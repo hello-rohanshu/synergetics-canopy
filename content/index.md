@@ -88,23 +88,31 @@ Buckminster Fuller's attempt to write down the coordinate system of the universe
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;">
       <div style="flex: 1; min-width: 0;">
         <div style="font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.35rem;">Content Audit</div>
-        <div style="font-size: 0.9rem; color: var(--gray); line-height: 1.5;">Check the completeness of the content&nbsp;→</div>
+        <div style="font-size: 0.9rem; color: var(--gray); line-height: 1.5;">Check the completeness of the content&nbsp;-></div>
       </div>
       <span id="audit-pct" style="font-family: var(--codeFont); font-size: 1.5rem; font-weight: 700; color: var(--secondary);">--%</span>
     </div>
-    <div style="margin-top: 1.25rem; height: 6px; background: var(--lightgray); border-radius: 3px; overflow: hidden;">
+    <div style="margin-top: 1.25rem; height: 10px; background: var(--lightgray); border-radius: 3px; overflow: hidden;">
       <div id="audit-bar" style="height: 100%; width: 0%; background: var(--secondary); border-radius: 3px; transition: width 0.8s ease;"></div>
     </div>
   </a>
 
-  <script>
-    fetch('/static/data/content-audit.json')
-      .then(r => r.json()).then(data => {
-        const v = Object.values(data?.vault || {}), a = v.length ? Math.round(v.reduce((x,y)=>x+y,0)/v.length) : 0;
-        document.getElementById('audit-pct').textContent = a + '%';
-        document.getElementById('audit-bar').style.width = a + '%';
-      }).catch(() => {});
-  </script>
+<script>
+  (function() {
+    function updateAudit() {
+      fetch('/static/data/content-audit.json')
+        .then(r => r.json()).then(data => {
+          const v = Object.values(data?.vault || {}), a = v.length ? Math.round(v.reduce((x,y)=>x+y,0)/v.length) : 0;
+          const pct = document.getElementById('audit-pct');
+          const bar = document.getElementById('audit-bar');
+          if (pct) pct.textContent = a + '%';
+          if (bar) bar.style.width = a + '%';
+        }).catch(() => {});
+    }
+    updateAudit();
+    document.addEventListener('nav', updateAudit);
+  })();
+</script>
 </div>
 
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:2.5rem;">
