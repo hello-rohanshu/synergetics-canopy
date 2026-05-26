@@ -60,10 +60,6 @@ export const sharedPageComponents: SharedLayout = {
       component: Component.SynergeticsAI(),
       condition: (page) => page.fileData.slug === "synergetics-ai",
     }),
-    Component.ConditionalRender({
-      component: Component.ContentAudit(),
-      condition: (page) => page.fileData.slug === "content-audit",
-    }),
   ],
   footer: Component.Footer({
     links: {
@@ -87,6 +83,10 @@ export const defaultContentPageLayout: PageLayout = {
         Component.ConditionalRender({
       component: Component.TrendsManifest(),
       condition: (page) => page.fileData.slug === "trends-manifest",
+    }),
+        Component.ConditionalRender({
+      component: Component.ContentAudit(),
+      condition: (page) => page.fileData.slug === "content-audit",
     }),
   ],
   left: [

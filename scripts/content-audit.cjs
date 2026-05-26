@@ -24,42 +24,42 @@ const CONFIG = {
   outputFile: "quartz/static/data/content-audit.json",
 
   // Properties to check in frontmatter
-  properties: {
+  "properties": {
     "p-replication": {
-      label: "Replication",
-      description: "Replication of the text from the source"
-    },
-    "p-emDash": {
-      label: "Em Dashes",
-      description: "Displaying of Em Dashes, replacing artifacts like double underscores "
+      "label": "Replication",
+      "description": "Full text reproduced from the source"
     },
     "p-headings": {
-      label: "Headings",
-      description: "Proper hierarchy and existance of headings throughout the text "
-    },
-    "p-italics": {
-      label: "Italics",
-      description: "Application of italics throughout the text"
+      "label": "Headings",
+      "description": "Correct hierarchy present throughout"
     },
     "p-images": {
-      label: "Images",
-      description: "Replication of all images as present in the original text"
-    },
-    "p-links": {
-      label: "Links (Entry)",
-      description: "Marking of text which operate as link doorways"
-    },
-    "p-links-2": {
-      label: "Links (Exit)",
-      description: "Connecting the primary link doorways to their actual destination"
-    },
-    "p-equations": {
-      label: "Equations",
-      description: "Proper rendering of equations, using LaTex, SVGs, etc."
+      "label": "Images",
+      "description": "All source images present and rendering"
     },
     "p-structure": {
-      label: "Structure",
-      description: "Confirmation of right structure, including tables and spacing"
+      "label": "Structure",
+      "description": "Tables, spacing, and layout confirmed correct"
+    },
+    "p-emDash": {
+      "label": "Em Dashes",
+      "description": "Double-underscore artifacts replaced with proper em dashes"
+    },
+    "p-italics": {
+      "label": "Italics",
+      "description": "Italic formatting applied throughout"
+    },
+    "p-equations": {
+      "label": "Equations",
+      "description": "Equations rendered via LaTeX, SVG, or equivalent"
+    },
+    "p-links": {
+      "label": "Links (Placed)",
+      "description": "Link markers placed in text"
+    },
+    "p-links-2": {
+      "label": "Links (Resolved)",
+      "description": "Placed links connected to their destinations"
     }
   },
 
