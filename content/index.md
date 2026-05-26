@@ -2,15 +2,10 @@
 title: Home
 ---
 
-<div class="image-gallery">
-  <div class="gallery-track">
-    <div class="gallery-item"><img src="https://geometrymatters.com/wp-content/uploads/2023/07/Buckminster-Fuller-%C2%A9-Bill-Ingrahim.jpg" alt="Buckminster Fuller"></div>
-    <div class="gallery-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl8imwVHIk9MsPR2mzyz7CiMwFmI7C6VQVyw&s" alt="Dynamic Architecture"></div>
-    <div class="gallery-item"><img src="https://rarebooksleuth.com/cdn/shop/files/IMG_7421_1883x.jpg?v=1730769245" alt="Rare Book"></div>
-    <div class="gallery-item"><img src="https://m.media-amazon.com/images/I/51DKdaY4eFL._AC_UF1000,1000_QL80_.jpg" alt="Book Cover"></div>
-    <div class="gallery-item"><img src="https://www.blackmountaincollege.org/wp-content/uploads/Bucky-Fuller-in-Dome-summer-1949.jpg" alt="Bucky Fuller in Dome 1949"></div>
-  </div>
-</div>
+<img src="bucky-classroom.jpg" 
+     alt="Bucky in the classroom" 
+     width="300" 
+     style="border-radius: 16px; display: block; margin: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" />
 
 <style>
 .image-gallery {
@@ -59,7 +54,7 @@ title: Home
 }
 </style>
 
-
+This is Buckminster Fuller's magnum opus *Synergetics*, sourced from the 2000s scans of the books by R. W. Gray, offering Synergetics as a living, breathing community resource, built with the future in mind, featuring: 
 
 # About
 
