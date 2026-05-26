@@ -86,8 +86,8 @@ Buckminster Fuller's attempt to write down the coordinate system of the universe
 
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:2.5rem;">
 
-<a href="/frontmatter-audit" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
-<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Frontmatter audit</div>
+<a href="/content-audit" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
+<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Content audit</div>
 <div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Content completion across all vault entries.</div>
 <div style="font-size:11px; color:var(--gray);">Live tracker →</div>
 </a>

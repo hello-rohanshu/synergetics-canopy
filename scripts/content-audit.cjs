@@ -1,8 +1,8 @@
-// scripts/frontmatter-audit.js
+// scripts/content-audit.js
 // ------------------------------------------------------------------
-// FRONTMATTER AUDIT SCRIPT
+// CONTENT AUDIT SCRIPT
 // Scans markdown files, checks boolean frontmatter properties,
-// and writes a completion report to quartz/static/data/frontmatter-audit.json
+// and writes a completion report to quartz/static/data/content-audit.json
 // ------------------------------------------------------------------
 
 const fs = require('fs');
@@ -21,7 +21,7 @@ const CONFIG = {
   contentDir: "content",
 
   // Where to save the report
-  outputFile: "quartz/static/data/frontmatter-audit.json",
+  outputFile: "quartz/static/data/content-audit.json",
 
   // Properties to check in frontmatter
   properties: {

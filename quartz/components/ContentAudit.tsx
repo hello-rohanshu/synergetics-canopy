@@ -1,5 +1,5 @@
-// quartz/components/FrontmatterAudit.tsx
-import vaultAudit from "../../quartz/static/data/frontmatter-audit.json"
+// quartz/components/ContentAudit.tsx
+import vaultAudit from "../static/data/content-audit.json"
 import { QuartzComponent, QuartzComponentConstructor } from "./types"
 
 interface AuditData {
@@ -34,7 +34,7 @@ const formatTime = (dStr: string) => {
   return "recently"
 }
 
-const FrontmatterAudit: QuartzComponent = () => (
+const ContentAudit: QuartzComponent = () => (
   <>
     <style>{`
       .aud-container { margin: 2rem 0; font-family: var(--bodyFont); }
@@ -87,4 +87,4 @@ const FrontmatterAudit: QuartzComponent = () => (
   </>
 )
 
-export default (() => FrontmatterAudit) satisfies QuartzComponentConstructor
+export default (() => ContentAudit) satisfies QuartzComponentConstructor
