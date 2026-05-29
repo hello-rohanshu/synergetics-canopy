@@ -4,7 +4,7 @@ import * as Component from "./quartz/components"
 const explorerConfig = {
   // Hide from explorer
   filterFn: (node: any) => {
-    const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "frontmatter-audit", "trends-manifest"]);
+    const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "content-audit", "trends-manifest"]);
     const slug = node.data?.slug ?? "";
     const name = (node.path || node.displayName || "").toLowerCase();
     return !hidden.has(slug) && !hidden.has(name);
@@ -60,10 +60,6 @@ export const sharedPageComponents: SharedLayout = {
       component: Component.SynergeticsAI(),
       condition: (page) => page.fileData.slug === "synergetics-ai",
     }),
-    Component.ConditionalRender({
-      component: Component.FrontmatterAudit(),
-      condition: (page) => page.fileData.slug === "frontmatter-audit",
-    }),
   ],
   footer: Component.Footer({
     links: {
@@ -87,6 +83,10 @@ export const defaultContentPageLayout: PageLayout = {
         Component.ConditionalRender({
       component: Component.TrendsManifest(),
       condition: (page) => page.fileData.slug === "trends-manifest",
+    }),
+        Component.ConditionalRender({
+      component: Component.ContentAudit(),
+      condition: (page) => page.fileData.slug === "content-audit",
     }),
   ],
   left: [

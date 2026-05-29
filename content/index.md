@@ -78,28 +78,32 @@ Buckminster Fuller's attempt to write down the coordinate system of the universe
 
 # Project Status
 
+<div class="content-audit-card" style="margin: 1.5rem 0;">
+  <a href="/content-audit" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem; padding-left: 2rem; padding-right: 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'; " onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+    <div style="flex: 1;">
+      <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Content Completeness</div>
+      <div style="font-size: 0.85rem; color: var(--gray);">Check Detailed Audit -></div>
+    </div>
+    <span id="audit-pct" style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary);">--%</span>
+  </a>
 
-<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:2.5rem;">
-
-<a href="/frontmatter-audit" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
-<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Frontmatter audit</div>
-<div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Content completion across all vault entries.</div>
-<div style="font-size:11px; color:var(--gray);">Live tracker →</div>
-</a>
-
-<a href="/systems-stack" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
-<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Systems manifest</div>
-<div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Health dashboard for all active project systems.</div>
-<div style="font-size:11px; color:var(--gray);">Status board →</div>
-</a>
-
-<a href="/trends-manifest" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
-<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Trends manifest</div>
-<div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Pipeline view of what's in progress and queued.</div>
-<div style="font-size:11px; color:var(--gray);">Kanban →</div>
-</a>
-
+  <script>
+    (function() {
+      function updateAudit() {
+        fetch('/static/data/content-audit.json')
+          .then(r => r.json()).then(data => {
+            const v = Object.values(data?.vault || {});
+            const a = v.length ? Math.round(v.reduce((x,y)=>x+y,0)/v.length) : 0;
+            const pct = document.getElementById('audit-pct');
+            if (pct) pct.textContent = a + '%';
+          }).catch(() => {});
+      }
+      updateAudit();
+      document.addEventListener('nav', updateAudit);
+    })();
+  </script>
 </div>
+
 
 
 &nbsp;
@@ -127,3 +131,21 @@ Buckminster Fuller's attempt to write down the coordinate system of the universe
 
 ### Comments Section 
 (Coming soon)
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:2.5rem;">
+
+
+
+<a href="/systems-stack" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
+<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Systems manifest</div>
+<div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Health dashboard for all active project systems.</div>
+<div style="font-size:11px; color:var(--gray);">Status board →</div>
+</a>
+
+<a href="/trends-manifest" style="background:var(--light); border:1px solid var(--lightgray); border-radius:8px; padding:1rem 1.25rem; text-decoration:none; color:var(--dark); display:block;">
+<div style="font-size:13px; font-weight:500; margin-bottom:4px;">Trends manifest</div>
+<div style="font-size:12px; color:var(--darkgray); line-height:1.5; margin-bottom:10px;">Pipeline view of what's in progress and queued.</div>
+<div style="font-size:11px; color:var(--gray);">Kanban →</div>
+</a>
+
+</div>
