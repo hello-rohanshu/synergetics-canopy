@@ -52,7 +52,8 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [
-        Component.ConditionalRender({
+    Component.Feedback(),
+    Component.ConditionalRender({
       component: Component.SystemsDashboard(),
       condition: (page) => page.fileData.slug === "systems-stack",
     }),
@@ -80,11 +81,11 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ContentMeta(),
     Component.TagList(),
     //Component.SystemsDashboard(),
-        Component.ConditionalRender({
+    Component.ConditionalRender({
       component: Component.TrendsManifest(),
       condition: (page) => page.fileData.slug === "trends-manifest",
     }),
-        Component.ConditionalRender({
+    Component.ConditionalRender({
       component: Component.ContentAudit(),
       condition: (page) => page.fileData.slug === "content-audit",
     }),
@@ -100,7 +101,6 @@ export const defaultContentPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
         { Component: Component.ReaderMode() },
-        // { Component: Component.Feedback() },
         { Component: Component.AIButton() },
       ],
     }),
@@ -127,7 +127,6 @@ export const defaultListPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
         { Component: Component.ReaderMode() },
-        //{ Component: Component.Feedback() },
         { Component: Component.AIButton() },
       ],
     }),

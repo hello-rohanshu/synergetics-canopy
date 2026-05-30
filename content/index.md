@@ -102,19 +102,21 @@ PS: The server is mostly inactive, but I'm not aware of any other place for comm
   </script>
 </div>
 
-<a href="https://github.com/hello-rohanshu/synergetics-canopy" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:12px; padding:12px 24px; border:1.5px solid var(--lightgray); border-radius:8px; text-decoration:none; color:var(--dark); font-size:16px; font-weight:500; background:transparent; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-  <svg width="20" height="20" viewBox="0 0 98 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-2.965.324-2.965 4.918.326 7.523 5.074 7.523 5.074 4.392 7.495 11.48 5.34 14.299 4.076.435-3.181 1.696-5.34 3.085-6.566-10.837-1.194-22.224-5.424-22.224-24.128 0-5.34 1.905-9.686 5.002-13.107-.525-1.194-2.155-6.267.498-13.068 0 0 4.085-1.303 13.391 5.006a46.648 46.648 0 0 1 12.177-1.63c4.127 0 8.261.544 12.177 1.63 9.306-6.309 13.39-5.006 13.39-5.006 2.653 6.801 1.023 11.874.498 13.068 3.108 3.421 5.002 7.767 5.002 13.107 0 18.735-11.395 22.934-22.239 24.139 1.728 1.476 3.332 4.479 3.332 9.037 0 6.525-.08 11.79-.08 13.39 0 1.304.889 2.863 3.316 2.363 19.423-6.519 33.404-24.935 33.404-46.691C97.707 22 75.87 0 48.854 0z" fill="currentColor"/>
-  </svg>
-  GitHub
-</a>
+<div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+  <a href="https://github.com/hello-rohanshu/synergetics-canopy" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:12px; padding:12px 24px; border:1.5px solid var(--lightgray); border-radius:8px; text-decoration:none; color:var(--dark); font-size:16px; font-weight:500; background:transparent; transition: opacity 0.2s ease; width: fit-content;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+    <svg width="20" height="20" viewBox="0 0 98 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-2.965.324-2.965 4.918.326 7.523 5.074 7.523 5.074 4.392 7.495 11.48 5.34 14.299 4.076.435-3.181 1.696-5.34 3.085-6.566-10.837-1.194-22.224-5.424-22.224-24.128 0-5.34 1.905-9.686 5.002-13.107-.525-1.194-2.155-6.267.498-13.068 0 0 4.085-1.303 13.391 5.006a46.648 46.648 0 0 1 12.177-1.63c4.127 0 8.261.544 12.177 1.63 9.306-6.309 13.39-5.006 13.39-5.006 2.653 6.801 1.023 11.874.498 13.068 3.108 3.421 5.002 7.767 5.002 13.107 0 18.735-11.395 22.934-22.239 24.139 1.728 1.476 3.332 4.479 3.332 9.037 0 6.525-.08 11.79-.08 13.39 0 1.304.889 2.863 3.316 2.363 19.423-6.519 33.404-24.935 33.404-46.691C97.707 22 75.87 0 48.854 0z" fill="currentColor"/>
+    </svg>
+    GitHub
+  </a>
 
-<button onclick="document.querySelector('.feedback-modal').classList.add('open')" style="display:inline-flex; align-items:center; gap:10px; padding:12px 24px; border:1.5px solid var(--lightgray); border-radius:8px; background:transparent; color:var(--dark); font-size:16px; font-weight:500; cursor:pointer; transition:opacity 0.2s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c-2 .2-3.53 1.9-3.53 3.8"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-  </svg>
-  Send Feedback
-</button>
+<button onclick="window.dispatchEvent(new CustomEvent('open-feedback'))" style="display:inline-flex; align-items:center; gap:10px; padding:12px 24px; border:1.5px solid var(--lightgray); border-radius:8px; background:transparent; color:var(--dark); font-size:16px; font-weight:500; cursor:pointer; transition:opacity 0.2s ease; width: fit-content;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c-2 .2-3.53 1.9-3.53 3.8"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+    </svg>
+    Send Feedback
+  </button>
+</div>
 
 &nbsp;
 

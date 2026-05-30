@@ -1,5 +1,4 @@
 document.addEventListener("nav", () => {
-  const btn = document.querySelector(".feedback-button") as HTMLButtonElement | null
   const modal = document.querySelector(".feedback-modal") as HTMLDivElement | null
   const cancelBtn = document.querySelector(".cancel-btn") as HTMLButtonElement | null
   const submitBtn = document.querySelector(".submit-btn") as HTMLButtonElement | null
@@ -12,9 +11,8 @@ document.addEventListener("nav", () => {
   const trapInput = document.getElementById("feedback-trap") as HTMLInputElement | null
   const statusDiv = document.getElementById("feedback-status") as HTMLDivElement | null
 
-  if (!btn || !modal) return
+  if (!modal) return
 
-  const openModal = () => modal.classList.add("open")
   const closeModal = () => {
     modal.classList.remove("open")
     if (statusDiv) statusDiv.style.display = "none"
@@ -24,7 +22,6 @@ document.addEventListener("nav", () => {
     if (trapInput) trapInput.value = ""
   }
 
-  btn.addEventListener("click", openModal)
   cancelBtn?.addEventListener("click", closeModal)
 
   const outsideClick = (e: MouseEvent) => {
@@ -48,7 +45,7 @@ document.addEventListener("nav", () => {
       name: nameInput?.value?.trim() || undefined,
       github_username: githubInput?.value?.trim() || undefined,
       url: window.location.href,
-      _trap: trapInput?.value || ""   // honeypot — should always be empty
+      _trap: trapInput?.value || ""
     }
 
     submitBtn.disabled = true
@@ -82,9 +79,16 @@ document.addEventListener("nav", () => {
   submitBtn?.addEventListener("click", submitFeedback)
 
   window.addCleanup(() => {
-    btn.removeEventListener("click", openModal)
     cancelBtn?.removeEventListener("click", closeModal)
     window.removeEventListener("click", outsideClick)
     submitBtn?.removeEventListener("click", submitFeedback)
   })
+})
+
+// Listen for the custom event from the inline button
+window.addEventListener("open-feedback", () => {
+  const modal = document.querySelector(".feedback-modal")
+  if (modal) {
+    modal.classList.add("open")
+  }
 })
