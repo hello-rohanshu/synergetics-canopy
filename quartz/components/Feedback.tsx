@@ -10,15 +10,18 @@ const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
         <h3>Send Feedback</h3>
 
         <select id="feedback-type">
-          <option value="Bug Report">Bug Report</option>
-          <option value="Content Issue">Content Issue</option>
-          <option value="Suggestion">Suggestion</option>
+          <option value="type: bug">Bug Report</option>
+          <option value="type: feedback">Feedback</option>
+          <option value="type: feature">Feature Request</option>
         </select>
 
         <select id="feedback-area">
-          <option value="User Interface">User Interface</option>
-          <option value="Text / Content">Text / Content</option>
-          <option value="Other">Other</option>
+          <option value="area: ai-chat">AI Chat</option>
+          <option value="area: hosting">Hosting</option>
+          <option value="area: research">Research</option>
+          <option value="area: site-ux">Site UX</option>
+          <option value="area: synergetics-content">Synergetics Content</option>
+          <option value="area: version-organization">Version Organization</option>
         </select>
 
         <textarea id="feedback-message" placeholder="What's on your mind?" required></textarea>
