@@ -26,6 +26,9 @@ import ConditionalRender from "./ConditionalRender"
 import SynergeticsAI from "./SynergeticsAI"
 import AIButton from "./AIButton"
 import Feedback from "./Feedback"
+import SystemsDashboard from "./SystemsDashboard"
+import ContentAudit from "./ContentAudit"
+import TrendsManifest from "./TrendsManifest"
 
 export {
   ArticleTitle,
@@ -56,4 +59,7 @@ export {
   SynergeticsAI,
   AIButton,
   Feedback,
+  SystemsDashboard,
+  ContentAudit,
+  TrendsManifest,
 }
