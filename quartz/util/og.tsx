@@ -313,7 +313,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
             fontSize: 28,
           }}
         >
-          {date && (
+          {/* {date && (
             <div style={{ display: "flex", alignItems: "center" }}>
               <svg
                 style={{ marginRight: "0.5rem" }}
@@ -330,7 +330,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
               </svg>
               {date}
             </div>
-          )}
+          )} */}
           <div style={{ display: "flex", alignItems: "center" }}>
             <svg
               style={{ marginRight: "0.5rem" }}
@@ -348,7 +348,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
         </div>
 
         {/* Right side - Tags */}
-        <div
+        {/* <div
           style={{
             display: "flex",
             gap: "0.5rem",
@@ -371,7 +371,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
               #{tag}
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )
