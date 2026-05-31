@@ -14,6 +14,183 @@ document.addEventListener("nav", () => {
 
   if (!modal) return
 
+  // Custom Dropdown UI Sync Managers
+  const customSelectContainers = document.querySelectorAll(".custom-select")
+  const dropdownCleanupFns: (() => void)[] = []
+
+  const initCustomDropdowns = () => {
+    customSelectContainers.forEach((container) => {
+      const select = container.querySelector("select")
+      const trigger = container.querySelector(".custom-select__trigger") as HTMLButtonElement
+      const list = container.querySelector(".custom-select__list") as HTMLUListElement
+      const options = Array.from(list.querySelectorAll('li[role="option"]')) as HTMLLIElement[]
+      
+      let highlightedIndex = 0
+
+      const openDropdown = () => {
+        // Close all other dropdowns first
+        closeAllDropdowns()
+        trigger.setAttribute("aria-expanded", "true")
+        list.removeAttribute("hidden")
+        
+        // Match highlighted index to currently selected value
+        const currentSelection = options.findIndex(opt => opt.getAttribute("aria-selected") === "true")
+        highlightedIndex = currentSelection >= 0 ? currentSelection : 0
+        updateHighlight(highlightedIndex)
+      }
+
+      const closeDropdown = () => {
+        trigger.setAttribute("aria-expanded", "false")
+        list.setAttribute("hidden", "")
+        trigger.removeAttribute("aria-activedescendant")
+      }
+
+      const updateHighlight = (index: number) => {
+        options.forEach((opt, i) => {
+          if (i === index) {
+            opt.classList.add("highlighted")
+            trigger.setAttribute("aria-activedescendant", opt.id)
+            // Keep container scrolled smoothly to active keyboard items
+            opt.scrollIntoView({ block: "nearest" })
+          } else {
+            opt.classList.remove("highlighted")
+          }
+        })
+      }
+
+      const selectOption = (index: number) => {
+        const targetOption = options[index]
+        const val = targetOption.getAttribute("data-value") || ""
+        const text = targetOption.textContent || ""
+
+        // Sync Native Element
+        if (select) {
+          select.value = val
+          select.dispatchEvent(new Event("change"))
+        }
+
+        // Update Custom Element View
+        const valSpan = trigger.querySelector(".custom-select__value")
+        if (valSpan) valSpan.textContent = text
+
+        options.forEach((opt, i) => {
+          const isSelected = i === index
+          opt.setAttribute("aria-selected", isSelected ? "true" : "false")
+          opt.classList.toggle("selected", isSelected)
+        })
+
+        closeDropdown()
+        trigger.focus()
+      }
+
+      const handleTriggerClick = (e: MouseEvent) => {
+        e.stopPropagation()
+        const isOpen = trigger.getAttribute("aria-expanded") === "true"
+        isOpen ? closeDropdown() : openDropdown()
+      }
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const isOpen = trigger.getAttribute("aria-expanded") === "true"
+
+        if (!isOpen) {
+          if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === " " || e.key === "Enter") {
+            e.preventDefault()
+            openDropdown()
+          }
+          return
+        }
+
+        switch (e.key) {
+          case "ArrowDown":
+            e.preventDefault()
+            highlightedIndex = (highlightedIndex + 1) % options.length
+            updateHighlight(highlightedIndex)
+            break
+          case "ArrowUp":
+            e.preventDefault()
+            highlightedIndex = (highlightedIndex - 1 + options.length) % options.length
+            updateHighlight(highlightedIndex)
+            break
+          case "Home":
+            e.preventDefault()
+            highlightedIndex = 0
+            updateHighlight(highlightedIndex)
+            break
+          case "End":
+            e.preventDefault()
+            highlightedIndex = options.length - 1
+            updateHighlight(highlightedIndex)
+            break
+          case "Enter":
+          case " ":
+            e.preventDefault()
+            selectOption(highlightedIndex)
+            break
+          case "Escape":
+            e.preventDefault()
+            closeDropdown()
+            trigger.focus()
+            break
+          case "Tab":
+            closeDropdown()
+            break
+        }
+      }
+
+      // Trigger Bindings
+      trigger.addEventListener("click", handleTriggerClick)
+      trigger.addEventListener("keydown", handleKeyDown)
+
+      // Option Clicks
+      options.forEach((opt, index) => {
+        const handleOptClick = (e: MouseEvent) => {
+          e.stopPropagation()
+          selectOption(index)
+        }
+        opt.addEventListener("click", handleOptClick)
+      })
+
+      // Push specific cleanups
+      dropdownCleanupFns.push(() => {
+        trigger.removeEventListener("click", handleTriggerClick)
+        trigger.removeEventListener("keydown", handleKeyDown)
+      })
+    })
+  }
+
+  const closeAllDropdowns = () => {
+    customSelectContainers.forEach((container) => {
+      const trigger = container.querySelector(".custom-select__trigger")
+      const list = container.querySelector(".custom-select__list")
+      trigger?.setAttribute("aria-expanded", "false")
+      list?.setAttribute("hidden", "")
+    })
+  }
+
+  const resetCustomDropdownsUI = () => {
+    customSelectContainers.forEach((container) => {
+      const select = container.querySelector("select")
+      if (select) select.selectedIndex = 0
+      
+      const firstOpt = container.querySelector('li[role="option"]')
+      const options = container.querySelectorAll('li[role="option"]')
+      const valSpan = container.querySelector(".custom-select__value")
+      
+      if (firstOpt && valSpan) {
+        valSpan.textContent = firstOpt.textContent
+      }
+
+      options.forEach((opt, i) => {
+        opt.setAttribute("aria-selected", i === 0 ? "true" : "false")
+        opt.classList.toggle("selected", i === 0)
+        opt.classList.toggle("highlighted", i === 0)
+      })
+    })
+  }
+
+  // Init custom listbox controls
+  initCustomDropdowns()
+
   const resetStatus = () => {
     if (!statusDiv) return
     statusDiv.style.display = "none"
@@ -24,12 +201,12 @@ document.addEventListener("nav", () => {
   const closeModal = () => {
     modal.classList.remove("open")
     resetStatus()
+    closeAllDropdowns()
+    resetCustomDropdownsUI()
     if (msgInput) msgInput.value = ""
     if (nameInput) nameInput.value = ""
     if (githubInput) githubInput.value = ""
     if (trapInput) trapInput.value = ""
-    if (typeSelect) typeSelect.selectedIndex = 0 
-    if (areaSelect) areaSelect.selectedIndex = 0 
     if (submitBtn) {
       submitBtn.disabled = false
       submitBtn.textContent = "Submit feedback"
@@ -41,13 +218,20 @@ document.addEventListener("nav", () => {
 
   const outsideClick = (e: MouseEvent) => {
     if (e.target === modal) closeModal()
+    // Global click outside to minimize open select dropdowns
+    if (!(e.target as HTMLElement).closest(".custom-select")) {
+      closeAllDropdowns()
+    }
   }
   window.addEventListener("click", outsideClick)
 
-  // Escape key handler
   const escapeClick = (e: KeyboardEvent) => {
     if (e.key === "Escape" && modal.classList.contains("open")) {
-      closeModal()
+      // If a select menu was open, don't drop out of entire modal instantly
+      const parsingDropdowns = Array.from(customSelectContainers).some(
+        c => c.querySelector(".custom-select__trigger")?.getAttribute("aria-expanded") === "true"
+      )
+      if (!parsingDropdowns) closeModal()
     }
   }
   window.addEventListener("keydown", escapeClick)
@@ -111,6 +295,7 @@ document.addEventListener("nav", () => {
         msgInput.value = ""
         if (nameInput) nameInput.value = ""
         if (githubInput) githubInput.value = ""
+        resetCustomDropdownsUI()
       } else {
         showStatus("💥 Ouch, something went wrong on our end. Could you try sending it again?", "error")
       }
@@ -130,6 +315,7 @@ document.addEventListener("nav", () => {
     window.removeEventListener("click", outsideClick)
     window.removeEventListener("keydown", escapeClick)
     submitBtn?.removeEventListener("click", submitFeedback)
+    dropdownCleanupFns.forEach(cleanup => cleanup())
   })
 })
 

@@ -40,11 +40,19 @@ $transition-speed: 0.24s;
 
   h3 {
     margin: 0;
-    margin-bottom: 0.65rem; 
+    margin-bottom: 0.25rem; 
     font-size: 1.3rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--dark);
+  }
+
+  .feedback-notice {
+    margin: 0 0 0.4rem 0;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--gray);
   }
 
   .feedback-close {
@@ -121,63 +129,106 @@ $transition-speed: 0.24s;
     min-height: 100px;
     line-height: 1.45;
   }
+}
 
-  // New-Age Compact Integrated Dropdown Wrapper
-  .select-wrapper {
-    position: relative;
+// ---------- Accessible Custom Listbox Styles ----------
+.custom-select {
+  position: relative;
+  width: 100%;
+
+  .custom-select__trigger {
     width: 100%;
-
-    &::after {
-      content: "";
-      position: absolute;
-      right: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 0.65rem;
-      height: 0.65rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234e4e4e' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-size: contain;
-      pointer-events: none;
-      opacity: 0.6;
-      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    &:focus-within::after {
-      opacity: 1;
-    }
-  }
-
-  select {
-    appearance: none;
-    width: 100%;
-    font-size: 0.85rem; 
-    font-weight: 500;
-    padding: 0.55rem 2rem 0.55rem 0.75rem; 
-    border-radius: 6px; 
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 2rem 0.6rem 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--dark);
     background: var(--light);
     border: 1px solid var(--lightgray);
-    color: var(--dark);
-    font-family: inherit;
-    transition: border-color $transition-speed $smooth-easing, box-shadow $transition-speed $smooth-easing;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
     box-sizing: border-box;
+    transition: border-color $transition-speed $smooth-easing, box-shadow $transition-speed $smooth-easing;
 
     &:hover {
       border-color: var(--gray);
     }
 
-    &:focus {
+    &:focus, &[aria-expanded="true"] {
       outline: none;
-      background: var(--light);
       border-color: var(--secondary);
       box-shadow: 0 0 0 3px var(--highlight);
     }
 
-    option {
+    .custom-select__chevron {
+      font-size: 1.1rem;
+      color: var(--gray);
+      transform: rotate(90deg);
+      display: inline-block;
+      line-height: 1;
+      pointer-events: none;
+      transition: transform 0.2s $smooth-easing;
+    }
+
+    &[aria-expanded="true"] .custom-select__chevron {
+      transform: rotate(270deg);
+    }
+  }
+
+  .custom-select__list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin: 4px 0 0 0;
+    padding: 4px 0;
+    list-style: none;
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    &[hidden] {
+      display: none;
+    }
+
+    li[role="option"] {
+      padding: 0.55rem 2.5rem 0.55rem 0.75rem;
+      font-family: 'Inter', sans-serif;
       font-size: 0.88rem;
-      background: var(--light);
+      font-weight: 500;
       color: var(--dark);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.15s ease, color 0.15s ease;
+
+      &.highlighted {
+        background: var(--highlight);
+        color: var(--dark);
+      }
+
+      &.selected {
+        color: var(--secondary);
+
+        &::after {
+          content: "✓";
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          font-weight: 700;
+          font-size: 0.85rem;
+          color: var(--secondary);
+        }
+      }
     }
   }
 }
@@ -223,7 +274,6 @@ $transition-speed: 0.24s;
   &.feedback-status--error { display: block; background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.15); }
   &.feedback-status--warning { display: block; background: var(--highlight); border-color: var(--gray); }
   
-  // Vertically Centered Loading Block
   &.feedback-status--loading { 
     display: flex; 
     align-items: center; 
@@ -235,7 +285,6 @@ $transition-speed: 0.24s;
   }
 }
 
-// Perfectly Baseline-Locked Spinner
 .feedback-spinner {
   display: inline-flex;
   width: 14px;
