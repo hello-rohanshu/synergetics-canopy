@@ -59,9 +59,9 @@ title: Home
 This is Buckminster Fuller's magnum opus _Synergetics_. Sourced from [R. W. Gray's 1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) of the original books, built with the future in mind.
 
 - Instant search across all 1,468 pages
-- AI assistant trained on the complete text ([[synergetics-ai|Try]])
+- AI assistant trained on the complete text. Try [[synergetics-ai|here]].
 - Paragraph-level anchor links, one-click copy
-- Open source on [Github](https://github.com/hello-rohanshu/synergetics-canopy)
+- Open source on <a href="https://github.com/hello-rohanshu/synergetics-canopy" target="_blank">GitHub</a>
 - Markdown
 - Many more to come!
 
