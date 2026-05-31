@@ -5,31 +5,53 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 
 const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
   return (
-    <div class="feedback-modal">
+    <div class="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
       <div class="feedback-content">
-        <h3>Send Feedback</h3>
+        <button class="feedback-close" aria-label="Close dialog">×</button>
+        
+        <h3 id="feedback-title">Share your thoughts</h3>
 
-        <select id="feedback-type">
-          <option value="type: bug">Bug Report</option>
-          <option value="type: feedback">Feedback</option>
-          <option value="type: feature">Feature Request</option>
-        </select>
+        <div class="feedback-field">
+          <label for="feedback-type">What kind of feedback is this?</label>
+          <div class="select-wrapper">
+            <select id="feedback-type">
+              <option value="type: bug">Something is broken (Bug)</option>
+              <option value="type: feedback">Just a general thought or idea</option>
+              <option value="type: feature">A feature request</option>
+            </select>
+          </div>
+        </div>
 
-        <select id="feedback-area">
-          <option value="area: ai-chat">AI Chat</option>
-          <option value="area: hosting">Hosting</option>
-          <option value="area: research">Research</option>
-          <option value="area: site-ux">Site UX</option>
-          <option value="area: synergetics-content">Synergetics Content</option>
-          <option value="area: version-organization">Version Organization</option>
-        </select>
+        <div class="feedback-field">
+          <label for="feedback-area">Where did you notice this?</label>
+          <div class="select-wrapper">
+            <select id="feedback-area">
+              <option value="area: ai-chat">AI Chat</option>
+              <option value="area: hosting">Hosting</option>
+              <option value="area: research">Research</option>
+              <option value="area: site-ux">Site UX / Experience</option>
+              <option value="area: synergetics-content">Synergetics Content</option>
+              <option value="area: version-organization">Version Organization</option>
+            </select>
+          </div>
+        </div>
 
-        <textarea id="feedback-message" placeholder="What's on your mind?" required></textarea>
+        <div class="feedback-field">
+          <label for="feedback-message">What's on your mind?</label>
+          <textarea id="feedback-message" placeholder="Tell us a bit more about it..." rows={4} required></textarea>
+        </div>
 
-        <input id="feedback-name" type="text" placeholder="Your name (optional)" />
-        <input id="feedback-github" type="text" placeholder="GitHub username (optional)" />
+        <div class="feedback-row">
+          <div class="feedback-field">
+            <label for="feedback-name">Your name <span class="optional">(optional)</span></label>
+            <input id="feedback-name" type="text" placeholder="e.g., Alex" />
+          </div>
+          <div class="feedback-field">
+            <label for="feedback-github">GitHub handle <span class="optional">(optional)</span></label>
+            <input id="feedback-github" type="text" placeholder="username" />
+          </div>
+        </div>
 
-        {/* Honeypot — hidden from humans, bots fill it */}
         <input
           id="feedback-trap"
           type="text"
@@ -37,18 +59,14 @@ const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
           tabIndex={-1}
           autocomplete="off"
           aria-hidden="true"
-          style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"
+          style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
         />
-
-        <p class="feedback-privacy">
-          Submissions are posted as public GitHub issues.
-        </p>
 
         <div id="feedback-status"></div>
 
         <div class="feedback-actions">
           <button class="cancel-btn">Cancel</button>
-          <button class="submit-btn">Submit</button>
+          <button class="submit-btn">Submit feedback</button>
         </div>
       </div>
     </div>

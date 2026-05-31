@@ -1,5 +1,6 @@
 document.addEventListener("nav", () => {
   const modal = document.querySelector(".feedback-modal") as HTMLDivElement | null
+  const closeBtn = document.querySelector(".feedback-close") as HTMLButtonElement | null
   const cancelBtn = document.querySelector(".cancel-btn") as HTMLButtonElement | null
   const submitBtn = document.querySelector(".submit-btn") as HTMLButtonElement | null
 
@@ -13,15 +14,29 @@ document.addEventListener("nav", () => {
 
   if (!modal) return
 
+  const resetStatus = () => {
+    if (!statusDiv) return
+    statusDiv.style.display = "none"
+    statusDiv.className = ""
+    statusDiv.innerHTML = ""
+  }
+
   const closeModal = () => {
     modal.classList.remove("open")
-    if (statusDiv) statusDiv.style.display = "none"
+    resetStatus()
     if (msgInput) msgInput.value = ""
     if (nameInput) nameInput.value = ""
     if (githubInput) githubInput.value = ""
     if (trapInput) trapInput.value = ""
+    if (typeSelect) typeSelect.selectedIndex = 0 
+    if (areaSelect) areaSelect.selectedIndex = 0 
+    if (submitBtn) {
+      submitBtn.disabled = false
+      submitBtn.textContent = "Submit feedback"
+    }
   }
 
+  closeBtn?.addEventListener("click", closeModal)
   cancelBtn?.addEventListener("click", closeModal)
 
   const outsideClick = (e: MouseEvent) => {
@@ -29,12 +44,41 @@ document.addEventListener("nav", () => {
   }
   window.addEventListener("click", outsideClick)
 
+  // Escape key handler
+  const escapeClick = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) {
+      closeModal()
+    }
+  }
+  window.addEventListener("keydown", escapeClick)
+
+  const showStatus = (message: string, type: "success" | "error" | "warning" | "loading", linkUrl?: string) => {
+    if (!statusDiv) return
+    statusDiv.style.display = "block"
+    statusDiv.className = `feedback-status feedback-status--${type}`
+
+    if (type === "loading") {
+      statusDiv.innerHTML = `
+        <span class="feedback-spinner"></span>
+        <span>Sending your thoughts over...</span>
+      `
+    } else if (type === "success" && linkUrl) {
+      statusDiv.innerHTML = `
+        <div>
+          <p>🎉 <strong>Awesome, your feedback is live!</strong></p>
+          <p class="status-link-text"><a href="${linkUrl}" target="_blank" rel="noopener noreferrer">View GitHub Issue →</a></p>
+        </div>
+      `
+    } else {
+      statusDiv.textContent = message
+    }
+  }
+
   const submitFeedback = async () => {
     if (!typeSelect || !areaSelect || !msgInput || !statusDiv || !submitBtn) return
 
     if (!msgInput.value.trim()) {
-      statusDiv.style.display = "block"
-      statusDiv.innerText = "Message cannot be empty."
+      showStatus("⚠️ Please enter a message before submitting!", "warning")
       return
     }
 
@@ -45,12 +89,13 @@ document.addEventListener("nav", () => {
       name: nameInput?.value?.trim() || undefined,
       github_username: githubInput?.value?.trim() || undefined,
       url: window.location.href,
+      labels: ["source: widget"],
       _trap: trapInput?.value || ""
     }
 
     submitBtn.disabled = true
-    statusDiv.style.display = "block"
-    statusDiv.innerText = "Submitting..."
+    submitBtn.textContent = "Submitting..."
+    showStatus("", "loading")
 
     try {
       const res = await fetch("https://synergetics-github-api-helper.rohanshu.workers.dev/feedback", {
@@ -62,30 +107,32 @@ document.addEventListener("nav", () => {
       const data = (await res.json()) as { ok: boolean; issue_url?: string }
 
       if (data.ok && data.issue_url) {
-        statusDiv.innerHTML = `✅ <a href="${data.issue_url}" target="_blank" rel="noopener">Issue created — thank you!</a>`
+        showStatus("", "success", data.issue_url)
         msgInput.value = ""
         if (nameInput) nameInput.value = ""
         if (githubInput) githubInput.value = ""
       } else {
-        statusDiv.innerText = "❌ Failed to submit. Try again."
+        showStatus("💥 Ouch, something went wrong on our end. Could you try sending it again?", "error")
       }
     } catch (err) {
-      statusDiv.innerText = "❌ Network error."
+      showStatus("📡 Connection issue. Please check your network and give it another shot.", "error")
     } finally {
       submitBtn.disabled = false
+      submitBtn.textContent = "Submit feedback"
     }
   }
 
   submitBtn?.addEventListener("click", submitFeedback)
 
   window.addCleanup(() => {
+    closeBtn?.removeEventListener("click", closeModal)
     cancelBtn?.removeEventListener("click", closeModal)
     window.removeEventListener("click", outsideClick)
+    window.removeEventListener("keydown", escapeClick)
     submitBtn?.removeEventListener("click", submitFeedback)
   })
 })
 
-// Listen for the custom event from the inline button
 window.addEventListener("open-feedback", () => {
   const modal = document.querySelector(".feedback-modal")
   if (modal) {
