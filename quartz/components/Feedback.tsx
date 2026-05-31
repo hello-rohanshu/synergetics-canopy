@@ -9,9 +9,8 @@ const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
       <div class="feedback-content">
         <button class="feedback-close" aria-label="Close dialog">×</button>
         
-        <div>
-          <h3 id="feedback-title">Share your thoughts</h3>
-          <p class="feedback-notice">All info will be public on GitHub.</p>
+        <div class="feedback-header">
+          <p id="feedback-title" class="feedback-title">Share your thoughts</p>
         </div>
 
         {/* Feedback Type Custom Select */}
@@ -69,11 +68,11 @@ const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
 
         <div class="feedback-row">
           <div class="feedback-field">
-            <label for="feedback-name">Your name <span class="optional">(optional)</span></label>
+            <label for="feedback-name">Your name <span class="optional">optional</span></label>
             <input id="feedback-name" type="text" placeholder="e.g., Alex" />
           </div>
           <div class="feedback-field">
-            <label for="feedback-github">GitHub handle <span class="optional">(optional)</span></label>
+            <label for="feedback-github">GitHub handle <span class="optional">optional</span></label>
             <input id="feedback-github" type="text" placeholder="username" />
           </div>
         </div>
@@ -88,7 +87,10 @@ const Feedback: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
           style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
         />
 
-        <div id="feedback-status"></div>
+        {/* Static Footprint Status Slot */}
+        <div id="feedback-status" class="feedback-status feedback-status--notice">
+          All info will be public on GitHub.
+        </div>
 
         <div class="feedback-actions">
           <button class="cancel-btn">Cancel</button>

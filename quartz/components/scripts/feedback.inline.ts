@@ -14,7 +14,6 @@ document.addEventListener("nav", () => {
 
   if (!modal) return
 
-  // Custom Dropdown UI Sync Managers
   const customSelectContainers = document.querySelectorAll(".custom-select")
   const dropdownCleanupFns: (() => void)[] = []
 
@@ -24,16 +23,14 @@ document.addEventListener("nav", () => {
       const trigger = container.querySelector(".custom-select__trigger") as HTMLButtonElement
       const list = container.querySelector(".custom-select__list") as HTMLUListElement
       const options = Array.from(list.querySelectorAll('li[role="option"]')) as HTMLLIElement[]
-      
+
       let highlightedIndex = 0
 
       const openDropdown = () => {
-        // Close all other dropdowns first
         closeAllDropdowns()
         trigger.setAttribute("aria-expanded", "true")
         list.removeAttribute("hidden")
-        
-        // Match highlighted index to currently selected value
+
         const currentSelection = options.findIndex(opt => opt.getAttribute("aria-selected") === "true")
         highlightedIndex = currentSelection >= 0 ? currentSelection : 0
         updateHighlight(highlightedIndex)
@@ -50,7 +47,6 @@ document.addEventListener("nav", () => {
           if (i === index) {
             opt.classList.add("highlighted")
             trigger.setAttribute("aria-activedescendant", opt.id)
-            // Keep container scrolled smoothly to active keyboard items
             opt.scrollIntoView({ block: "nearest" })
           } else {
             opt.classList.remove("highlighted")
@@ -63,13 +59,11 @@ document.addEventListener("nav", () => {
         const val = targetOption.getAttribute("data-value") || ""
         const text = targetOption.textContent || ""
 
-        // Sync Native Element
         if (select) {
           select.value = val
           select.dispatchEvent(new Event("change"))
         }
 
-        // Update Custom Element View
         const valSpan = trigger.querySelector(".custom-select__value")
         if (valSpan) valSpan.textContent = text
 
@@ -137,11 +131,9 @@ document.addEventListener("nav", () => {
         }
       }
 
-      // Trigger Bindings
       trigger.addEventListener("click", handleTriggerClick)
       trigger.addEventListener("keydown", handleKeyDown)
 
-      // Option Clicks
       options.forEach((opt, index) => {
         const handleOptClick = (e: MouseEvent) => {
           e.stopPropagation()
@@ -150,7 +142,6 @@ document.addEventListener("nav", () => {
         opt.addEventListener("click", handleOptClick)
       })
 
-      // Push specific cleanups
       dropdownCleanupFns.push(() => {
         trigger.removeEventListener("click", handleTriggerClick)
         trigger.removeEventListener("keydown", handleKeyDown)
@@ -171,11 +162,11 @@ document.addEventListener("nav", () => {
     customSelectContainers.forEach((container) => {
       const select = container.querySelector("select")
       if (select) select.selectedIndex = 0
-      
+
       const firstOpt = container.querySelector('li[role="option"]')
       const options = container.querySelectorAll('li[role="option"]')
       const valSpan = container.querySelector(".custom-select__value")
-      
+
       if (firstOpt && valSpan) {
         valSpan.textContent = firstOpt.textContent
       }
@@ -188,14 +179,12 @@ document.addEventListener("nav", () => {
     })
   }
 
-  // Init custom listbox controls
   initCustomDropdowns()
 
   const resetStatus = () => {
     if (!statusDiv) return
-    statusDiv.style.display = "none"
-    statusDiv.className = ""
-    statusDiv.innerHTML = ""
+    statusDiv.className = "feedback-status feedback-status--notice"
+    statusDiv.innerHTML = "All info will be public on GitHub."
   }
 
   const closeModal = () => {
@@ -218,7 +207,6 @@ document.addEventListener("nav", () => {
 
   const outsideClick = (e: MouseEvent) => {
     if (e.target === modal) closeModal()
-    // Global click outside to minimize open select dropdowns
     if (!(e.target as HTMLElement).closest(".custom-select")) {
       closeAllDropdowns()
     }
@@ -227,7 +215,6 @@ document.addEventListener("nav", () => {
 
   const escapeClick = (e: KeyboardEvent) => {
     if (e.key === "Escape" && modal.classList.contains("open")) {
-      // If a select menu was open, don't drop out of entire modal instantly
       const parsingDropdowns = Array.from(customSelectContainers).some(
         c => c.querySelector(".custom-select__trigger")?.getAttribute("aria-expanded") === "true"
       )
@@ -238,23 +225,21 @@ document.addEventListener("nav", () => {
 
   const showStatus = (message: string, type: "success" | "error" | "warning" | "loading", linkUrl?: string) => {
     if (!statusDiv) return
-    statusDiv.style.display = "block"
     statusDiv.className = `feedback-status feedback-status--${type}`
 
     if (type === "loading") {
       statusDiv.innerHTML = `
         <span class="feedback-spinner"></span>
-        <span>Sending your thoughts over...</span>
+        <span class="feedback-status-text">Sending your thoughts over...</span>
       `
     } else if (type === "success" && linkUrl) {
       statusDiv.innerHTML = `
-        <div>
-          <p>🎉 <strong>Awesome, your feedback is live!</strong></p>
-          <p class="status-link-text"><a href="${linkUrl}" target="_blank" rel="noopener noreferrer">View GitHub Issue →</a></p>
+        <div class="feedback-success-wrapper">
+          <p>Aweseome, feedback live! <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="status-link">Check →</a></p>
         </div>
       `
     } else {
-      statusDiv.textContent = message
+      statusDiv.innerHTML = `<span class="feedback-status-text">${message}</span>`
     }
   }
 
@@ -262,7 +247,7 @@ document.addEventListener("nav", () => {
     if (!typeSelect || !areaSelect || !msgInput || !statusDiv || !submitBtn) return
 
     if (!msgInput.value.trim()) {
-      showStatus("⚠️ Please enter a message before submitting!", "warning")
+      showStatus("Please enter a message before submitting!", "warning")
       return
     }
 
@@ -297,10 +282,10 @@ document.addEventListener("nav", () => {
         if (githubInput) githubInput.value = ""
         resetCustomDropdownsUI()
       } else {
-        showStatus("💥 Ouch, something went wrong on our end. Could you try sending it again?", "error")
+        showStatus("Something went wrong on our end. Could you try sending it again?", "error")
       }
     } catch (err) {
-      showStatus("📡 Connection issue. Please check your network and give it another shot.", "error")
+      showStatus("Connection issue. Please check your network and give it another shot.", "error")
     } finally {
       submitBtn.disabled = false
       submitBtn.textContent = "Submit feedback"
