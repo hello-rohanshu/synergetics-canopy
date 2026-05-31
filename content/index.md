@@ -56,12 +56,13 @@ title: Home
 
 # About
 
-This is Buckminster Fuller's magnum opus *Synergetics*. Sourced from the 2000s scans of the original books by R. W. Gray, but built with the future in mind, this site turns Synergetics into a living, breathing community resource.
+This is Buckminster Fuller's magnum opus _Synergetics_. Sourced from [R. W. Gray's 1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) of the original books, built with the future in mind.
 
 - Instant search across all 1,468 pages
 - AI assistant trained on the complete text ([[synergetics-ai|Try]])
 - Paragraph-level anchor links, one-click copy
 - Open source on [Github](https://github.com/hello-rohanshu/synergetics-canopy)
+- Markdown
 - Many more to come!
 
 
