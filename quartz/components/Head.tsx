@@ -25,7 +25,7 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/icon.png")
+    const iconPath = joinSegments(baseDir, "static/dynamic-logo.svg")
 
     // Url of current page
     const socialUrl =
@@ -83,7 +83,7 @@ export default (() => {
           </>
         )}
 
-        <link rel="icon" href={iconPath} />
+        <link rel="icon" href={iconPath} type="image/svg+xml" />
         <link rel="preload" href={`${baseDir}/static/fonts/inter-v20-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href={`${baseDir}/static/fonts/literata-v40-latin-600.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* <link rel="preload" href={`${baseDir}/static/fonts/bebas-neue-v16-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" /> */}
