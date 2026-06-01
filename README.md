@@ -1,7 +1,7 @@
 <h1 align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="quartz/static/icon.png">
-    <img src="quartz/static/icon-light.png" alt="Synergetics Canopy Logo" width="64" height="64" />
+    <source media="(prefers-color-scheme: dark)" srcset="quartz/static/icon-night.png">
+    <img src="quartz/static/icon-day.png" alt="Synergetics Canopy Logo" width="64" height="64" />
   </picture>
   <br>
   Synergetics Canopy
