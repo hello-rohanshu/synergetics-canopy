@@ -14,7 +14,6 @@ const defaultHeaderWeight = [700]
 const defaultBodyWeight = [400]
 
 export async function getSatoriFonts(headerFont: FontSpecification, bodyFont: FontSpecification) {
-  // Restored: Dynamic weight detection from your Quartz configuration
   const headerWeights: FontWeight[] = (
     typeof headerFont === "string" ? defaultHeaderWeight : (headerFont.weights ?? defaultHeaderWeight)
   ) as FontWeight[]
@@ -106,6 +105,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
   cfg,
   title,
   fileData,
+  iconBase64,
 }) => {
   const COLORS = {
     bg: "#161618",
@@ -128,17 +128,18 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         height: "100%",
         width: "100%",
         backgroundColor: COLORS.bg,
         fontFamily: bodyFont,
       }}
     >
+      {/* Top Accent Line: Avoids left-side UI crowding */}
       <div
         style={{
-          width: "12px",
-          height: "100%",
+          width: "100%",
+          height: "8px",
           backgroundColor: COLORS.accent,
         }}
       />
@@ -149,23 +150,41 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
+          paddingTop: "72px", // Adjusted to balance the top bar
           flex: 1,
         }}
       >
+        {/* Branding Row with Favicon */}
         <div
           style={{
             display: "flex",
-            fontSize: 28,
-            color: COLORS.muted,
+            alignItems: "center",
+            gap: "16px",
             marginBottom: "40px",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
           }}
         >
-          {/* Fixed: Dynamic trailing slash removal */}
-          {cfg.baseUrl?.replace("https://", "").replace(/\/$/, "")}
+          {iconBase64 && (
+            <img
+              src={iconBase64}
+              width={32}
+              height={32}
+              style={{ borderRadius: "50%" }}
+            />
+          )}
+          <div
+            style={{
+              display: "flex",
+              fontSize: 28,
+              color: COLORS.muted,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+            }}
+          >
+            {cfg.baseUrl?.replace("https://", "").replace(/\/$/, "")}
+          </div>
         </div>
 
+        {/* Title Block */}
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
           <h1
             style={{
@@ -186,6 +205,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
           </h1>
         </div>
 
+        {/* Metadata Block */}
         <div
           style={{
             display: "flex",
