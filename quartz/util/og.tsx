@@ -111,7 +111,6 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
   
   const COLORS = {
     baseBg: themeColors.light,
-    bgGradient: "linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 100%)",
     title: themeColors.dark,       
     accent: themeColors.secondary,  
     muted: themeColors.gray,        
@@ -163,8 +162,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
         flexDirection: "column",
         height: "100%",
         width: "100%",
-        backgroundColor: COLORS.baseBg,
-        backgroundImage: COLORS.bgGradient,
+        backgroundColor: COLORS.baseBg, // Fixed: Swapped to solid color to prevent compression banding
         fontFamily: bodyFont,
         position: "relative",
         overflow: "hidden",
@@ -207,7 +205,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
           )}
           <div
             style={{
-              fontSize: 22,
+              fontSize: 28, // Fixed: Increased from 22 for crisp scaling
               color: COLORS.muted,
               letterSpacing: "0.25em",
               textTransform: "uppercase",
@@ -224,13 +222,13 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
             display: "flex",
             alignItems: "center",
             backgroundColor: COLORS.pillBg,
-            padding: "8px 16px",
+            padding: "10px 20px", // Fixed: Scaled padding for larger text
             borderRadius: "30px",
           }}
         >
           <span
             style={{
-              fontSize: 16,
+              fontSize: 22, // Fixed: Increased from 16 for legible mobile preview
               color: COLORS.accent,
               letterSpacing: "0.08em",
               fontWeight: 600,
