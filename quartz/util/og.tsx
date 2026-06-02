@@ -122,7 +122,7 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
     title.length > 30 ? 76 :
     title.length > 12 ? 92 : 110
 
-  const lineHeight = fontSize > 70 ? 1.05 : 1.15
+  const lineHeight = fontSize > 70 ? 1.1 : 1.2
 
   const renderSvgIcon = (size: number) => (
     <svg
@@ -144,76 +144,87 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "630px",
-        width: "1200px",
+        height: "100%",
+        width: "100%",
         backgroundColor: COLORS.baseBg,
         fontFamily: bodyFont,
-        boxSizing: "border-box",
+        position: "relative",
+        overflow: "hidden",
+        padding: "100px 90px",
       }}
     >
-      {/* Top zone: 61.8% (389.34px) — Title anchored to baseline */}
+      {/* Background Watermark */}
       <div
         style={{
-          height: "389.34px",
+          position: "absolute",
+          right: "-80px",
+          bottom: "-100px",
+          opacity: 0.05,
           display: "flex",
-          alignItems: "flex-end",
-          paddingLeft: "67.2px",
-          paddingRight: "67.2px",
-          paddingBottom: "21.4px",
-          boxSizing: "border-box",
+        }}
+      >
+        {renderSvgIcon(640)}
+      </div>
+
+      {/* Header Row: Brand only, no pill badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          zIndex: 2,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          {iconBase64 ? (
+            <img
+              src={iconBase64}
+              width={36}
+              height={36}
+              style={{ borderRadius: "50%" }}
+            />
+          ) : (
+            renderSvgIcon(36)
+          )}
+          <div
+            style={{
+              fontSize: 28,
+              color: COLORS.muted,
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+            }}
+          >
+            {cfg.baseUrl?.replace(/^https?:\/\//, "")?.replace(/\/$/, "") ?? ""}
+          </div>
+        </div>
+      </div>
+
+      {/* Title Block */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          flex: 1,
+          marginTop: "40px",
+          zIndex: 2,
         }}
       >
         <h1
           style={{
             margin: 0,
+            fontSize: `${fontSize}px`,
             fontFamily: headerFont,
             fontWeight: 700,
             color: COLORS.title,
-            fontSize: `${fontSize}px`,
             lineHeight: lineHeight,
             letterSpacing: "-0.02em",
           }}
         >
           {title}
         </h1>
-      </div>
-
-      {/* Bottom zone: 38.2% (240.66px) — Brand */}
-      <div
-        style={{
-          height: "240.66px",
-          display: "flex",
-          alignItems: "flex-end",
-          paddingLeft: "67.2px",
-          paddingRight: "67.2px",
-          paddingBottom: "35.3px",
-          boxSizing: "border-box",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "13px" }}>
-          {iconBase64 ? (
-            <img
-              src={iconBase64}
-              width={34}
-              height={34}
-              style={{ borderRadius: "50%", flexShrink: 0 }}
-            />
-          ) : (
-            renderSvgIcon(34)
-          )}
-          <span
-            style={{
-              fontSize: "21px",
-              color: COLORS.muted,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              fontWeight: 500,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {cfg.baseUrl?.replace(/^https?:\/\//, "")?.replace(/\/$/, "") ?? ""}
-          </span>
-        </div>
       </div>
     </div>
   )
