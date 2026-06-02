@@ -6,8 +6,6 @@ import { JSXInternal } from "preact/src/jsx"
 import { FontSpecification, getFontSpecificationName, ThemeKey } from "./theme"
 import path from "path"
 import { QUARTZ } from "./path"
-import readingTime from "reading-time"
-import { i18n } from "../i18n"
 import { styleText } from "util"
 
 const defaultHeaderWeight = [700]
@@ -104,53 +102,40 @@ export type ImageOptions = {
 export const defaultImage: SocialImageOptions["imageStructure"] = ({
   cfg,
   title,
-  fileData,
   iconBase64,
 }) => {
   const themeColors = cfg.theme.colors.darkMode
   
   const COLORS = {
-    baseBg: themeColors.light,
-    title: themeColors.dark,       
-    accent: themeColors.secondary,  
-    muted: themeColors.gray,        
-    pillBg: themeColors.highlight,  
+    baseBg: themeColors.light ?? "#161618",
+    title: themeColors.dark ?? "#ebebec",       
+    accent: themeColors.secondary ?? "#7b97aa",  
+    muted: themeColors.gray ?? "#646464",        
   }
 
   const headerFont = getFontSpecificationName(cfg.theme.typography.header)
   const bodyFont = getFontSpecificationName(cfg.theme.typography.body)
 
+  // Dynamic typography steps
   const fontSize = 
     title.length > 80 ? 44 :
     title.length > 50 ? 54 : 
     title.length > 30 ? 76 : 
     title.length > 12 ? 92 : 110
 
-  const lineHeight = fontSize > 70 ? 1.1 : 1.2
-
-  const { minutes } = readingTime(fileData.text ?? "")
-  const readingTimeText = i18n(cfg.locale).components.contentMeta.readingTime({
-    minutes: Math.ceil(minutes),
-  })
+  const lineHeight = fontSize > 70 ? 1.05 : 1.15
 
   const renderSvgIcon = (size: number) => (
-    <svg
-      id="Layer_2"
-      data-name="Layer 2"
-      xmlns="http://www.w3.org/2000/svg"
+    <svg 
+      style={{ width: `${size}px`, height: `${size}px`, flexShrink: 0 }} 
+      xmlns="http://www.w3.org/2000/svg" 
       viewBox="0 0 1024 1024"
-      width={size}
-      height={size}
     >
-      <g id="Guides">
-        <g>
-          <rect fill="none" x="0" y="0" width="1024" height="1024" rx="512" ry="512"/>
-          <g>
-            <path fill={COLORS.accent} d="M813.87,810.38c-96.25,55.57-219.33,22.59-274.9-73.66-3.11-5.38-5.94-10.85-8.49-16.38,102.5-9.32,182.8-95.5,182.8-200.43,0-30.08-6.6-58.63-18.43-84.26,75.74-6.9,152.16,29.64,192.68,99.83,55.57,96.25,22.59,219.32-73.66,274.9Z"/>
-            <path fill={COLORS.accent} d="M686.29,388.16c-3.1,5.38-6.42,10.56-9.93,15.53-36.46-51.46-96.48-85.06-164.35-85.06s-127.92,33.6-164.38,85.08c-43.86-62.14-50.43-146.6-9.9-216.79,55.57-96.26,178.64-129.23,274.9-73.66,96.25,55.57,129.23,178.64,73.66,274.9Z"/>
-            <path fill={COLORS.accent} d="M493.53,720.34c-2.55,5.53-5.38,11-8.49,16.38-55.57,96.25-178.65,129.23-274.9,73.66s-129.23-178.65-73.66-274.9c40.52-70.19,116.94-106.73,192.68-99.82-11.83,25.63-18.43,54.17-18.43,84.25,0,104.93,80.29,191.1,182.8,200.43Z"/>
-          </g>
-        </g>
+      <rect fill="none" x="0" y="0" width="1024" height="1024" rx="512" ry="512"/>
+      <g>
+        <path fill={COLORS.accent} d="M813.87,810.38c-96.25,55.57-219.33,22.59-274.9-73.66-3.11-5.38-5.94-10.85-8.49-16.38,102.5-9.32,182.8-95.5,182.8-200.43,0-30.08-6.6-58.63-18.43-84.26,75.74-6.9,152.16,29.64,192.68,99.83,55.57,96.25,22.59,219.32-73.66,274.9Z"/>
+        <path fill={COLORS.accent} d="M686.29,388.16c-3.1,5.38-6.42,10.56-9.93,15.53-36.46-51.46-96.48-85.06-164.35-85.06s-127.92,33.6-164.38,85.08c-43.86-62.14-50.43-146.6-9.9-216.79,55.57-96.26,178.64-129.23,274.9-73.66,96.25,55.57,129.23,178.64,73.66,274.9Z"/>
+        <path fill={COLORS.accent} d="M493.53,720.34c-2.55,5.53-5.38,11-8.49,16.38-55.57,96.25-178.65,129.23-274.9,73.66s-129.23-178.65-73.66-274.9c40.52-70.19,116.94-106.73,192.68-99.82-11.83,25.63-18.43,54.17-18.43,84.25,0,104.93,80.29,191.1,182.8,200.43Z"/>
       </g>
     </svg>
   )
@@ -160,110 +145,76 @@ export const defaultImage: SocialImageOptions["imageStructure"] = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        width: "100%",
-        backgroundColor: COLORS.baseBg, // Fixed: Swapped to solid color to prevent compression banding
+        height: "630px",
+        width: "1200px",
+        backgroundColor: COLORS.baseBg,
         fontFamily: bodyFont,
-        position: "relative",
-        overflow: "hidden",
-        padding: "100px 90px",
+        boxSizing: "border-box",
       }}
     >
-      {/* Background Watermark */}
+      {/* ── Top zone: 61.8% (389.34px) — Title anchored to baseline ── */}
       <div
         style={{
-          position: "absolute",
-          right: "-80px",
-          bottom: "-100px",
-          opacity: 0.05,
+          height: "389.34px",
           display: "flex",
-        }}
-      >
-        {renderSvgIcon(640)}
-      </div>
-
-      {/* Header Row */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          zIndex: 2,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          {iconBase64 ? (
-            <img
-              src={iconBase64}
-              width={36}
-              height={36}
-              style={{ borderRadius: "50%" }}
-            />
-          ) : (
-            renderSvgIcon(36)
-          )}
-          <div
-            style={{
-              fontSize: 28, // Fixed: Increased from 22 for crisp scaling
-              color: COLORS.muted,
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              fontWeight: 500,
-            }}
-          >
-            {cfg.baseUrl?.replace(/^https?:\/\//, "")?.replace(/\/$/, "") ?? ""}
-          </div>
-        </div>
-
-        {/* Pill Badge */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: COLORS.pillBg,
-            padding: "10px 20px", // Fixed: Scaled padding for larger text
-            borderRadius: "30px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: 22, // Fixed: Increased from 16 for legible mobile preview
-              color: COLORS.accent,
-              letterSpacing: "0.08em",
-              fontWeight: 600,
-            }}
-          >
-            {readingTimeText.toUpperCase()}
-          </span>
-        </div>
-      </div>
-
-      {/* Editorial Title Block */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center", 
-          width: "100%",
-          flex: 1,
-          marginTop: "40px",
-          zIndex: 2,
+          alignItems: "flex-end",
+          paddingLeft: "67.2px",   // 5.6% of 1200px
+          paddingRight: "67.2px",
+          paddingBottom: "21.4px", // 3.4% of 630px
+          boxSizing: "border-box",
         }}
       >
         <h1
           style={{
             margin: 0,
-            fontSize: `${fontSize}px`,
             fontFamily: headerFont,
             fontWeight: 700,
             color: COLORS.title,
+            fontSize: `${fontSize}px`,
             lineHeight: lineHeight,
             letterSpacing: "-0.02em",
           }}
         >
           {title}
         </h1>
+      </div>
+
+      {/* ── Bottom zone: 38.2% (240.66px) — Brand ── */}
+      <div
+        style={{
+          height: "240.66px",
+          display: "flex",
+          alignItems: "flex-end",
+          paddingLeft: "67.2px",
+          paddingRight: "67.2px",
+          paddingBottom: "35.3px", // 5.6% of 630px
+          boxSizing: "border-box",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "13px" }}>
+          {iconBase64 ? (
+            <img
+              src={iconBase64}
+              width={24}
+              height={24}
+              style={{ borderRadius: "50%", flexShrink: 0 }}
+            />
+          ) : (
+            renderSvgIcon(24)
+          )}
+          <span
+            style={{
+              fontSize: "16px",
+              color: COLORS.muted,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {cfg.baseUrl?.replace(/^https?:\/\//, "")?.replace(/\/$/, "") ?? ""}
+          </span>
+        </div>
       </div>
     </div>
   )
