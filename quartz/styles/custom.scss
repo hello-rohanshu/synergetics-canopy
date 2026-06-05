@@ -422,3 +422,61 @@ ul.overflow li {
 }
 
 // -----------------------------------------------------------------------
+// ─── Fix: Right sidebar — guarantee Backlinks always has space ────────────────
+//
+// Problem: The sidebar is a flex column. .toc has no max-height, so a long
+// document's TOC expands freely and pushes Backlinks below the viewport.
+//
+// Solution: Treat the sidebar as a bounded flex column (height = 100vh sticky),
+// let the TOC scroll internally, and give Backlinks a minimum reserved space.
+
+.sidebar.right {
+  // Anchor the sidebar column to the viewport so it doesn't just grow forever
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: hidden; // clips children; each child manages its own overflow
+}
+
+// Table of contents — shrinks/scrolls, never hogs all the space
+.toc {
+  flex: 1 1 auto;     // grow to fill available space, but can also shrink
+  min-height: 80px;   // always show at least a sliver of the TOC
+  max-height: 60vh;   // hard ceiling so Backlinks can breathe
+  overflow-y: auto;   // scroll internally when headings overflow
+  overflow-x: hidden;
+  
+  // Optional: subtle scrollbar so users know it's scrollable
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--lightgray);
+    border-radius: 2px;
+  }
+}
+
+// Backlinks — always has reserved space at the bottom
+.backlinks {
+  flex: 0 0 auto;     // don't grow or shrink; take exactly its natural height
+  min-height: 80px;   // guarantee it's never squeezed to zero
+  overflow-y: auto;   // if there are many backlinks, scroll them too
+}
+
+
+// -----------------------------------------------------------------------
+// ─── Fix: Disable fade/overflow gradient on TOC ─────────────────────────
+//
+// Quartz applies a mask-image fade on ul.overflow and .overflow-fade::after.
+// This kills both so the TOC cuts off cleanly instead of fading out.
+
+ul.overflow {
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+.overflow-fade::after {
+  display: none !important;
+}
