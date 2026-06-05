@@ -397,4 +397,28 @@ html::-webkit-scrollbar-thumb:hover {
   margin-bottom: 0.25rem;
 }
 
-// --------------------------------------------------------------------------
+// ===== FIX: Reduce line height for wrapped text in Explorer items =====
+// WORKS, commented out for now. Shows left side explorer's targetting.
+// WORKS
+// WORKS
+// ----------------------------------------------------------------------
+// .explorer-content ul li {
+//   line-height: 1.4;
+//   margin-bottom: 0.35rem;
+// }
+
+// /* reset for nested folder contents so indented items don't double-stack */
+// .explorer-content .folder-outer > ul > li {
+//   margin-bottom: 0.25rem;
+// }
+
+// -----------------------------------------------------------------------
+// ===== FIX: Reduce line height for wrapped text in ALLLL Explorer items =====
+.sidebar li,
+ul.toc-content li,
+ul.overflow li {
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+
+// -----------------------------------------------------------------------

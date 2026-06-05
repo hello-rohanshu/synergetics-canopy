@@ -2,50 +2,53 @@ import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
 const explorerConfig = {
-  // Hide from explorer
   filterFn: (node: any) => {
     const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "content-audit", "trends-manifest"]);
     const slug = node.data?.slug ?? "";
     const name = (node.path || node.displayName || "").toLowerCase();
     return !hidden.has(slug) && !hidden.has(name);
   },
+
+  mapFn: (node: any) => {
+    if (node.displayName === "Introduction - The Wellspring of Reality") {
+      node.displayName = "Wellspring";
+    }
+    return node;
+  },
+
+// Change names as per the above rename function if implemented
   sortFn: (a: any, b: any) => {
     const order: Record<string, number> = {
-      "Copyright": 1,
-      "Dedication": 2,
-      "Acknowledgment": 3,
-      "Table of Contents": 4,
-      "A Note on Collaboration": 5,
-      "Preface": 6,
-      "Moral of the Work": 7,
-      "Author's Note on the Rationale for Repetition in This Work": 8,
-      "Explicit - A note to the reader": 9,
-      "Introduction - The Wellspring of Reality": 10,
-      "Humans In Universe": 11,
-      "Scenarios": 12,
-      "100.00 Synergy": 13,
-      "200.00 Synergetics": 14,
-      "300.00 Universe": 15,
-      "400.00 System": 16,
-      "500.00 Conceptuality": 17,
-      "600.00 Structure": 18,
-      "700.00 Tensegrity": 19,
-      "800.00 Operational Mathematics": 20,
-      "900.00 Modelability": 21,
-      "1000.00 Omnitopology": 22,
-      "1100.00 Constant Zenith Projection": 23,
-      "1200.00 Numerology": 24,
-      "Afterpiece": 25,
-      "32 Color Plates": 26,
-      "Evolution of Synergetics": 27,
-      "Book Index": 28,
-      "Extras": 99,
-    }
-    const aOrder = order[a.displayName] ?? 98
-    const bOrder = order[b.displayName] ?? 98
-    return aOrder - bOrder
+      "Foreword": 1,
+      "Wellspring": 2, 
+      "Humans In Universe": 3,
+      "Scenarios": 4,
+      "100.00 Synergy": 5,
+      "200.00 Synergetics": 6,
+      "300.00 Universe": 7,
+      "400.00 System": 8,
+      "500.00 Conceptuality": 9,
+      "600.00 Structure": 10,
+      "700.00 Tensegrity": 11,
+      "800.00 Operational Mathematics": 12,
+      "900.00 Modelability": 13,
+      "1000.00 Omnitopology": 14,
+      "1100.00 Constant Zenith Projection": 15,
+      "1200.00 Numerology": 16,
+      "Afterpiece": 17,
+      "Evolution of Synergetics": 18,
+      "Book Index": 19,
+      "Illustrations": 99
+    };
+
+    const aOrder = order[a.displayName] ?? 98;  // FIXED: was a.name
+    const bOrder = order[b.displayName] ?? 98;  // FIXED: was b.name
+
+    if (aOrder !== bOrder) return aOrder - bOrder;
+    if (a.isFolder !== b.isFolder) return a.isFolder ? -1 : 1;
+    return 0;
   },
-}
+};
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
