@@ -29,6 +29,7 @@ import Feedback from "./Feedback"
 import SystemsDashboard from "./SystemsDashboard"
 import ContentAudit from "./ContentAudit"
 import TrendsManifest from "./TrendsManifest"
+import ImageZoom from "./ImageZoom"
 
 export {
   ArticleTitle,
@@ -62,4 +63,5 @@ export {
   SystemsDashboard,
   ContentAudit,
   TrendsManifest,
+  ImageZoom,
 }
