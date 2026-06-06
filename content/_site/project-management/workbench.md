@@ -87,3 +87,13 @@ draft: "true"
 
 
 
+# Changes to be made/Rules to be followed
+(with regards to linking)
+06-06-2026
+
+- Links which are linking to images and tables present in the same para should not be clickable to avoid confusion.
+- Links linking to figures and attachments directly should instead link to where the figure is used in the text.
+- "Section xyz" should be linked in whole and not just the number 'xyz'. But any suffixing description should be avoided
+
+Specifics
+- 1010.00: Should "drawings sections" be a link?

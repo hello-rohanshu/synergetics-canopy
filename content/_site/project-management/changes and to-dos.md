@@ -42,7 +42,7 @@ Check all the features list in Quartz docs, should have a few worth using
 - [ ] em dash need spaces around them to prevent weird rendering of italics and such. need to first replace those with space with no space and then collectively give one space for every em dash globally
 - [ ] em dahes are used for lists in a lot of places, might need to use actual lists
 - [ ] im using short forms DSR, RWGS (rwgray's synergetics) here and there, might be worth documenting those properly
-- [ ] "See Secs. [[954.20]]-.70." in here i only linked the half before the dash, somewhere else i linked the whole.
+- [ ] "See Secs. \[\[954.20]]-.70." in here i only linked the half before the dash, somewhere else i linked the whole.
 - [ ] so i need to remove all br tags as inline breaks will now be recognized (there was a built in plugin for turning the same on)
 - [ ] explorer lists stops responding to mouse when the context is an open folder rather than the explorer
 
