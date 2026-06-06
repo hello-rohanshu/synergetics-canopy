@@ -84,20 +84,29 @@ PS: The server is mostly inactive, but I'm not aware of any other place for comm
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Content Completeness</div>
       <div style="font-size: 0.85rem; color: var(--gray);">Check Detailed Audit -></div>
     </div>
-    <span id="audit-pct" style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary);">--%</span>
+    <span id="audit-pct" style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary); opacity: 0; transition: opacity 0.4s;">—</span>
   </a>
 
   <script>
     (function() {
+      const pct = document.getElementById('audit-pct');
+      if (!pct) return;
+
       function updateAudit() {
         fetch('/static/data/content-audit.json')
-          .then(r => r.json()).then(data => {
+          .then(r => r.json())
+          .then(data => {
             const v = Object.values(data?.vault || {});
             const a = v.length ? Math.round(v.reduce((x,y)=>x+y,0)/v.length) : 0;
-            const pct = document.getElementById('audit-pct');
-            if (pct) pct.textContent = a + '%';
-          }).catch(() => {});
+            pct.textContent = a + '%';
+            pct.style.opacity = '1';
+          })
+          .catch(() => {
+            pct.textContent = '—';
+            pct.style.opacity = '1';
+          });
       }
+
       updateAudit();
       document.addEventListener('nav', updateAudit);
     })();
