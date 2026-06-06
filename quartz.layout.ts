@@ -16,11 +16,11 @@ const explorerConfig = {
     return node;
   },
 
-// Change names as per the above rename function if implemented
+  // Change names as per the above rename function if implemented
   sortFn: (a: any, b: any) => {
     const order: Record<string, number> = {
       "Foreword": 1,
-      "Wellspring": 2, 
+      "Wellspring": 2,
       "Humans In Universe": 3,
       "Scenarios": 4,
       "100.00 Synergy": 5,
@@ -37,7 +37,8 @@ const explorerConfig = {
       "1200.00 Numerology": 16,
       "Afterpiece": 17,
       "Evolution of Synergetics": 18,
-      "Book Index": 19,
+      "32 Color Plates": 19,
+      "Book Index": 20,
       "Illustrations": 99
     };
 
