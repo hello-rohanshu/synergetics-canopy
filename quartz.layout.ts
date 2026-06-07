@@ -54,9 +54,10 @@ const explorerConfig = {
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
-  afterBody: [
+  header: [
     Component.ImageZoom(),
+  ],
+  afterBody: [
     Component.Feedback(),
     Component.ConditionalRender({
       component: Component.SystemsDashboard(),

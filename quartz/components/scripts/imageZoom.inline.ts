@@ -121,7 +121,20 @@ function pinchDistance(touches: TouchList): number {
   return Math.sqrt(dx * dx + dy * dy)
 }
 
+// ─── Own medium-zoom styles (re‑injected on every nav) ──────────────────
+function injectMediumZoomStyles() {
+  if (document.getElementById("medium-zoom-styles")) return
+  const style = document.createElement("style")
+  style.id = "medium-zoom-styles"
+  // Exact CSS from medium-zoom's source (v1.1.0) – verbatim
+  style.textContent = `.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}`
+  document.head.appendChild(style)
+}
+
 function setupImageZoom() {
+  // Re‑inject after SPA navigation wipes <head>
+  injectMediumZoomStyles()
+
   const targets = document.querySelectorAll<HTMLImageElement>(SELECTOR)
   if (targets.length === 0) return
 
@@ -309,7 +322,6 @@ function setupImageZoom() {
   })
 }
 
-// ── Lifecycle: teardown BEFORE DOM swap, setup AFTER ─────────────────────────
 function teardown() {
   openedCleanups.forEach(fn => fn())
   openedCleanups = []
@@ -337,10 +349,6 @@ function teardown() {
   resetVars()
 }
 
-// Prenav fires before Quartz replaces the page → clean slate for medium-zoom
-document.addEventListener("prenav", teardown)
-
-// Nav fires after the new DOM is in place → attach fresh zoom
 document.addEventListener("nav", () => {
   setupImageZoom()
   window.addCleanup(teardown)
