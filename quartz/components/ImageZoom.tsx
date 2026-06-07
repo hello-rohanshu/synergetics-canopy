@@ -18,7 +18,14 @@ ImageZoom.css = `
 
   .medium-zoom-image--opened {
     touch-action: none;
-    transition: transform 0.12s ease !important;
+    cursor: grab;
+  }
+
+  @media (pointer: coarse) {
+    #zoom-close {
+      display: none !important;
+      pointer-events: none !important;
+    }
   }
 `
 
