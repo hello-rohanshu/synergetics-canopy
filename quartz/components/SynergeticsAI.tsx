@@ -336,6 +336,7 @@ function tryInit(attempts = 0) {
   }
   if (inputEl._bound) return;
   inputEl._bound = true;
+  inputEl.focus();
 
 const outputEl = document.getElementById("chat-output");
 const sendBtn  = document.getElementById("chat-send");
