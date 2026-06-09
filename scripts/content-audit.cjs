@@ -69,11 +69,10 @@ const CONFIG = {
   // Groups define how entries are organized in the report
   groups: {
     "Front Matter": [
-      "Copyright", "Dedication", "Acknowledgment", "Table of Contents",
-      "A Note on Collaboration", "Preface", "Moral of the Work",
-      "Author's Note on the Rationale for Repetition in This Work",
-      "Explicit - A note to the reader", "Introduction - The Wellspring of Reality",
-      "Humans In Universe", "Scenarios"
+      "Foreword",
+      "Introduction - The Wellspring of Reality",
+      "Humans In Universe",
+      "Scenarios"
     ],
     "Main Chapters": [
       "100.00 Synergy", "200.00 Synergetics", "300.00 Universe",
@@ -84,7 +83,7 @@ const CONFIG = {
     ],
     "Back Matter": [
       "Afterpiece", "32 Color Plates", "Evolution of Synergetics",
-      "Book Index", "Extras"
+      "Book Index", "Illustrations"
     ]
   }
 };
