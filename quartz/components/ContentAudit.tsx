@@ -48,7 +48,7 @@ const ContentAudit: QuartzComponent = () => (
   <>
     <style>{`
       .aud-container { margin: 2rem 0; font-family: var(--bodyFont); color: var(--dark); }
-      .aud-section-title { font-size: 1.2rem; font-weight: 600; margin: 2.5rem 0 1rem 0; color: var(--darkgray); border-bottom: 1px solid var(--lightgray); padding-bottom: 0.5rem; }
+      .aud-section-title {font-weight: 600; margin: 3.5rem 0 1rem 0; color: var(--darkgray); solid var(--lightgray); padding-bottom: 0.5rem; }
       
       /* Hero Banner */
       .aud-hero { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem; background: var(--highlight); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--secondary); }
@@ -56,7 +56,7 @@ const ContentAudit: QuartzComponent = () => (
       .aud-timestamp { font-size: 0.85rem; color: var(--gray); }
       
       /* Grid Layout (Properties) */
-      .aud-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+      .aud-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
       .aud-card { border: 1px solid var(--lightgray); border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; background: transparent; }
       
       /* Shared Item Typography & Bars */
@@ -65,7 +65,7 @@ const ContentAudit: QuartzComponent = () => (
       .aud-value { font-weight: 600; font-size: 0.85rem; font-family: var(--codeFont); min-width: 35px; text-align: right; }
       .aud-bar-bg { height: 6px; background: var(--lightgray); width: 100%; border-radius: 4px; overflow: hidden; }
       .aud-bar-fill { height: 100%; transition: width 0.4s ease; }
-      .aud-desc { font-size: 0.75rem; color: var(--gray); margin: 0; line-height: 1.4; }
+      .aud-desc { font-size: 0.75rem;  font-style: italic; color: var(--darkgray); margin: 0; line-height: 1.4; }
 
       /* Expandable List Layout (Chapters) */
       .aud-list { display: flex; flex-direction: column; gap: 0.5rem; }
