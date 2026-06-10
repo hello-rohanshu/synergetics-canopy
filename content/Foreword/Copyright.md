@@ -10,13 +10,11 @@ p-structure: false
 p-links-2: false
 e-issues:
 ---
-Synergetics is copyrighted © 1997 by the Estate of R. Buckminster Fuller.
+*Synergetics*, Volumes 1 and 2,  
+© 1975, 1979 R. Buckminster Fuller. All rights reserved.  
+Administered by the Estate of R. Buckminster Fuller, Sebastopol, CA 95472.
 
-All rights reserved. Reproduction or use of text or pictorial content in any for profit manner is prohibited without express permission.
-
-Contact the Estate of R. Buckminster Fuller for further information.
-
-Address: 
-	Estate of R. Buckminster Fuller
-	708 Gravenstein Highway, North #188 
-	Sebastopol, CA 95472
+This digital edition is derived from [R. W. Gray's 1997 digitization](https://rwgrayprojects.com/synergetics/toc/toc.html) of the
+original text and is published for non-commercial educational purposes only.
+No portion of the text may be reproduced or used commercially without
+express permission from the Estate.

@@ -1,13 +1,13 @@
 ---
-p-replication: false
-p-emDash: false
-p-headings: false
-p-italics: false
-p-images: false
-p-links: false
-p-equations: false
-p-structure: false
-p-links-2: false
+p-replication: true
+p-emDash: true
+p-headings: true
+p-italics: true
+p-images: true
+p-links: true
+p-equations: true
+p-structure: true
+p-links-2: true
 e-issues:
 ---
 Dare to be naive. 
@@ -20,4 +20,4 @@ A complex of further discoverabilities is inherent in eternally regenerative Uni
 
 Each age is characterized by its own astronomical myriads of new, special-case experiences and problems to be stored in freshly born optimum capacity human brains-which storages in turn may disclose to human minds the presence of heretofore undiscovered, unsuspectedly existent eternal generalized principles. 
 
-\- R B F
+— R B F

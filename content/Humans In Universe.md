@@ -1,18 +1,18 @@
 ---
-p-replication: false
-p-emDash: false
-p-headings: false
-p-italics: false
-p-images: false
-p-links: false
-p-equations: false
-p-structure: false
-p-links-2: false
+p-replication: true
+p-emDash: true
+p-headings: true
+p-italics: true
+p-images: true
+p-links: true
+p-equations: true
+p-structure: true
+p-links-2: true
 e-issues:
 ---
 
 ##### 000.100
-Introduction to [[10 Color Posters]]
+Introduction to [[32 Color Plates|10 Color Posters]]
 
 ##### 000.101
 The combined land areas of Africa, Europe, and Asia embrace within their perimeters the Mediterranean, Black, Caspian, Aral, China, Arabian, Red, Baltic, and North seas: altogether their area was historically thought of only as a flat Universe sandwiched between heaven above and hell below and seemingly stretching away to infinity in all lateral directions. Yet the total land area of this flat world constitutes less than 17 percent of the subsequently-discovered-to-be-spherical Planet Earth's surface. All the great empires of written history before A.D. 1500 lay well within that "known" flat world: it was and as yet remains the spontaneous theater of popular historical conceptioning.
@@ -108,18 +108,17 @@ Nature's coordinate system is called Synergetics-synergy means behavior of whole
 At present 99 percent of humanity is misinformed in believing in the Malthusian concept of the fundamental inadequacy of life support, and so they have misused their minds to develop only personal and partisan advantages, intellectual cunning, and selfishness. Intellectual cunning has concentrated on how to divorce money from true life-support wealth; second, cunning has learned how to make money with money by making it scarce. As of the 1970s muscle, guns, and intellectual cunning are ruling world affairs and keeping them competitive by continuing the false premise of universal inadequacy of life support. If mind comes into supreme power within a decade, humanity will exercise its option of a design revolution and will enter a new and-lasting epoch of physical success for all. If not, it will be curtains for all humanity within this century.
 
 ##### 000.131
-In complement with Synergetics 1 and 2 the posters at [[color plates 1-10]] may clarify for everyone the few scientific conceptions and mathematical tools necessary for universal comprehension and individual use of nature's synergetic geometrical intertransformings.
+In complement with Synergetics 1 and 2 the posters at [[32 Color Plates|color plates 1-10]] may clarify for everyone the few scientific conceptions and mathematical tools necessary for universal comprehension and individual use of nature's synergetic geometrical intertransformings.
 
 ---
 # Footnote
-Rudyard Kipling labored under the only-you-or-me philosophy, but he was inspired by thoughts that it might some day be otherwise: 
 
-And no one will work for money and no one will
-	 work for fame 
-But each for the joy of working, and each in his
-	separate star,
-Shall draw the Thing as he sees It for the God of
-	 Things as They are!"
- 
- \- from When Earth's Last Picture Is Painted
- 
+Rudyard Kipling labored under the only-you-or-me philosophy, but he was inspired by thoughts that it might some day be otherwise:
+
+> And no one will work for money and no one will work for fame  
+> But each for the joy of working, and each in his separate star,  
+> Shall draw the Thing as he sees It for the God of Things as They are!"
+>
+> — *from When Earth's Last Picture Is Painted*
+
+

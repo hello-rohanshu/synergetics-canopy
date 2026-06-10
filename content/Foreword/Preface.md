@@ -1,16 +1,16 @@
 ---
-p-replication: false
-p-emDash: false
-p-headings: false
-p-italics: false
-p-images: false
-p-links: false
-p-equations: false
-p-structure: false
-p-links-2: false
+p-replication: true
+p-emDash: true
+p-headings: true
+p-italics: true
+p-images: true
+p-links: true
+p-equations: true
+p-structure: true
+p-links-2: true
 e-issues:
 ---
-**by A. Loeb**
+**by Arthur L. Loeb**
 
 The appearance of this sizable book is symptomatic of a considerable revival of interest in geometrics, a science of configurations. Configurations observed in the sky constitute the laboratory of our oldest science, astronomy. Patterns and regularities were discerned, and speculations regarding the influence of celestial configurations on terrestrial existence gave rise to scientific as well as mystical systems of natural philosophy. The dividing line between these two is at times surprisingly diffuse, and varies throughout history. 
 
@@ -18,11 +18,11 @@ Platonic and Archimedean solids and such plane figures as the Pentagram were pow
 
 Like his great aunt Margaret, Fuller is a transcendentalist: he discerns patterns and accepts their significance on faith. His is not the burden of proof: the pattern is assumed significant unless proven otherwise. If Fuller had been burdened by the necessity of proof, he would have been too hamstrung to continue looking for significant patterns. His own biographical notes in Synergetics show us a mind that accepts information in a highly unorthodox fashion and refuses to swallow the predigested. In rejecting the predigested, Fuller has had to discover the world all by himself. It is not surprising, in fact rather reassuring, that the obvious should emerge alongside the novel, the obscure together with the useful. Posterity will have to draw the line between the mystical and the scientific, a line that will certainly have to be redrawn from time to time. 
 
-Fuller expresses himself metaphorically: his poems sometimes convey his meaning more lucidly than his prose. Gertrude Stein's language really becomes unintelligible only when analyzed; the sentence "Entropy is not random; it is always one negative tetrahedron" (Synergetics, Sec. 345) is worthy of a place in American literature next to Miss Stein's. And if happiness be a warm puppy, why should not entropy be a negative tetrahedron? I have learned never to reject one of Fuller's outrageous statements without careful consideration, and even hesitated to call "Sum of angels around each vertex" in the rough manuscript a misprint. The truth has usually turned out far stranger than Buckminster Fuller! 
+Fuller expresses himself metaphorically: his poems sometimes convey his meaning more lucidly than his prose. Gertrude Stein's language really becomes unintelligible only when analyzed; the sentence "Entropy is not random; it is always one negative tetrahedron" (Synergetics, [[340.00 Expanding Universe#345.00|Sec. 345]]) is worthy of a place in American literature next to Miss Stein's. And if happiness be a warm puppy, why should not entropy be a negative tetrahedron? I have learned never to reject one of Fuller's outrageous statements without careful consideration, and even hesitated to call "Sum of angels around each vertex" in the rough manuscript a misprint. The truth has usually turned out far stranger than Buckminster Fuller! 
 
 Fuller is a Janus: grass-rooted in the past, he creates beacons for the very young. Ivy- trained, he rejected academic discipline and was highly honored by his alma mater. In each of these aspects, there is a strong parallel with an older contemporary, also a latter-day transcendentalist New Englander: composer Charles Ives. Their playful intuitive experiments nowadays inspire the most serious, abstract, and learned of the avant-garde. While there is no evidence of a mutual influence between the two, there appears to be considerable overlap among their apostles. The Compleat Geometrist might think, not of a circle of admirers, but of confocal ellipses of apostles around these two focal men, a dangerous simile if one is to conclude that the inner ellipse would be the most eccentric one! 
 
-The appearance of Synergetics seems to mark a watershed; Fuller has this Janus like quality, looking far into the future with an almost old-fashioned intuitive approach. The danger of respectability, alluded to previously, lies in the loss of this innocence, in the guile that kills creativity. 
+The appearance of Synergetics seems to mark a watershed; Fuller has this Januslike quality, looking far into the future with an almost old-fashioned intuitive approach. The danger of respectability, alluded to previously, lies in the loss of this innocence, in the guile that kills creativity. 
 
 Fuller's hope for the future lies in doing more with less. Again and again he discovers that there is no such thing as continuity and the infinitesimal: with sufficient resolution we find that we look at a very large, but finite number of very small, but finite multiples, put together with very great, but attainable ingenuity. There always appears to be a structure. Computer technology has already moved in the direction of doing more with less. The cost of a modern computer would scarcely be affected if it were made of the most precious metals, for material-wise there is not very much to a computer. What counts is the knowledge of how to put things together to perform usefully. Knowledge is the tool of today and tomorrow and the hope of the day thereafter: education will be the greatest tool-making industry!
 

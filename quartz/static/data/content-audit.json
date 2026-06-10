@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-30T11:34:38.080Z",
+  "generated": "2026-06-09T13:01:28.114Z",
   "properties": {
     "p-replication": {
       "label": "Replication",
@@ -39,38 +39,38 @@
     }
   },
   "vault": {
-    "p-replication": 3.8,
-    "p-headings": 3.8,
-    "p-images": 3.8,
-    "p-structure": 1.9,
-    "p-emDash": 3.8,
-    "p-italics": 3.8,
-    "p-equations": 1.9,
-    "p-links": 3.8,
-    "p-links-2": 0
+    "p-replication": 25.3,
+    "p-headings": 25.3,
+    "p-images": 25,
+    "p-structure": 8.3,
+    "p-emDash": 25,
+    "p-italics": 24.2,
+    "p-equations": 24.5,
+    "p-links": 25.3,
+    "p-links-2": 0.5
   },
   "groups": {
     "Front Matter": {
-      "p-replication": 3.3,
-      "p-headings": 3.3,
-      "p-images": 3.3,
-      "p-structure": 3.3,
-      "p-emDash": 3.3,
-      "p-italics": 3.3,
-      "p-equations": 3.3,
-      "p-links": 3.3,
+      "p-replication": 3.2,
+      "p-headings": 3.2,
+      "p-images": 3.2,
+      "p-structure": 3.2,
+      "p-emDash": 3.2,
+      "p-italics": 3.2,
+      "p-equations": 3.2,
+      "p-links": 3.2,
       "p-links-2": 0
     },
     "Main Chapters": {
-      "p-replication": 9.1,
-      "p-headings": 9.1,
-      "p-images": 9.1,
-      "p-structure": 0,
-      "p-emDash": 9.1,
-      "p-italics": 9.1,
-      "p-equations": 0,
-      "p-links": 9.1,
-      "p-links-2": 0
+      "p-replication": 67.8,
+      "p-headings": 67.8,
+      "p-images": 67.1,
+      "p-structure": 21.9,
+      "p-emDash": 67.1,
+      "p-italics": 65.1,
+      "p-equations": 65.8,
+      "p-links": 67.8,
+      "p-links-2": 1.4
     },
     "Back Matter": {
       "p-replication": 0,
@@ -85,103 +85,15 @@
     }
   },
   "entries": {
-    "Copyright": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Dedication": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Acknowledgment": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Table of Contents": {
-      "p-replication": 100,
-      "p-headings": 100,
-      "p-images": 100,
-      "p-structure": 100,
-      "p-emDash": 100,
-      "p-italics": 100,
-      "p-equations": 100,
-      "p-links": 100,
-      "p-links-2": 0
-    },
-    "A Note on Collaboration": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Preface": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Moral of the Work": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Author's Note on the Rationale for Repetition in This Work": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
-    },
-    "Explicit - A note to the reader": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
+    "Foreword": {
+      "p-replication": 10,
+      "p-headings": 10,
+      "p-images": 10,
+      "p-structure": 10,
+      "p-emDash": 10,
+      "p-italics": 10,
+      "p-equations": 10,
+      "p-links": 10,
       "p-links-2": 0
     },
     "Introduction - The Wellspring of Reality": {
@@ -218,14 +130,124 @@
       "p-links-2": 0
     },
     "100.00 Synergy": {
-      "p-replication": 12.5,
-      "p-headings": 12.5,
-      "p-images": 12.5,
+      "p-replication": 11.1,
+      "p-headings": 11.1,
+      "p-images": 11.1,
       "p-structure": 0,
-      "p-emDash": 12.5,
-      "p-italics": 12.5,
+      "p-emDash": 11.1,
+      "p-italics": 11.1,
       "p-equations": 0,
-      "p-links": 12.5,
+      "p-links": 11.1,
+      "p-links-2": 11.1
+    },
+    "200.00 Synergetics": {
+      "p-replication": 0,
+      "p-headings": 0,
+      "p-images": 0,
+      "p-structure": 0,
+      "p-emDash": 0,
+      "p-italics": 0,
+      "p-equations": 0,
+      "p-links": 0,
+      "p-links-2": 0
+    },
+    "300.00 Universe": {
+      "p-replication": 0,
+      "p-headings": 0,
+      "p-images": 0,
+      "p-structure": 0,
+      "p-emDash": 0,
+      "p-italics": 0,
+      "p-equations": 0,
+      "p-links": 0,
+      "p-links-2": 0
+    },
+    "400.00 System": {
+      "p-replication": 72.7,
+      "p-headings": 72.7,
+      "p-images": 72.7,
+      "p-structure": 0,
+      "p-emDash": 72.7,
+      "p-italics": 54.5,
+      "p-equations": 72.7,
+      "p-links": 72.7,
+      "p-links-2": 0
+    },
+    "500.00 Conceptuality": {
+      "p-replication": 97.7,
+      "p-headings": 97.7,
+      "p-images": 97.7,
+      "p-structure": 0,
+      "p-emDash": 97.7,
+      "p-italics": 97.7,
+      "p-equations": 97.7,
+      "p-links": 97.7,
+      "p-links-2": 0
+    },
+    "600.00 Structure": {
+      "p-replication": 85.7,
+      "p-headings": 85.7,
+      "p-images": 85.7,
+      "p-structure": 0,
+      "p-emDash": 85.7,
+      "p-italics": 85.7,
+      "p-equations": 85.7,
+      "p-links": 85.7,
+      "p-links-2": 0
+    },
+    "700.00 Tensegrity": {
+      "p-replication": 90.9,
+      "p-headings": 90.9,
+      "p-images": 90.9,
+      "p-structure": 90.9,
+      "p-emDash": 90.9,
+      "p-italics": 90.9,
+      "p-equations": 90.9,
+      "p-links": 90.9,
+      "p-links-2": 0
+    },
+    "800.00 Operational Mathematics": {
+      "p-replication": 0,
+      "p-headings": 0,
+      "p-images": 0,
+      "p-structure": 0,
+      "p-emDash": 0,
+      "p-italics": 0,
+      "p-equations": 0,
+      "p-links": 0,
+      "p-links-2": 0
+    },
+    "900.00 Modelability": {
+      "p-replication": 95.8,
+      "p-headings": 95.8,
+      "p-images": 95.8,
+      "p-structure": 66.7,
+      "p-emDash": 95.8,
+      "p-italics": 95.8,
+      "p-equations": 95.8,
+      "p-links": 95.8,
+      "p-links-2": 0
+    },
+    "1000.00 Omnitopology": {
+      "p-replication": 88.9,
+      "p-headings": 88.9,
+      "p-images": 77.8,
+      "p-structure": 66.7,
+      "p-emDash": 77.8,
+      "p-italics": 66.7,
+      "p-equations": 66.7,
+      "p-links": 88.9,
+      "p-links-2": 11.1
+    },
+    "1100.00 Constant Zenith Projection": {
+      "p-replication": 0,
+      "p-headings": 0,
+      "p-images": 0,
+      "p-structure": 0,
+      "p-emDash": 0,
+      "p-italics": 0,
+      "p-equations": 0,
+      "p-links": 0,
       "p-links-2": 0
     },
     "1200.00 Numerology": {
@@ -240,6 +262,17 @@
       "p-links-2": 0
     },
     "Afterpiece": {
+      "p-replication": 0,
+      "p-headings": 0,
+      "p-images": 0,
+      "p-structure": 0,
+      "p-emDash": 0,
+      "p-italics": 0,
+      "p-equations": 0,
+      "p-links": 0,
+      "p-links-2": 0
+    },
+    "32 Color Plates": {
       "p-replication": 0,
       "p-headings": 0,
       "p-images": 0,
@@ -272,7 +305,7 @@
       "p-links": 0,
       "p-links-2": 0
     },
-    "Extras": {
+    "Illustrations": {
       "p-replication": 0,
       "p-headings": 0,
       "p-images": 0,
