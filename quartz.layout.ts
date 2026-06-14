@@ -61,10 +61,6 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [
     Component.Feedback(),
     Component.ConditionalRender({
-      component: Component.SystemsDashboard(),
-      condition: (page) => page.fileData.slug === "systems-stack",
-    }),
-    Component.ConditionalRender({
       component: Component.SynergeticsAI(),
       condition: (page) => page.fileData.slug === "synergetics-ai",
     }),
