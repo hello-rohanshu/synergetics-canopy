@@ -84,6 +84,8 @@ export default (() => {
         )}
 
         <link rel="icon" href={iconPath} type="image/svg+xml" />
+        <link rel="icon" href={joinSegments(baseDir, "favicon.ico")} type="image/x-icon" />
+        <link rel="icon" sizes="48x48" href={joinSegments(baseDir, "static/icon-day.png")} type="image/png" />
         <link rel="preload" href={`${baseDir}/static/fonts/inter-v20-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href={`${baseDir}/static/fonts/literata-v40-latin-600.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* <link rel="preload" href={`${baseDir}/static/fonts/bebas-neue-v16-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" /> */}
@@ -102,6 +104,17 @@ export default (() => {
             return resource
           }
         })}
+        {fileData.slug === "index" && (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "url": "https://synergetics.pages.dev",
+              "name": "Synergetics",
+              "logo": "https://synergetics.pages.dev/static/icon-day.png"
+            })
+          }} />
+        )}
       </head>
     )
   }
