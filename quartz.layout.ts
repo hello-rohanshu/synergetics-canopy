@@ -3,7 +3,7 @@ import * as Component from "./quartz/components"
 
 const explorerConfig = {
   filterFn: (node: any) => {
-    const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "content-audit", "trends-manifest"]);
+    const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "content-audit", "in-full", "trends-manifest"]);
     const slug = node.data?.slug ?? "";
     const name = (node.path || node.displayName || "").toLowerCase();
     return !hidden.has(slug) && !hidden.has(name);
