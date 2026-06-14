@@ -1,5 +1,5 @@
 ---
-title: Entire Synergetics
+title: "Synergetics: Corpus"
 tags:
   - hide-from-nav
 ---
