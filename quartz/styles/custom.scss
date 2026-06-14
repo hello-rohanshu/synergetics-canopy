@@ -493,4 +493,20 @@ ul.overflow {
 //   display: none;
 // }
 
+
+// --------------------------------------------------------------
+// HIDE ALL TAGS
+
+// Hide all tag-related visual elements
+.tag,
+.tags,
+.tag-list,
+.tag-link,
+.tags-container,
+.content-meta .tags,
+.frontmatter-section.tag,
+a[href*="/tags/"] {
+  display: none !important;
+}
+
 // ---------------------------------------------------------------
