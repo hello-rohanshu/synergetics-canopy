@@ -82,7 +82,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
-    Component.TagList(),
+    //Component.TagList(),
     Component.ConditionalRender({
       component: Component.SystemsDashboard(),
       condition: (page) => page.fileData.slug === "systems-stack",
