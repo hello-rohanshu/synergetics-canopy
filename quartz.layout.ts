@@ -87,7 +87,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.TagList(),
-    //Component.SystemsDashboard(),
+    Component.SystemsDashboard(),
     Component.ConditionalRender({
       component: Component.TrendsManifest(),
       condition: (page) => page.fileData.slug === "trends-manifest",
