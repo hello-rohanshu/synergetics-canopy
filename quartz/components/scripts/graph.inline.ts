@@ -95,6 +95,12 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       v,
     ]),
   )
+  const hiddenTag = "hide-from-nav"
+  for (const [slug, details] of data.entries()) {
+    if (details.tags?.includes(hiddenTag)) {
+      data.delete(slug)
+    }
+  }
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
   const validLinks = new Set(data.keys())

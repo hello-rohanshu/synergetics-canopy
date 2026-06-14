@@ -1,5 +1,7 @@
 ---
-title: It's Just One Page
+title: Entire Synergetics
+tags:
+  - hide-from-nav
 ---
 
 # Frontmatter

@@ -3,10 +3,11 @@ import * as Component from "./quartz/components"
 
 const explorerConfig = {
   filterFn: (node: any) => {
-    const hidden = new Set(["systems", "synergetics-ai", "systems-stack", "content-audit", "in-full", "trends-manifest"]);
+    const hidden = new Set(["dummy-item"]); //add files to hide them from sidebar
     const slug = node.data?.slug ?? "";
     const name = (node.path || node.displayName || "").toLowerCase();
-    return !hidden.has(slug) && !hidden.has(name);
+    const hasHideTag = node.data?.tags?.includes("hide-from-nav");
+    return !hidden.has(slug) && !hidden.has(name) && !hasHideTag;
   },
 
   mapFn: (node: any) => {

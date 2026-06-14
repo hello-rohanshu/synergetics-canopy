@@ -2,8 +2,10 @@ import { FullSlug, resolveRelative } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
 
+const HIDDEN_TAGS = new Set(["hide-from-nav"])
+
 const TagList: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
-  const tags = fileData.frontmatter?.tags
+  const tags = fileData.frontmatter?.tags?.filter((tag) => !HIDDEN_TAGS.has(tag))
   if (tags && tags.length > 0) {
     return (
       <ul class={classNames(displayClass, "tags")}>
