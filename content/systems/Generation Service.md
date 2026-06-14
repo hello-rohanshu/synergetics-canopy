@@ -9,4 +9,6 @@ children:
   - "[[Cerebras]]"
   - "[[Cloudflare AI Search]]"
 critical: false
+tags:
+  - hide-from-nav
 ---

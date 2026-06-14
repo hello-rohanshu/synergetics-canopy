@@ -4,4 +4,6 @@ attestation:
 ping_url:
 url: https://cloudflare.com
 children:
+tags:
+  - hide-from-nav
 ---

@@ -5,4 +5,6 @@ ping_url:
 url:
 children:
   - "[[Obsidian]]"
+tags:
+  - hide-from-nav
 ---

@@ -8,4 +8,6 @@ children:
   - "[[Embedding]]"
   - "[[Vector Store]]"
   - "[[Worker]]"
+tags:
+  - hide-from-nav
 ---

@@ -22,6 +22,7 @@ views:
       property: formula.power
       direction: DESC
     order:
+      - tags
       - formula.power
       - file.name
       - file.backlinks
@@ -32,10 +33,27 @@ views:
       - alternatives
       - url
       - attestation
+    sort:
+      - property: file.name
+        direction: ASC
+    columnSize:
+      file.backlinks: 147
+      note.children: 285
+  - type: table
+    name: Table 2
+    order:
+      - formula.power
+      - file.name
+      - file.backlinks
+      - status
+      - retired
+      - nonCritical
+      - children
+      - alternatives
+      - url
+      - attestation
+      - tags
     sort: []
     columnSize:
       file.backlinks: 147
       note.children: 285
-  - type: cards
-    name: View
-    image: formula.power

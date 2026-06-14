@@ -4,4 +4,6 @@ attestation:
 ping_url: https://hello-rohanshu-synergetics-embed.hf.space/health
 url: https://huggingface.co
 children:
+tags:
+  - hide-from-nav
 ---

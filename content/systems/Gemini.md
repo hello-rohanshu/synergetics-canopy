@@ -7,4 +7,6 @@ children:
 alternatives:
 critical:
 retired:
+tags:
+  - hide-from-nav
 ---

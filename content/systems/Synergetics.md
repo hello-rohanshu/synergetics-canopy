@@ -6,4 +6,6 @@ url:
 children:
   - "[[R. W. Gray's Synergetics Online]]"
   - "[[Custom Interactive Diagrams]]"
+tags:
+  - hide-from-nav
 ---

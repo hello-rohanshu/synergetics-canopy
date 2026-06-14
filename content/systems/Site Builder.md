@@ -5,5 +5,7 @@ ping_url:
 url:
 children:
   - "[[Quartz]]"
+tags:
+  - hide-from-nav
 ---
 

@@ -9,4 +9,6 @@ children:
   - "[[ChatGPT]]"
   - "[[DeepSeek]]"
   - "[[Gemini]]"
+tags:
+  - hide-from-nav
 ---

@@ -6,4 +6,6 @@ url:
 children:
   - "[[Uptime Robot]]"
   - "[[Cloudflare Worker]]"
+tags:
+  - hide-from-nav
 ---

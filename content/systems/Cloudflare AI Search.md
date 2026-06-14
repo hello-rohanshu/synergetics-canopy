@@ -7,4 +7,6 @@ url: https://cloudflare.com
 children:
 critical: false
 retired: true
+tags:
+  - hide-from-nav
 ---

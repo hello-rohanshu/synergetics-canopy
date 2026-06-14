@@ -5,5 +5,7 @@ ping_url:
 url:
 children:
   - "[[GitHub]]"
+tags:
+  - hide-from-nav
 ---
 asdf

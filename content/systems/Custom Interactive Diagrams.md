@@ -7,4 +7,6 @@ url:
 children:
 critical: false
 retired: true
+tags:
+  - hide-from-nav
 ---

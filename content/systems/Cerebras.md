@@ -6,4 +6,6 @@ url: https://cerebras.ai
 children:
   - "[[gpt-oss-120b]]"
 retired: false
+tags:
+  - hide-from-nav
 ---

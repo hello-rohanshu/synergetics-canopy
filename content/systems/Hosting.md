@@ -5,4 +5,6 @@ ping_url:
 url:
 children:
   - "[[Cloudflare Hosting]]"
+tags:
+  - hide-from-nav
 ---

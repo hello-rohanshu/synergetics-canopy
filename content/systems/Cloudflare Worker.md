@@ -4,4 +4,6 @@ attestation:
 ping_url: https://synergetics-worker.rohanshu.workers.dev/ping
 url: https://cloudflare.com
 children:
+tags:
+  - hide-from-nav
 ---
