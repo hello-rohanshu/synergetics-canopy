@@ -94,6 +94,7 @@ draft: "true"
 - Links which are linking to images and tables present in the same para should not be clickable to avoid confusion.
 - Links linking to figures and attachments directly should instead link to where the figure is used in the text.
 - "Section xyz" should be linked in whole and not just the number 'xyz'. But any suffixing description should be avoided
+- special: (as we have seen in Sections [[640.00 Tension and Compression#644.00 Limitless Ratios of Tension|644 through 646.03]]).
 
 Specifics
 - 1010.00: Should "drawings sections" be a link?
