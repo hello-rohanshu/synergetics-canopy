@@ -115,6 +115,7 @@ export default (() => {
             })
           }} />
         )}
+        <meta name="google-site-verification" content="YQMUKCIOgo3QnYVDjFVGSWtoozwmEdTHFgmXJ_J_A8k" />
       </head>
     )
   }
