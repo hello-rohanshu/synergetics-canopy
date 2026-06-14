@@ -188,6 +188,7 @@ function highlightHTML(searchTerm: string, el: HTMLElement) {
 }
 
 async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: ContentIndex) {
+
   const container = searchElement.querySelector(".search-container") as HTMLElement
   if (!container) return
 
@@ -490,7 +491,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       ...getByField("content"),
       ...getByField("tags"),
     ])
-    const finalResults = [...allIds].map((id) => formatForDisplay(currentSearchTerm, id))
+    const finalResults = [...allIds]
+      .map((id) => formatForDisplay(currentSearchTerm, id))
+      .filter((r) => !data[r.slug]?.tags?.includes("hide-from-nav"))
     await displayResults(finalResults)
   }
 
