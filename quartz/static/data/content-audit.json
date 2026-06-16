@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-10T12:31:38.862Z",
+  "generated": "2026-06-15T14:40:13.031Z",
   "properties": {
     "p-replication": {
       "label": "Replication",
@@ -43,11 +43,11 @@
     "p-headings": 28.3,
     "p-images": 28,
     "p-structure": 11.4,
-    "p-emDash": 28,
-    "p-italics": 27.3,
+    "p-emDash": 28.3,
+    "p-italics": 27.5,
     "p-equations": 27.5,
     "p-links": 28.3,
-    "p-links-2": 3.5
+    "p-links-2": 4.3
   },
   "groups": {
     "Front Matter": {
@@ -66,11 +66,11 @@
       "p-headings": 68.5,
       "p-images": 67.8,
       "p-structure": 22.6,
-      "p-emDash": 67.8,
-      "p-italics": 65.8,
+      "p-emDash": 68.5,
+      "p-italics": 66.4,
       "p-equations": 66.4,
       "p-links": 68.5,
-      "p-links-2": 2.1
+      "p-links-2": 4.1
     },
     "Back Matter": {
       "p-replication": 0.9,
@@ -233,11 +233,11 @@
       "p-headings": 88.9,
       "p-images": 77.8,
       "p-structure": 66.7,
-      "p-emDash": 77.8,
-      "p-italics": 66.7,
+      "p-emDash": 88.9,
+      "p-italics": 77.8,
       "p-equations": 66.7,
       "p-links": 88.9,
-      "p-links-2": 11.1
+      "p-links-2": 44.4
     },
     "1100.00 Constant Zenith Projection": {
       "p-replication": 0,
