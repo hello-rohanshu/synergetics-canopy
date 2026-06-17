@@ -468,11 +468,12 @@ ul.overflow li {
 }
 
 
-// -----------------------------------------------------------------------
+// ═══════════════════════════════════════════════════════════════════════════
 // ─── Fix: Disable fade/overflow gradient on TOC ─────────────────────────
 //
 // Quartz applies a mask-image fade on ul.overflow and .overflow-fade::after.
 // This kills both so the TOC cuts off cleanly instead of fading out.
+// ═══════════════════════════════════════════════════════════════════════════
 
 ul.overflow {
     mask-image: none !important;
@@ -482,6 +483,16 @@ ul.overflow {
 .overflow-fade::after {
     display: none !important;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Prevent backlinks from overtaking TOC space
+// ═══════════════════════════════════════════════════════════════════════════
+
+#quartz-body > div.right.sidebar > div.backlinks #list-2 {
+    max-height: 100px;
+    overflow-y: auto;
+}
+// ═══════════════════════════════════════════════════════════════════════════
 
 
 // ---------------------------------------------------------------
