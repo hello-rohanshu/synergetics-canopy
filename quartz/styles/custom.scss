@@ -494,6 +494,19 @@ ul.overflow {
 }
 // ═══════════════════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Reduce graph height to 200px and keep it centered
+// ═══════════════════════════════════════════════════════════════════════════
+
+#quartz-body > div.right.sidebar > div.graph > div.graph-outer {
+  height: 200px;
+  overflow: hidden;
+}
+
+#quartz-body > div.right.sidebar > div.graph > div.graph-outer > .graph-container {
+  transform: translateY(-25px);
+}
+// ═══════════════════════════════════════════════════════════════════════════
 
 // ---------------------------------------------------------------
 // HIDE TAG
