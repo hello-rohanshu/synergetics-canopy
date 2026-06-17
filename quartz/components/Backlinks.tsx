@@ -24,7 +24,11 @@ export default ((opts?: Partial<BacklinksOptions>) => {
     cfg,
   }: QuartzComponentProps) => {
     const slug = simplifySlug(fileData.slug!)
-    const backlinkFiles = allFiles.filter((file) => file.links?.includes(slug))
+    const backlinkFiles = allFiles.filter((file) => {
+      const isBacklink = file.links?.includes(slug)
+      const isHidden = file.frontmatter?.tags?.includes("hide-from-nav")
+      return isBacklink && !isHidden
+    })
     if (options.hideWhenEmpty && backlinkFiles.length == 0) {
       return null
     }
