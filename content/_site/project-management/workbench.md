@@ -86,6 +86,89 @@ draft: "true"
 ```
 
 
+# Highlight superscripts, subscripts and equal signs
+
+```
+(function() {
+  // 🎨 High-contrast, easily distinguishable colors
+  const COLORS = {
+    superscript: {
+      backgroundColor: '#FFD700',  // gold
+      border: '2px solid #FF0000'  // red
+    },
+    subscript: {
+      backgroundColor: '#00FFFF',  // cyan
+      border: '2px solid #0000FF'  // blue
+    },
+    equals: {
+      backgroundColor: '#FF69B4',  // hot pink
+      border: '2px solid #8B008B'  // dark magenta
+    }
+  };
+  
+  const borderRadius = '2px';
+  const padding = '1px 2px';
+  
+  const superscripts = document.querySelectorAll('sup');
+  const subscripts = document.querySelectorAll('sub');
+  const equalsSigns = [];
+  
+  // Find all text nodes containing equals signs
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function(node) {
+        return node.textContent.includes('=') 
+          ? NodeFilter.FILTER_ACCEPT 
+          : NodeFilter.FILTER_REJECT;
+      }
+    }
+  );
+  
+  while (walker.nextNode()) {
+    equalsSigns.push(walker.currentNode);
+  }
+  
+  // Apply styles to superscripts
+  superscripts.forEach(el => {
+    el.style.backgroundColor = COLORS.superscript.backgroundColor;
+    el.style.border = COLORS.superscript.border;
+    el.style.borderRadius = borderRadius;
+    el.style.padding = padding;
+  });
+  
+  // Apply styles to subscripts
+  subscripts.forEach(el => {
+    el.style.backgroundColor = COLORS.subscript.backgroundColor;
+    el.style.border = COLORS.subscript.border;
+    el.style.borderRadius = borderRadius;
+    el.style.padding = padding;
+  });
+  
+  // Highlight equals signs
+  equalsSigns.forEach(textNode => {
+    const parent = textNode.parentNode;
+    const text = textNode.textContent;
+    const highlightedHTML = text.replace(
+      /=/g, 
+      `<span style="background-color: ${COLORS.equals.backgroundColor}; border: ${COLORS.equals.border}; border-radius: ${borderRadius}; padding: ${padding};">=</span>`
+    );
+    
+    if (highlightedHTML !== text) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = highlightedHTML;
+      
+      while (tempDiv.firstChild) {
+        parent.insertBefore(tempDiv.firstChild, textNode);
+      }
+      parent.removeChild(textNode);
+    }
+  });
+  
+  console.log(`Highlighted ${superscripts.length} superscripts, ${subscripts.length} subscripts, and ${equalsSigns.length} text nodes containing equals signs.`);
+})();
+```
 
 # Changes to be made/Rules to be followed
 (with regards to linking)
