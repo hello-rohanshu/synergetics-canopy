@@ -16,6 +16,7 @@ draft: "true"
 | Seven  | ₇         | ⁷           |
 | Eight  | ₈         | ⁸           |
 | Nine   | ₉         | ⁹           |
+| n      | ₙ         | ⁿ           |
 
 # Symbols
 
@@ -178,6 +179,9 @@ draft: "true"
 - Links linking to figures and attachments directly should instead link to where the figure is used in the text.
 - "Section xyz" should be linked in whole and not just the number 'xyz'. But any suffixing description should be avoided
 - special: (as we have seen in Sections [[640.00 Tension and Compression#644.00 Limitless Ratios of Tension|644 through 646.03]]).
+- special: (see Sec. [[920.00 Functions of A and B Modules|920]] through 940).
 
 Specifics
 - 1010.00: Should "drawings sections" be a link?
+- "displaystyle" in latex is rendered with no difference in Obsidian but is bigger in Quartz than without it. Unsure if to use it or not. Given it is distinct, it should be searchable across the repo if change is needed later. DeepSeek said use it as it's the ideal display size.
+- (See [[pp. 46-47]].) in 220.00 is what?
