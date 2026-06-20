@@ -85,7 +85,7 @@ tags:
 ![[534.00 Doppler Effect]]
 ![[535.00 Halo Concept]]
 ![[536.00 Interference Domains of Structural Systems]]
-![[537.00Twelve Universal Degrees of Freedom]]
+![[537.00 Twelve Universal Degrees of Freedom]]
 ![[538.00 Probability]]
 ![[539.00 Quantum Wave Phenomena]]
 ![[540.00 Frame of Reference]]
