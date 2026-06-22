@@ -185,3 +185,7 @@ Specifics
 - 1010.00: Should "drawings sections" be a link?
 - "displaystyle" in latex is rendered with no difference in Obsidian but is bigger in Quartz than without it. Unsure if to use it or not. Given it is distinct, it should be searchable across the repo if change is needed later. DeepSeek said use it as it's the ideal display size.
 - (See [[pp. 46-47]].) in 220.00 is what?
+
+
+# More
+- asterisk to be scanned across the repo, and if there is any space before and after it, it should be removed. otherwise parser can fail to recognize asterisk pairs, failing to render or leaking italics beyond the end.
