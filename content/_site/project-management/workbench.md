@@ -89,6 +89,8 @@ draft: "true"
 
 # Highlight superscripts, subscripts and equal signs
 
+(Em dash underscores are of grey color, for a visual separation from relevant superscripts)
+
 ```
 (function() {
   // 🎨 High-contrast, easily distinguishable colors
