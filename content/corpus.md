@@ -94,7 +94,7 @@ tags:
 ![[543.00 Reality and Inexactitude]]
 ![[600.01 Definition - Structure]]
 ![[610.00 Triangulation]]
-![[620.00  Tetrahedron]]
+![[620.00 Tetrahedron]]
 ![[630.00  Antitetrahedron]]
 ![[640.00 Tension and Compression]]
 ![[650.00 Structural Properties of Octet Truss]]
