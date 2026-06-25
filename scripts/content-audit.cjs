@@ -13,6 +13,13 @@ const grayMatter = require('gray-matter');
 // CONFIGURATION
 // Edit this section to add/remove properties or change groups.
 // Each property needs: label (shown in UI) and description (shown in tooltip).
+//
+// SCOPE NOTE: the audit only ever scans entries named in `groups`
+// below. Anything in content/ that isn't listed there (content-audit.md,
+// corpus.md, systems-stack.md, synergetics-ai.md, the systems/ folder,
+// _site/, etc.) is never touched — `groups` is treated as the
+// canonical table of contents for the book, everything else is
+// site tooling/UI and is out of scope by construction.
 // ------------------------------------------------------------------
 
 const CONFIG = {
@@ -22,6 +29,12 @@ const CONFIG = {
 
   // Where to save the report
   outputFile: "quartz/static/data/content-audit.json",
+
+  // Filenames to skip when recursing into a directory-type entry
+  // (e.g. "300.00 Universe/index.md" is structural, not book content).
+  // This only applies inside entries listed in `groups` below — it is
+  // not a vault-wide exclusion list.
+  skipFilenames: ["index.md"],
 
   // Properties to check in frontmatter
   "properties": {
@@ -63,10 +76,12 @@ const CONFIG = {
     }
   },
 
-  // Entries to skip (filenames without .md)
+  // Entries to skip (filenames without .md) — e.g. a chapter you've
+  // intentionally pulled from the audit temporarily.
   exclusions: [],
 
-  // Groups define how entries are organized in the report
+  // Groups define how entries are organized in the report.
+  // This list IS the scan scope — only these entries are ever read.
   groups: {
     "Front Matter": [
       "Foreword",
@@ -93,7 +108,8 @@ const booleanProps = Object.keys(CONFIG.properties);
 
 // ------------------------------------------------------------------
 // FILE SCANNING
-// Recursively finds all .md files in a directory
+// Recursively finds all .md files in a directory, skipping any
+// filename listed in CONFIG.skipFilenames (e.g. index.md).
 // ------------------------------------------------------------------
 
 function findMarkdownFiles(dir) {
@@ -104,6 +120,7 @@ function findMarkdownFiles(dir) {
     if (entry.isDirectory()) {
       results.push(...findMarkdownFiles(fullPath));
     } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      if (CONFIG.skipFilenames.includes(entry.name)) continue;
       results.push(fullPath);
     }
   }
@@ -193,6 +210,7 @@ function audit() {
 
   const groupsResult = {};
   const entriesResult = {};
+  const missingEntries = [];   // <-- NEW: track entries listed but not found
 
   // ---- Scan each group ----
   for (const [groupName, entryNames] of Object.entries(CONFIG.groups)) {
@@ -207,6 +225,7 @@ function audit() {
       const scan = scanEntry(entryName);
       if (!scan || scan.fileCount === 0) {
         console.warn(`No markdown files found for entry: "${entryName}" – skipping.`);
+        missingEntries.push(entryName);   // <-- NEW: collect for the report
         continue;
       }
 
@@ -239,7 +258,8 @@ function audit() {
     properties: CONFIG.properties,   // Label/description info for the UI
     vault: vaultPercentages,         // Overall completion per property
     groups: groupsResult,            // Completion per group
-    entries: entriesResult           // Completion per entry
+    entries: entriesResult,          // Completion per entry
+    missing: missingEntries          // <-- NEW: entries in groups that weren't found
   };
 
   // ---- Write to file ----
@@ -254,6 +274,12 @@ function audit() {
     `file${vaultFileCount !== 1 ? 's' : ''} across ${entryCount} ` +
     `entr${entryCount !== 1 ? 'ies' : 'y'}.`
   );
+  if (missingEntries.length > 0) {
+    console.warn(
+      `⚠  Warning: ${missingEntries.length} entr${missingEntries.length !== 1 ? 'ies' : 'y'} ` +
+      `listed in groups but not found in content/: ${missingEntries.join(', ')}`
+    );
+  }
   console.log(`Timestamp: ${report.generated}`);
   console.log(`Report written to ${CONFIG.outputFile}`);
 }
