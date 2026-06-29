@@ -48,7 +48,11 @@ const CONFIG = {
     },
     "p-images": {
       "label": "Images",
-      "description": "All source images present and rendering"
+      "description": "All source images present"
+    },
+    "p-imageFormat": {
+      "label": "Image Formatting",
+      "description": "Images checked for captions and artifacts"
     },
     "p-structure": {
       "label": "Structure",
@@ -73,12 +77,12 @@ const CONFIG = {
     "p-links-2": {
       "label": "Links (Resolved)",
       "description": "Placed links connected to their destinations"
-    }
+    },
   },
 
   // Entries to skip (filenames without .md) — e.g. a chapter you've
   // intentionally pulled from the audit temporarily.
-  exclusions: [],
+  exclusions: ["Illustrations"],
 
   // Groups define how entries are organized in the report.
   // This list IS the scan scope — only these entries are ever read.
