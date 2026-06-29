@@ -191,3 +191,4 @@ Specifics
 
 # More
 - asterisk to be scanned across the repo, and if there is any space before and after it, it should be removed. otherwise parser can fail to recognize asterisk pairs, failing to render or leaking italics beyond the end.
+	- unsure if space on left or right should be removed as one side will have letters and other side space as the word ends
