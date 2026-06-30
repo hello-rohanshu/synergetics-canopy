@@ -1,5 +1,6 @@
 ![[Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra.png]]
 
+Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra:
 A.	Tetrahedron: 4 faces, 4 vertexes, 6 edges.
 B.	Cube: 6 faces, 8 vertexes, 12 edges.
 C.	Octahedron: 8 faces, 6 vertexes, 12 edges.
