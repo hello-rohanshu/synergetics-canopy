@@ -1,3 +1,6 @@
+---
+tags: hide-from-nav
+---
 
 
 

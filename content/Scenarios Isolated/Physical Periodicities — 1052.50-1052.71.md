@@ -1,3 +1,7 @@
+---
+tags:
+  - hide-from-nav
+---
 
 
 ![[1050.00 Synergetic Hierarchy#1052.50 Syntropy and Entropy]]

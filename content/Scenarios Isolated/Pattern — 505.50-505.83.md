@@ -1,3 +1,7 @@
+---
+tags:
+  - hide-from-nav
+---
 
 
 ![[505.00 Pattern#505.50 Abstract vs Energetic]]

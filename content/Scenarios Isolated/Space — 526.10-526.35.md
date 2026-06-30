@@ -1,3 +1,7 @@
+---
+tags:
+  - hide-from-nav
+---
 
 
 ![[526.00 Space#526.10 Systematic Inclusion and Exclusion of Space]]
