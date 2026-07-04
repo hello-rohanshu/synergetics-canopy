@@ -60,6 +60,7 @@ const config: QuartzConfig = {
   },
   plugins: {
     transformers: [
+      Plugin.BuildStats(),
       Plugin.HardLineBreaks(),
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({

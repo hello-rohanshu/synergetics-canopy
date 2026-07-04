@@ -78,80 +78,24 @@ PS: The server is mostly inactive, but I'm not aware of any other place for comm
 
 # Project Status
 
-<div class="content-audit-card" style="margin: 1.5rem 0;">
-  <a href="/content-audit" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem; padding-left: 2rem; padding-right: 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'; " onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+<div class="status-card" style="margin: 1.5rem 0;">
+  <a href="/content-audit" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Content Completeness</div>
-      <div style="font-size: 0.85rem; color: var(--gray);">Check Detailed Audit -></div>
+      <div style="font-size: 0.85rem; color: var(--gray);">Check Detailed Audit →</div>
     </div>
-    <span id="audit-pct" style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary); opacity: 0; transition: opacity 0.4s;">—</span>
+    <span style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary);">{{buildstat:audit-pct}}</span>
   </a>
-
-<script>
-  (function() {
-    function updateAudit() {
-      const el = document.getElementById('audit-pct');
-      if (!el) return;
-      fetch('/static/data/content-audit.json')
-        .then(r => r.json())
-        .then(data => {
-          const fresh = document.getElementById('audit-pct');
-          if (!fresh) return;
-          const v = Object.values(data?.vault || {});
-          const a = v.length ? Math.round(v.reduce((x,y)=>x+y,0)/v.length) : 0;
-          fresh.textContent = a + '%';
-          fresh.style.opacity = '1';
-        })
-        .catch(() => {
-          const fresh = document.getElementById('audit-pct');
-          if (fresh) {
-            fresh.textContent = '—';
-            fresh.style.opacity = '1';
-          }
-        });
-    }
-    updateAudit();
-    document.addEventListener('nav', updateAudit);
-  })();
-</script>
 </div>
 
-<div class="changelog-card" style="margin: 1.5rem 0;">
-  <a href="/changelog" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem; padding-left: 2rem; padding-right: 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'; " onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+<div class="status-card" style="margin: 1.5rem 0;">
+  <a href="/changelog" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Current Version</div>
-      <div style="font-size: 0.85rem; color: var(--gray);">See Changelog -></div>
+      <div style="font-size: 0.85rem; color: var(--gray);">See Changelog →</div>
     </div>
-    <span id="changelog-meta" style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary); opacity: 0; transition: opacity 0.4s;">—</span>
+    <span style="font-family: var(--codeFont); font-size: 2rem; font-weight: 700; color: var(--tertiary);">{{buildstat:changelog-version}}</span>
   </a>
-
-  <script>
-  (function() {
-    function updateChangelog() {
-      const el = document.getElementById('changelog-meta');
-      if (!el) return;
-      fetch('/static/data/changelog.json')
-        .then(r => r.json())
-        .then(data => {
-          // re-check element still exists after async fetch
-          const fresh = document.getElementById('changelog-meta');
-          if (!fresh) return;
-          const latest = data?.releases?.[0];
-          fresh.textContent = latest ? `v${latest.version}` : '—';
-          fresh.style.opacity = '1';
-        })
-        .catch(() => {
-          const fresh = document.getElementById('changelog-meta');
-          if (fresh) {
-            fresh.textContent = '—';
-            fresh.style.opacity = '1';
-          }
-        });
-    }
-    updateChangelog();
-    document.addEventListener('nav', updateChangelog);
-  })();
-</script>
 </div>
 
 <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
