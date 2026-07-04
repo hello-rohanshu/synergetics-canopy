@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-29T07:32:12.462Z",
+  "generated": "2026-07-04T06:21:33.057Z",
   "properties": {
     "p-replication": {
       "label": "Replication",
@@ -43,41 +43,41 @@
     }
   },
   "vault": {
-    "p-replication": 85.1,
-    "p-headings": 85.1,
-    "p-images": 84.5,
+    "p-replication": 98,
+    "p-headings": 98,
+    "p-images": 97.4,
     "p-imageFormat": 0,
-    "p-structure": 45.2,
-    "p-emDash": 85.1,
-    "p-italics": 83.3,
-    "p-equations": 84.5,
-    "p-links": 85.1,
-    "p-links-2": 29.8
+    "p-structure": 54.3,
+    "p-emDash": 98,
+    "p-italics": 96,
+    "p-equations": 97.4,
+    "p-links": 98,
+    "p-links-2": 36.4
   },
   "groups": {
     "Front Matter": {
-      "p-replication": 37.9,
-      "p-headings": 37.9,
-      "p-images": 37.9,
+      "p-replication": 100,
+      "p-headings": 100,
+      "p-images": 100,
       "p-imageFormat": 0,
-      "p-structure": 37.9,
-      "p-emDash": 37.9,
-      "p-italics": 37.9,
-      "p-equations": 37.9,
-      "p-links": 37.9,
-      "p-links-2": 34.5
+      "p-structure": 100,
+      "p-emDash": 100,
+      "p-italics": 100,
+      "p-equations": 100,
+      "p-links": 100,
+      "p-links-2": 91.7
     },
     "Main Chapters": {
-      "p-replication": 95.6,
-      "p-headings": 95.6,
-      "p-images": 94.8,
+      "p-replication": 98.5,
+      "p-headings": 98.5,
+      "p-images": 97.8,
       "p-imageFormat": 0,
-      "p-structure": 45.9,
-      "p-emDash": 95.6,
-      "p-italics": 93.3,
-      "p-equations": 94.8,
-      "p-links": 95.6,
-      "p-links-2": 27.4
+      "p-structure": 49.6,
+      "p-emDash": 98.5,
+      "p-italics": 96.3,
+      "p-equations": 97.8,
+      "p-links": 98.5,
+      "p-links-2": 30.4
     },
     "Back Matter": {
       "p-replication": 75,
@@ -130,16 +130,16 @@
       "p-links-2": 100
     },
     "Scenarios": {
-      "p-replication": 0,
-      "p-headings": 0,
-      "p-images": 0,
+      "p-replication": 100,
+      "p-headings": 100,
+      "p-images": 100,
       "p-imageFormat": 0,
-      "p-structure": 0,
-      "p-emDash": 0,
-      "p-italics": 0,
-      "p-equations": 0,
-      "p-links": 0,
-      "p-links-2": 0
+      "p-structure": 100,
+      "p-emDash": 100,
+      "p-italics": 100,
+      "p-equations": 100,
+      "p-links": 100,
+      "p-links-2": 100
     },
     "100.00 Synergy": {
       "p-replication": 100,
@@ -158,7 +158,7 @@
       "p-headings": 100,
       "p-images": 100,
       "p-imageFormat": 0,
-      "p-structure": 85.7,
+      "p-structure": 100,
       "p-emDash": 100,
       "p-italics": 100,
       "p-equations": 100,
@@ -178,16 +178,16 @@
       "p-links-2": 100
     },
     "400.00 System": {
-      "p-replication": 80,
-      "p-headings": 80,
-      "p-images": 80,
+      "p-replication": 100,
+      "p-headings": 100,
+      "p-images": 100,
       "p-imageFormat": 0,
-      "p-structure": 0,
-      "p-emDash": 80,
-      "p-italics": 60,
-      "p-equations": 80,
-      "p-links": 80,
-      "p-links-2": 0
+      "p-structure": 20,
+      "p-emDash": 100,
+      "p-italics": 80,
+      "p-equations": 100,
+      "p-links": 100,
+      "p-links-2": 20
     },
     "500.00 Conceptuality": {
       "p-replication": 100,
@@ -262,16 +262,16 @@
       "p-links-2": 62.5
     },
     "1100.00 Constant Zenith Projection": {
-      "p-replication": 25,
-      "p-headings": 25,
-      "p-images": 25,
+      "p-replication": 75,
+      "p-headings": 75,
+      "p-images": 75,
       "p-imageFormat": 0,
-      "p-structure": 25,
-      "p-emDash": 25,
-      "p-italics": 25,
-      "p-equations": 25,
-      "p-links": 25,
-      "p-links-2": 50
+      "p-structure": 75,
+      "p-emDash": 75,
+      "p-italics": 75,
+      "p-equations": 75,
+      "p-links": 75,
+      "p-links-2": 100
     },
     "1200.00 Numerology": {
       "p-replication": 66.7,

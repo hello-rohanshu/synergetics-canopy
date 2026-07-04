@@ -95,6 +95,10 @@ export const defaultContentPageLayout: PageLayout = {
       component: Component.ContentAudit(),
       condition: (page) => page.fileData.slug === "content-audit",
     }),
+    Component.ConditionalRender({
+      component: Component.Changelog(),
+      condition: (page) => page.fileData.slug === "changelog",
+    }),
   ],
   left: [
     Component.PageTitle(),

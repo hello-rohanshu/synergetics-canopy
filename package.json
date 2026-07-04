@@ -13,8 +13,8 @@
   },
   "scripts": {
     "build": "npx quartz build",
-    "prebuild": "node scripts/content-audit.cjs",
-    "preserve": "node scripts/content-audit.cjs",
+  "prebuild": "node scripts/content-audit.cjs && node scripts/changelog.cjs",
+  "preserve": "node scripts/content-audit.cjs && node scripts/changelog.cjs",
     "serve": "npx quartz build --serve",
     "quartz": "./quartz/bootstrap-cli.mjs",
     "docs": "npx quartz build --serve -d docs",
