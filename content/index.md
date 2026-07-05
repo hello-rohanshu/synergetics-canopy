@@ -53,6 +53,35 @@ description: "Buckminster Fuller's Synergetics — a navigable digital edition o
   background: #ddd;
   border-radius: 10px;
 }
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem 0;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  color: var(--darkgray);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.link-btn:hover {
+  background: var(--highlight);
+  border-color: var(--gray);
+}
+
+/* Reset native button styles */
+button.link-btn {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
 </style>
 
 &nbsp;
