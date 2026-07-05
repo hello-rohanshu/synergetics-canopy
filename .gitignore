@@ -15,3 +15,4 @@ synergetics-worker/dev.vars
 .wrangler/
 quartz/static/data/content-audit.json
 quartz/static/data/changelog.json
+quartz/static/data/systems-manifest.json

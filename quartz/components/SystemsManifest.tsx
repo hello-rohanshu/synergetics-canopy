@@ -1,7 +1,7 @@
-// quartz/components/SystemsDashboard.tsx
+// quartz/components/SystemsManifest.tsx
 
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { QuartzPluginData } from "../plugins/vfile"
+import systemsData from "../static/data/systems-manifest.json"
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -13,6 +13,7 @@ interface SystemNode {
   slug: string
   name: string
   ownStatus: BaseStatus
+  rolledStatus: RolledStatus
   critical: boolean
   retired: boolean
   attestation: string
@@ -21,22 +22,7 @@ interface SystemNode {
   children: SystemNode[]
 }
 
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
-
-const parseWikilinks = (raw: unknown): string[] => {
-  if (!Array.isArray(raw)) return []
-  return raw
-    .map((item) => {
-      if (typeof item !== "string") return null
-      const match = item.match(/\[\[(.+?)\]\]/)
-      return match ? match[1].trim() : item.trim()
-    })
-    .filter((x): x is string => Boolean(x))
-}
-
-const slugToName = (slug: string): string =>
-  slug.split("/").pop()?.replace(/-/g, " ") ?? slug
 
 const getDaysSince = (dateStr: string): number => {
   if (!dateStr) return 999
@@ -71,163 +57,6 @@ const getDomain = (url: string): string => {
 
 const formatPingId = (slug: string, pingUrl: string): string | null =>
   pingUrl ? slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase() : null
-
-// ── Parsers ───────────────────────────────────────────────────────────────────
-
-const parseStatus = (raw: unknown): BaseStatus => {
-  const vals = Array.isArray(raw) ? raw : [raw]
-  if (vals.includes("defunct") || vals.includes("down")) return "down"
-  if (vals.includes("wip")) return "wip"
-  return "active"
-}
-
-const parseRetired = (raw: unknown): boolean => {
-  if (raw === true || raw === "true") return true
-  if (Array.isArray(raw)) {
-    const strArr = raw.map(String).map(s => s.toLowerCase())
-    if (strArr.includes("true") || strArr.includes("retired")) return true
-  }
-  if (typeof raw === "string" && raw.toLowerCase() === "retired") return true
-  return false
-}
-
-const parseCritical = (raw: unknown): boolean => {
-  if (raw === true || raw === "true") return true
-  if (Array.isArray(raw)) {
-    const arr = raw.map(String).map(s => s.toLowerCase())
-    if (arr.includes("true") || arr.includes("critical")) return true
-  }
-  if (typeof raw === "string") {
-    const lower = raw.toLowerCase()
-    if (lower === "true" || lower === "critical") return true
-  }
-  return false
-}
-
-// ── Graph Logic ───────────────────────────────────────────────────────────────
-
-
-
-const buildTree = (allFiles: QuartzPluginData[]): SystemNode[] => {
-  const sysFiles = allFiles.filter((f) => {
-    const parts = (f.slug ?? "").split("/")
-    return parts.length === 2 && parts[0] === "systems" && parts[1] !== "index"
-  })
-
-  // 1. Build map of ALL nodes (including retired, but mark retired flag)
-  const byName = new Map<string, SystemNode & { retired: boolean }>()
-
-  for (const f of sysFiles) {
-    const fm = (f.frontmatter ?? {}) as Record<string, unknown>
-    const retired = parseRetired(fm.retired) || parseRetired(fm.lifecycle)
-    const name = (fm.title as string | undefined) ?? slugToName(f.slug ?? "")
-
-    byName.set(name.toLowerCase(), {
-      slug: f.slug ?? "",
-      name,
-      ownStatus: parseStatus(fm.status),
-      retired,
-      critical: parseCritical(fm.critical),
-      attestation: (fm.attestation as string | undefined) ?? "",
-      pingUrl: (fm.ping_url as string | undefined) ?? "",
-      url: (fm.url as string | undefined) ?? "",
-      childNames: parseWikilinks(fm.children),
-      children: [],
-    })
-  }
-
-  // 2. Link children (ignoring retired children? no, link everything for now)
-  for (const node of byName.values()) {
-    for (const childName of node.childNames) {
-      const child = byName.get(childName.toLowerCase())
-      if (child) node.children.push(child)
-    }
-  }
-
-  // 3. Prune any node that is retired or has a retired ancestor
-  const isOrHasRetiredAncestor = (node: SystemNode & { retired: boolean }, ancestors: Set<SystemNode> = new Set()): boolean => {
-    if (node.retired) return true
-    for (const ancestor of ancestors) {
-      if (ancestor.retired) return true
-    }
-    // Check ancestors recursively? Actually we pass the ancestor set down.
-    // Simpler: mark all nodes that are descendants of any retired node.
-    // We'll do a separate DFS.
-    return false
-  }
-
-  // Better: mark all nodes that are reachable from any retired node
-  const retiredRoots = [...byName.values()].filter(n => n.retired)
-  const descendantsOfRetired = new Set<SystemNode>()
-  const dfsMark = (node: SystemNode) => {
-    if (descendantsOfRetired.has(node)) return
-    descendantsOfRetired.add(node)
-    for (const child of node.children) {
-      dfsMark(child)
-    }
-  }
-  for (const retiredNode of retiredRoots) {
-    dfsMark(retiredNode)
-  }
-
-  // Remove retired nodes and descendants of retired nodes
-  const validNodes = [...byName.values()].filter(n => !n.retired && !descendantsOfRetired.has(n))
-
-  // 4. Rebuild the tree with only valid nodes, but keep child links only to valid nodes
-  const validMap = new Map(validNodes.map(n => [n.name.toLowerCase(), n]))
-  for (const node of validNodes) {
-    node.children = node.childNames
-      .map(cn => validMap.get(cn.toLowerCase()))
-      .filter((c): c is SystemNode => c !== undefined)
-  }
-
-  // 5. Find roots (nodes that are not a child of any valid node)
-  const allChildNames = new Set<string>()
-  for (const node of validNodes) {
-    for (const child of node.children) {
-      allChildNames.add(child.name.toLowerCase())
-    }
-  }
-
-  return validNodes.filter(n => !allChildNames.has(n.name.toLowerCase()))
-}
-
-// Core status propagation helpers
-const hasCriticalDownInSubtree = (node: SystemNode): boolean => {
-  for (const child of node.children) {
-    if (child.ownStatus === "down" && child.critical) return true
-    if (hasCriticalDownInSubtree(child)) return true
-  }
-  return false
-}
-
-const hasNonCriticalDownInSubtree = (node: SystemNode): boolean => {
-  for (const child of node.children) {
-    if (child.ownStatus === "down" && !child.critical) return true
-    if (hasNonCriticalDownInSubtree(child)) return true
-  }
-  return false
-}
-
-const hasWipInSubtree = (node: SystemNode): boolean => {
-  for (const child of node.children) {
-    if (child.ownStatus === "wip") return true
-    if (hasWipInSubtree(child)) return true
-  }
-  return false
-}
-
-const getRolledStatus = (node: SystemNode): RolledStatus => {
-  // Own status overrides everything
-  if (node.ownStatus === "down") return "down"
-  if (node.ownStatus === "wip") return "wip"
-
-  // Check subtree
-  if (hasCriticalDownInSubtree(node)) return "down"
-  if (hasNonCriticalDownInSubtree(node)) return "degraded"
-  if (hasWipInSubtree(node)) return "wip"
-  return "active"
-}
 
 const getPanelAccentColor = (status: RolledStatus): string => ({
   active: "#22c55e",
@@ -308,7 +137,7 @@ const TreeNode = ({ node, depth = 0, defaultDepth = 2 }: {
   depth?: number;
   defaultDepth?: number;
 }) => {
-  const rolled = getRolledStatus(node)
+  const rolled = node.rolledStatus // Calculated by the CJS script
   const pingId = formatPingId(node.slug, node.pingUrl)
   const hasChildren = node.children.length > 0
   const hasValidDomain = getDomain(node.url) !== ""
@@ -353,7 +182,7 @@ const TreeNode = ({ node, depth = 0, defaultDepth = 2 }: {
 }
 
 const Panel = ({ root }: { root: SystemNode }) => {
-  const rolled = getRolledStatus(root)
+  const rolled = root.rolledStatus // Calculated by the CJS script
   const days = getDaysSince(root.attestation)
   const isFresh = days <= 21
 
@@ -394,12 +223,14 @@ const Panel = ({ root }: { root: SystemNode }) => {
 
 // ── Main Component ───────────────────────────────────────────────────────────
 
-const SystemsDashboard: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) => {
-  const roots = buildTree(allFiles)
+const SystemsManifest: QuartzComponent = (_props: QuartzComponentProps) => {
+  const roots = systemsData.roots as SystemNode[]
+  
   const severityOf = (n: SystemNode) => {
-    const s = getRolledStatus(n)
+    const s = n.rolledStatus
     return { down: 0, degraded: 1, wip: 2, active: 3 }[s]
   }
+  
   roots.sort((a, b) => severityOf(a) - severityOf(b))
 
   const counts = { active: 0, wip: 0, degraded: 0, down: 0, neglected: 0, total: roots.length }
@@ -410,7 +241,7 @@ const SystemsDashboard: QuartzComponent = ({ fileData, allFiles }: QuartzCompone
     if (!isFresh) {
       counts.neglected++
     } else {
-      counts[getRolledStatus(r)]++
+      counts[r.rolledStatus]++
     }
   }
 
@@ -499,11 +330,9 @@ const SystemsDashboard: QuartzComponent = ({ fileData, allFiles }: QuartzCompone
   )
 }
 
-
-
 // ── CSS ───────────────────────────────────────────────────────────────────────
 
-SystemsDashboard.css = `
+SystemsManifest.css = `
 
 .si-root * {
   box-sizing: border-box;
@@ -920,7 +749,7 @@ SystemsDashboard.css = `
 
 // ── Runtime ───────────────────────────────────────────────────────────────────
 
-SystemsDashboard.afterDOMLoaded = `
+SystemsManifest.afterDOMLoaded = `
 (function () {
   var STORAGE_KEY = 'si_ping_cache';
   var masonryTimer = null;
@@ -1009,4 +838,4 @@ SystemsDashboard.afterDOMLoaded = `
 })();
 `
 
-export default (() => SystemsDashboard) satisfies QuartzComponentConstructor
+export default (() => SystemsManifest) satisfies QuartzComponentConstructor
