@@ -136,7 +136,7 @@ What you can do:
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Systems Status</div>
       <div style="font-size: 0.85rem; color: var(--gray);">View Systems Manifest -></div>
     </div>
-    <span style="font-size: 1.5rem; font-weight: 600; color: var(--tertiary); text-align: right; max-width: 45%; line-height: 1.3;">
+    <span style="font-size: 1.3rem; font-weight: 600; color: var(--tertiary); text-align: right; max-width: 45%; line-height: 1.3;">
       {{buildstat:systems-status}}
     </span>
   </a>
