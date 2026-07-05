@@ -40,7 +40,7 @@ const config: QuartzConfig = {
           darkgray: "#4A443F",    // Deep bark brown for highly readable body text
           dark: "#2C2825",        // Near-black espresso for strong headings
           secondary: "#44633a",   // Synergetic botanical green for links
-          tertiary: "#a8a24c",    // Earthy green-yellow hover
+          tertiary: "#b6bd38",    // Earthy green-yellow hover
           highlight: "rgba(58, 99, 81, 0.12)",
           textHighlight: "#F4D35E88",
         },
@@ -51,7 +51,7 @@ const config: QuartzConfig = {
           darkgray: "#D4CFC9",    // Soft ash for readable dark mode text
           dark: "#FFF8E7",        // Cosmic Latte as the heading text!
           secondary: "#768E65",   // Calmed down to a dusty, muted moss green
-          tertiary: "#C4BD83",    // Calmed down to a faint, pale linen/straw yellow
+          tertiary: "#a99f4e",    // Calmed down to a faint, pale linen/straw yellow
           highlight: "rgba(118, 142, 101, 0.12)", // Updated to match the calmer green
           textHighlight: "#D4A37388",
         },
