@@ -39,14 +39,17 @@ const getDomain = (url: string) => {
   try { return new URL(url).hostname.replace(/^www\./, "") } catch { return "" }
 }
 
-const formatPingId = (slug: string) => 
+const formatPingId = (slug: string) =>
   slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase()
 
 // --- Sub-Components ---
 
-const Favicon = ({ url }: { url: string }) => {
+const Favicon = ({ url, hidePlaceholder }: { url: string; hidePlaceholder?: boolean }) => {
   const d = getDomain(url)
-  if (!d) return <div class="si-fav si-fav-placeholder" aria-hidden="true"><span /></div>
+  if (!d) {
+    if (hidePlaceholder) return null // no dot for parents
+    return <div class="si-fav si-fav-placeholder" aria-hidden="true"><span /></div>
+  }
   return <img class="si-fav" src={`https://icon.horse/icon/${d}`} alt="" width="14" height="14" />
 }
 
@@ -71,7 +74,7 @@ const TreeNode = ({ node }: { node: SystemNode }) => {
     <div class="si-item-row">
       <div class="si-item-left">
         {hasChildren ? <Chevron /> : <span class="si-chevron-spacer" />}
-        <Favicon url={node.url} />
+        <Favicon url={node.url} hidePlaceholder={hasChildren} />
         <span class="si-iname">{node.name}</span>
       </div>
       <div class="si-item-right">
@@ -100,7 +103,7 @@ const SystemsManifest: QuartzComponent = () => {
     return acc
   }, { fresh: 0, stale: 0, neglected: 0 })
 
-  const countNodes = (node: SystemNode): number => 
+  const countNodes = (node: SystemNode): number =>
     1 + node.children.reduce((sum, child) => sum + countNodes(child), 0)
 
   const leftCol: SystemNode[] = []
@@ -126,13 +129,13 @@ const SystemsManifest: QuartzComponent = () => {
         const days = getDays(root.attestation)
         const cat = getCat(days)
         const accent = { fresh: "#22c55e", stale: "#eab308", neglected: "#ef4444" }[cat]
-        
+
         return (
           <div class="si-panel" style={`border-left-color: ${accent}`} key={root.slug}>
             <div class="si-panel-header">
               <div class="si-panel-title-group">
                 <div class="si-panel-title-row">
-                  <Favicon url={root.url} />
+                  <Favicon url={root.url} hidePlaceholder={true} />
                   <span class="si-panel-name">{root.name}</span>
                   {root.children.length === 0 && <PingDot slug={root.slug} pingUrl={root.pingUrl} />}
                 </div>
@@ -254,7 +257,10 @@ SystemsManifest.css = `
 .si-attest-neglected { color: #dc2626; }
 
 /* Tree Nodes */
-.si-node-summary { list-style: none; cursor: pointer; margin: 0; padding: 0; }
+.si-node-summary { 
+  list-style: none; cursor: pointer; margin: 0; padding: 0;
+  display: block; /* kills any native disclosure marker */
+}
 .si-node-summary::-webkit-details-marker { display: none; } 
 
 .si-item-row { 
@@ -270,7 +276,6 @@ SystemsManifest.css = `
 .si-iname { font-size: 12px; color: var(--darkgray); word-break: break-word; overflow-wrap: anywhere; min-width: 0; line-height: 1.3; }
 
 /* Icons & Indicators */
-/* Added !important to block inherited global Quartz styles (like max-height or margins) */
 .si-fav { 
   width: 14px !important; height: 14px !important; margin: 0 !important; padding: 0 !important; 
   flex-shrink: 0; border-radius: 3px; object-fit: contain; display: block; 
