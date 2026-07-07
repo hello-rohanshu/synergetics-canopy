@@ -1,39 +1,31 @@
-// quartz/components/SystemsManifest.tsx
-
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import systemsData from "../static/data/systems-manifest.json"
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-type BaseStatus = "active" | "wip" | "down"
-type RolledStatus = "active" | "wip" | "degraded" | "down"
+// --- Types & Data Fetching ---
 
 interface SystemNode {
-  url: string
   slug: string
   name: string
-  ownStatus: BaseStatus
-  rolledStatus: RolledStatus
-  critical: boolean
-  retired: boolean
-  attestation: string
+  url: string
   pingUrl: string
-  childNames: string[]
+  attestation: string
   children: SystemNode[]
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+const roots = systemsData.roots as SystemNode[]
 
-const getDaysSince = (dateStr: string): number => {
+// --- Helpers ---
+
+const getDays = (dateStr: string): number => {
   if (!dateStr) return 999
   const [y, m, d] = dateStr.split("-").map(Number)
-  const local = new Date(y, m - 1, d)
-  return Math.floor((Date.now() - local.getTime()) / 86_400_000)
+  return Math.floor((Date.now() - new Date(y, m - 1, d).getTime()) / 86400000)
 }
 
-const relativeDate = (dateStr: string): string => {
-  if (!dateStr) return "Never reviewed"
-  const days = getDaysSince(dateStr)
+const getCat = (days: number) => (days <= 21 ? "fresh" : days <= 49 ? "stale" : "neglected")
+
+const formatRelTime = (days: number): string => {
+  if (days >= 999) return "Never reviewed"
   if (days === 0) return "Reviewed today"
   if (days === 1) return "Reviewed yesterday"
   if (days < 7) return `Reviewed ${days}d ago`
@@ -42,800 +34,175 @@ const relativeDate = (dateStr: string): string => {
   return `Reviewed ${Math.floor(days / 365)}y ago`
 }
 
-const getAttestColorClass = (dateStr: string): string => {
-  if (!dateStr) return "si-attest-old"
-  const days = getDaysSince(dateStr)
-  if (days <= 21) return "si-attest-fresh"
-  if (days <= 49) return "si-attest-stale"
-  return "si-attest-old"
-}
-
-const getDomain = (url: string): string => {
-  if (!url || typeof url !== "string") return ""
+const getDomain = (url: string) => {
   try { return new URL(url).hostname.replace(/^www\./, "") } catch { return "" }
 }
 
-const formatPingId = (slug: string, pingUrl: string): string | null =>
-  pingUrl ? slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase() : null
-
-const getPanelAccentColor = (status: RolledStatus): string => ({
-  active: "#22c55e",
-  wip: "#eab308",
-  degraded: "#f97316",
-  down: "#ef4444",
-}[status])
-
-// ── JSX Components ───────────────────────────────────────────────────────────
+// --- Sub-Components ---
 
 const Favicon = ({ url }: { url: string }) => {
-  const d = getDomain(url)
-  if (!d) {
-    return (
-      <div class="si-fav si-fav-placeholder" aria-hidden="true">
-        <span />
-      </div>
-    )
-  }
-  return (
-    <img
-      class="si-fav"
-      src={`https://icon.horse/icon/${d}`}
-      data-domain={d}
-      alt=""
-      width="14"
-      height="14"
-    />
-  )
+  const domain = getDomain(url)
+  if (!domain) return <div class="si-fav-null" />
+  return <img class="si-fav" src={`https://icon.horse/icon/${domain}`} alt="" width="14" height="14" />
 }
 
-const Badge = ({ own, rolled, isInherited }: { own: BaseStatus; rolled: RolledStatus; isInherited: boolean }) => {
-  let displayStatus: "wip" | "down" | "degraded" | null = null
-
-  // Direct badge (own status)
-  if (own === "wip") displayStatus = "wip"
-  else if (own === "down") displayStatus = "down"
-  // Inherited badges (rolled status when own is active)
-  else if (own === "active") {
-    if (rolled === "wip") displayStatus = "wip"
-    else if (rolled === "down") displayStatus = "down"
-    else if (rolled === "degraded") displayStatus = "degraded"
-  }
-
-  if (!displayStatus) return null
-
-  const labels: Record<string, string> = { wip: "WIP", down: "Down", degraded: "Degraded" }
-  const label = labels[displayStatus]
-
-  // For degraded, we need to add CSS classes
-  if (displayStatus === "degraded") {
-    return (
-      <div class={`si-badge si-badge-${isInherited ? 'inherited' : 'direct'} si-badge-degraded`}>
-        <span class={`si-badge-${isInherited ? 'dot-hollow' : 'dot'}`} />
-        {label}
-      </div>
-    )
-  }
-
+const PingDot = ({ slug, pingUrl }: { slug: string; pingUrl: string }) => {
+  if (!pingUrl) return null
+  const id = slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase()
   return (
-    <div class={`si-badge si-badge-${isInherited ? 'inherited' : 'direct'} si-badge-${displayStatus}`}>
-      <span class={`si-badge-${isInherited ? 'dot-hollow' : 'dot'}`} />
-      {label}
+    <div class="si-ping-box">
+      <span class="si-pdot" id={`si-pdot-${id}`} data-ping-url={pingUrl} />
     </div>
   )
 }
 
-const Chevron = ({ status }: { status: RolledStatus }) => {
-  return (
-    <svg class={`si-chevron si-chev-${status}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  )
+const Attestation = ({ date }: { date: string }) => {
+  const days = getDays(date)
+  const cat = getCat(days)
+  return <span class={`si-attest si-attest-${cat}`}>{formatRelTime(days)}</span>
 }
 
-const TreeNode = ({ node, depth = 0, defaultDepth = 2 }: {
-  node: SystemNode;
-  depth?: number;
-  defaultDepth?: number;
-}) => {
-  const rolled = node.rolledStatus // Calculated by the CJS script
-  const pingId = formatPingId(node.slug, node.pingUrl)
+const TreeNode = ({ node }: { node: SystemNode }) => {
   const hasChildren = node.children.length > 0
-  const hasValidDomain = getDomain(node.url) !== ""
-  const showFavicon = !hasChildren || hasValidDomain
-  const shouldOpen = depth < defaultDepth
-  const isInherited = node.ownStatus === "active"
-
-  const RowContent = (
-    <div class="si-item-row">
-      <div class="si-item-left">
-        {hasChildren ? (
-          <Chevron status={rolled} />
-        ) : (
-          <span class="si-chevron-spacer" />
-        )}
-        {showFavicon && <Favicon url={node.url} />}
-        <span class="si-iname" title={node.name}>{node.name}</span>
+  
+  const content = (
+    <div class="si-row">
+      <div class="si-row-left">
+        {hasChildren && <span class="si-chevron" />}
+        <Favicon url={node.url} />
+        <span class="si-name">{node.name}</span>
       </div>
-      <div class="si-item-right">
-        <Badge own={node.ownStatus} rolled={rolled} isInherited={isInherited} />
-        {pingId && (
-          <div class="si-ping-wrap" title={`Live check: ${node.pingUrl}`}>
-            <span class="si-pdot" id={`si-pdot-${pingId}`} data-ping-url={node.pingUrl} />
-          </div>
-        )}
+      <div class="si-row-right">
+        <Attestation date={node.attestation} />
+        <PingDot slug={node.slug} pingUrl={node.pingUrl} />
       </div>
     </div>
   )
 
-  if (!hasChildren) return RowContent
+  if (!hasChildren) return content
 
   return (
-    <details class="si-node-details" open={shouldOpen}>
-      <summary class="si-node-summary">{RowContent}</summary>
-      <div class="si-node-children">
-        {node.children.map(child => (
-          <TreeNode key={child.slug} node={child} depth={depth + 1} defaultDepth={defaultDepth} />
-        ))}
+    <details class="si-tree" open>
+      <summary>{content}</summary>
+      <div class="si-children">
+        {node.children.map(child => <TreeNode key={child.slug} node={child} />)}
       </div>
     </details>
   )
 }
 
-const Panel = ({ root }: { root: SystemNode }) => {
-  const rolled = root.rolledStatus // Calculated by the CJS script
-  const days = getDaysSince(root.attestation)
-  const isFresh = days <= 21
+// --- Main Component ---
 
-  const accent = getPanelAccentColor(rolled)
-  const attestColor = getAttestColorClass(root.attestation)
-  const relTime = relativeDate(root.attestation)
-
-  const panelClass = isFresh ? `si-panel-status-${rolled}` : `si-panel-status-neglected`
-  const panelBorderColor = isFresh ? accent : `#9e9e9e`
+const SystemsManifest: QuartzComponent = () => {
+  const stats = roots.reduce(
+    (acc, r) => {
+      acc[getCat(getDays(r.attestation))]++
+      return acc
+    },
+    { fresh: 0, stale: 0, neglected: 0 }
+  )
 
   return (
-    <div class={`si-panel ${panelClass}`} style={`border-left-color: ${panelBorderColor};`} data-si-panel>
-      <div class="si-panel-header">
-        <div class="si-panel-title-group">
-          {/* Greyscale wrapper strictly around the Title row so it naturally stacks with the attestation text below */}
-          <div class={!isFresh ? "si-panel-greyscale" : ""}>
-            <div class="si-panel-title-row">
-              {root.url && <Favicon url={root.url} />}
-              <span class="si-panel-name">{root.name}</span>
+    <div class="si-manifest">
+      <div class="si-summary">
+        <div class="si-sum-item si-fresh"><b>{stats.fresh}</b> Fresh</div>
+        <div class="si-sum-item si-stale"><b>{stats.stale}</b> Stale</div>
+        <div class="si-sum-item si-neglected"><b>{stats.neglected}</b> Neglected</div>
+      </div>
+
+      <div class="si-grid">
+        {roots.map(root => {
+          const cat = getCat(getDays(root.attestation))
+          return (
+            <div class={`si-panel si-border-${cat}`} key={root.slug}>
+              <div class="si-panel-header">
+                <Favicon url={root.url} />
+                <span class="si-panel-title">{root.name}</span>
+                <PingDot slug={root.slug} pingUrl={root.pingUrl} />
+              </div>
+              <div class="si-panel-meta">
+                <Attestation date={root.attestation} />
+              </div>
+              {root.children.length > 0 && (
+                <div class="si-panel-body">
+                  {root.children.map(child => <TreeNode key={child.slug} node={child} />)}
+                </div>
+              )}
             </div>
-          </div>
-          {/* Attestation remains safely untouched right underneath */}
-          <span class={`si-attest ${attestColor}`}>{relTime}</span>
-        </div>
-      </div>
-      {root.children.length > 0 && (
-        <div class={!isFresh ? "si-panel-greyscale" : ""}>
-          <div class="si-panel-body">
-            {root.children.map(child => (
-              <TreeNode key={child.slug} node={child} depth={1} defaultDepth={2} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ── Main Component ───────────────────────────────────────────────────────────
-
-const SystemsManifest: QuartzComponent = (_props: QuartzComponentProps) => {
-  const roots = systemsData.roots as SystemNode[]
-  
-  const severityOf = (n: SystemNode) => {
-    const s = n.rolledStatus
-    return { down: 0, degraded: 1, wip: 2, active: 3 }[s]
-  }
-  
-  roots.sort((a, b) => severityOf(a) - severityOf(b))
-
-  const counts = { active: 0, wip: 0, degraded: 0, down: 0, neglected: 0, total: roots.length }
-
-  // Mutually exclusive counting: sum of neglected + ops statuses will equal total cards
-  for (const r of roots) {
-    const isFresh = getDaysSince(r.attestation) <= 21
-    if (!isFresh) {
-      counts.neglected++
-    } else {
-      counts[r.rolledStatus]++
-    }
-  }
-
-  return (
-    <div class="si-root">
-      <div class="si-summary-card">
-        {/* Left Side: Maintenance/Documentation Health */}
-        <div class="si-summary-maintenance">
-          <div class={`si-summary-badge ${counts.neglected > 0 ? 'si-summary-neglected-badge' : 'si-summary-zero-badge'}`}>
-            <span class="si-summary-dot" style={counts.neglected > 0 ? "background: #757575;" : "background: currentColor; opacity: 0.5;"}></span>
-            <span class="si-summary-count">{counts.neglected} / {counts.total}</span>
-            <span class="si-summary-label">Neglected</span>
-          </div>
-        </div>
-
-        <div class="si-summary-divider"></div>
-
-        {/* Right Side: Operational Health */}
-        <div class="si-summary-ops">
-          <div class="si-summary-col">
-            {counts.active > 0 ? (
-              <div class="si-summary-badge si-summary-active-badge">
-                <span class="si-summary-dot si-summary-dot-active"></span>
-                <span class="si-summary-count">{counts.active}</span>
-                <span class="si-summary-label">Active</span>
-              </div>
-            ) : (
-              <div class="si-summary-badge si-summary-zero-badge">
-                <span class="si-summary-count">0</span>
-                <span class="si-summary-label">Active</span>
-              </div>
-            )}
-          </div>
-
-          <div class="si-summary-col">
-            {counts.wip > 0 ? (
-              <div class="si-badge si-badge-direct si-badge-wip si-summary-badge">
-                <span class="si-badge-dot"></span>
-                <span class="si-summary-count">{counts.wip}</span>
-                <span class="si-summary-label">WIP</span>
-              </div>
-            ) : (
-              <div class="si-summary-badge si-summary-zero-badge">
-                <span class="si-summary-count">0</span>
-                <span class="si-summary-label">WIP</span>
-              </div>
-            )}
-          </div>
-
-          <div class="si-summary-col">
-            {counts.degraded > 0 ? (
-              <div class="si-summary-badge si-summary-degraded-badge">
-                <span class="si-summary-dot si-summary-dot-degraded"></span>
-                <span class="si-summary-count">{counts.degraded}</span>
-                <span class="si-summary-label">Degraded</span>
-              </div>
-            ) : (
-              <div class="si-summary-badge si-summary-zero-badge">
-                <span class="si-summary-count">0</span>
-                <span class="si-summary-label">Degraded</span>
-              </div>
-            )}
-          </div>
-
-          <div class="si-summary-col">
-            {counts.down > 0 ? (
-              <div class="si-badge si-badge-direct si-badge-down si-summary-badge">
-                <span class="si-badge-dot"></span>
-                <span class="si-summary-count">{counts.down}</span>
-                <span class="si-summary-label">Down</span>
-              </div>
-            ) : (
-              <div class="si-summary-badge si-summary-zero-badge">
-                <span class="si-summary-count">0</span>
-                <span class="si-summary-label">Down</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div class="si-grid" id="si-masonry">
-        {roots.map((root) => <Panel key={root.slug} root={root} />)}
+          )
+        })}
       </div>
     </div>
   )
 }
 
-// ── CSS ───────────────────────────────────────────────────────────────────────
-
-SystemsManifest.css = `
-
-.si-root * {
-  box-sizing: border-box;
-}
-
-.si-root { margin: 0; padding: 0; }
-
-.si-panel-title-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.si-panel-name {
-  font-family: var(--bodyFont);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--dark);
-  line-height: 1.2;
-}
-
-.si-summary-card {
-  display: flex;
-  align-items: center;
-  width: 100%; /* Force full parent width */
-  gap: 16px;
-  background: var(--light);
-  border-radius: var(--radius-md, 6px);
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-
-.si-summary-maintenance {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.si-summary-maintenance .si-summary-badge {
-  padding: 4px 12px;
-}
-.si-summary-maintenance .si-summary-count {
-  font-size: 14px;
-}
-
-.si-summary-ops {
-  display: flex;
-  align-items: center;
-  flex: 1; /* Takes up all remaining space to the right */
-  gap: 8px;
-}
-
-.si-summary-col {
-  display: flex;
-  align-items: center;
-  flex: 1; /* Forces each operational badge to share the space equally */
-  justify-content: center; /* Centers the badge within its equal share */
-}
-
-.si-summary-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--bodyFont);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.si-summary-active-badge {
-  background: rgba(34, 197, 94, 0.1);
-  color: #16a34a;
-}
-.si-summary-degraded-badge {
-  background: rgba(249, 115, 22, 0.1);
-  color: #ea580c;
-}
-.si-summary-neglected-badge {
-  background: var(--highlight);
-  color: var(--secondary);
-}
-
-/* Summary card dot */
-.si-summary-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  display: inline-block;
-  overflow: hidden;
-  line-height: 0;
-}
-.si-summary-dot-active { background: #22c55e; }
-.si-summary-dot-degraded { background: #f97316; }
-
-.si-summary-zero-badge {
-  background: var(--lightgray);
-  color: var(--gray);
-  opacity: 0.7;
-}
-.si-summary-count {
-  font-weight: 700;
-  font-size: 12px;
-}
-.si-summary-label {
-  font-weight: 700;
-}
-.si-summary-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--lightgray);
-  flex-shrink: 0;
-}
-.si-summary-card .si-badge {
-  padding: 2px 8px;
-  gap: 6px;
-  font-size: 11px;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-  .si-summary-card {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 14px;
-    gap: 14px;
-  }
-  .si-summary-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--lightgray);
-  }
-  .si-summary-maintenance .si-summary-badge {
-    width: 100%;
-    justify-content: center;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  .si-summary-ops {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .si-summary-ops .si-summary-badge {
-    width: 100%;
-    justify-content: center;
-    padding: 6px;
-  }
-}
-
-.si-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.si-grid.si-masonry-ready {
-  flex-direction: row;
-  align-items: flex-start;
-}
-.si-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1 1 0;
-  min-width: 0;
-  width: 0;
-}
-
-.si-panel {
-  background: var(--light);
-  border: 1px solid var(--lightgray);
-  border-left: 3px solid #22c55e;
-  border-radius: var(--radius-md, 5px);
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  width: 100%;
-  transition: background 0.2s ease;
-}
-.si-panel-greyscale { 
-  filter: grayscale(1); 
-  opacity: 0.6;
-}
-.si-panel-status-active {
-  background-color: rgba(34, 197, 94, 0.04);
-}
-.si-panel-status-wip {
-  background-color: rgba(234, 179, 8, 0.04);
-}
-.si-panel-status-degraded {
-  background-color: rgba(249, 115, 22, 0.04);
-}
-.si-panel-status-down {
-  background-color: rgba(239, 68, 68, 0.04);
-}
-
-.si-panel-status-neglected {
-  background-color: rgba(100, 100, 100, 0.12);  /* light mode - darker grey */
-}
-.dark .si-panel-status-neglected {
-  background-color: rgba(158, 158, 158, 0.1);   /* dark mode */
-}
-
-.dark .si-panel-status-active {
-  background-color: rgba(34, 197, 94, 0.08);
-}
-.dark .si-panel-status-wip {
-  background-color: rgba(234, 179, 8, 0.08);
-}
-.dark .si-panel-status-degraded {
-  background-color: rgba(249, 115, 22, 0.08);
-}
-.dark .si-panel-status-down {
-  background-color: rgba(239, 68, 68, 0.08);
-}
-
-.si-panel-header {
-  display: flex; align-items: flex-start; justifney-content: space-between; gap: 12px;
-  padding: 8px 12px 8px 11px;
-  border-bottom: 1px solid var(--lightgray);
-  background: rgba(0,0,0,0.012);
-}
-.si-panel-title-group { display: flex; flex-direction: column; gap: 4px; }
-.si-panel-name {
-  font-family: var(--bodyFont); font-size: 12px; font-weight: 600;
-  color: var(--dark); line-height: 1.2;
-}
-.si-attest { font-family: var(--bodyFont); font-size: 10px; font-weight: 500; line-height: 1; }
-.si-attest-fresh { color: #16a34a; }
-.si-attest-stale { color: #ca8a04; }
-.si-attest-old   { color: #dc2626; }
-
-.si-panel-status-neglected .si-attest-stale { color: #d4a52d; }
-.si-panel-status-neglected .si-attest-old   { color: #c23232; }
-
-.si-panel-body { display: flex; flex-direction: column; padding: 4px 8px 6px; }
-
-.si-node-details > summary { list-style: none; cursor: pointer; }
-.si-node-details > summary::-webkit-details-marker { display: none; }
-
-.si-item-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 3px 4px; min-height: 32px;
-  border-radius: var(--radius-sm, 3px);
-  transition: background 0.1s ease;
-}
-
-.si-node-summary:hover .si-item-row { background: rgba(0,0,0,0.035); }
-
-.si-node-children {
-  margin-left: 8px; padding-left: 6px;
-  border-left: 1.5px solid var(--lightgray);
-}
-
-.si-item-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
-
-.si-fav {
-  width: 14px; height: 14px; flex-shrink: 0;
-  border-radius: var(--radius-sm, 3px);
-  object-fit: contain;
-}
-.si-fav-placeholder {
-  display: inline-flex; align-items: center; justify-content: center;
-  opacity: 0.3;
-}
-/* Favicon placeholder dot */
-.si-fav-placeholder span {
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background: currentColor;
-  display: inline-block;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.si-chevron {
-  width: 10px; height: 10px; color: var(--gray);
-  transition: transform 0.15s ease, color 0.15s ease; flex-shrink: 0;
-}
-.si-chev-down { color: #ef4444; }
-.si-chev-degraded { color: #f97316; }
-.si-chev-wip  { color: #eab308; }
-.si-node-details[open] > summary .si-chevron { transform: rotate(90deg); }
-.si-chevron-spacer { width: 10px; flex-shrink: 0; }
-
-
-.si-iname {
-  font-size: 12px; font-family: var(--bodyFont); color: var(--darkgray);
-  word-break: break-word; overflow-wrap: anywhere; min-width: 0;
-  line-height: 1.3;
-}
-  
-
-.si-item-right { display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
-
-
-.si-ping-wrap { 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  width: 12px; 
-  height: 12px; 
-  min-width: 12px; 
-  flex: 0 0 12px; 
-  
-  /* 1. The Layout Firewall: Completely isolates the dot from 
-     ANY parent transitions, hover effects, or DOM state changes. */
-  contain: strict; 
-}
-
-.si-pdot {
-  display: block;
-  width: 6px; 
-  height: 6px; 
-  min-width: 6px; 
-  flex: 0 0 6px;
-  background: transparent; 
-  cursor: default;
-  transition: background 0.3s ease, opacity 0.3s ease;
-  
-  /* Strip out text/spacing interference */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: 0;
-  line-height: 0;
-  
-  /* 2. The Physical Cookie-Cutter: Even if the browser's GPU tries 
-     to stretch the background paint, this physically masks the render 
-     output to a perfect 3px radius circle no matter what. */
-  border-radius: 50%;
-  clip-path: circle(3px at center);
-  -webkit-clip-path: circle(3px at center);
-}
-
-
-
-.si-pdot.si-live     { background: #22c55e; }
-.si-pdot.si-down     { background: #ef4444; box-shadow: 0 0 5px rgba(239,68,68,0.5); }
-.si-pdot.si-cached   { background: #22c55e; opacity: 0.5; }
-.si-pdot.si-checking { background: #eab308; animation: si-pulse 1.618s ease-in-out infinite; }
-
-.si-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: var(--bodyFont); font-size: 10px; font-weight: 600;
-  padding: 1px 5px; border-radius: 12px; letter-spacing: 0.04em; text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.si-badge-direct { border: 1px solid transparent; }
-/* Solid badge dot */
-.si-badge-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;   /* instead of 50% */
-  flex-shrink: 0;
-  display: inline-block;
-  background: currentColor; /* fallback, but each variant sets its own */
-  overflow: hidden;
-  line-height: 0;
-}
-.si-badge-direct.si-badge-wip  { background: rgba(234,179,8,0.12);  color: #ca8a04; }
-.si-badge-direct.si-badge-wip .si-badge-dot  { background: #eab308; }
-.si-badge-direct.si-badge-down { background: rgba(239,68,68,0.12);  color: #dc2626; }
-.si-badge-direct.si-badge-down .si-badge-dot { background: #ef4444; }
-
-.si-badge-inherited { background: transparent; }
-/* Hollow badge dot */
-.si-badge-dot-hollow {
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;
-  flex-shrink: 0;
-  background: transparent;
-  display: inline-block;
-  box-sizing: border-box;
-  overflow: hidden;
-  line-height: 0;
-}
-.si-badge-inherited.si-badge-wip { border: 1px solid rgba(234,179,8,0.4); color: #ca8a04; }
-.si-badge-inherited.si-badge-wip .si-badge-dot-hollow { border: 1px solid #ca8a04; }
-.si-badge-inherited.si-badge-down { border: 1px solid rgba(239,68,68,0.4); color: #dc2626; }
-.si-badge-inherited.si-badge-down .si-badge-dot-hollow { border: 1px solid #ef4444; }
-
-.si-node-details[open] > .si-node-summary .si-badge-inherited { display: none; }
-
-@keyframes si-pulse { 0%, 100% { opacity: 1; } 61.8% { opacity: 0.2; } }
-
-/* Degraded badge styles */
-.si-badge-direct.si-badge-degraded {
-  background: rgba(249, 115, 22, 0.12);
-  color: #ea580c;
-}
-.si-badge-direct.si-badge-degraded .si-badge-dot {
-  background: #f97316;
-}
-.si-badge-inherited.si-badge-degraded {
-  background: transparent;
-  border: 1px solid rgba(249, 115, 22, 0.4);
-  color: #ea580c;
-}
-.si-badge-inherited.si-badge-degraded .si-badge-dot-hollow {
-  border: 1px solid #f97316;
-}
-  
-.si-fav {
-  margin: 0;
-  padding: 0;
-}
-
+// Client-side Rollup Logic: If a child dot becomes .si-down, propagate to parent
+const rollupScript = `
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(m => {
+      if (m.type === "attributes" && m.attributeName === "class") {
+        const dot = m.target;
+        if (dot.classList.contains("si-down")) {
+          let parent = dot.closest(".si-tree")?.parentElement?.closest(".si-tree, .si-panel");
+          while (parent) {
+            const parentDot = parent.querySelector(":scope > summary .si-pdot, :scope > .si-panel-header .si-pdot");
+            if (parentDot) parentDot.classList.add("si-down");
+            parent = parent.parentElement?.closest(".si-tree, .si-panel");
+          }
+        }
+      }
+    });
+  });
+  document.querySelectorAll(".si-pdot").forEach(d => observer.observe(d, { attributes: true }));
+});
 `
 
-// ── Runtime ───────────────────────────────────────────────────────────────────
+SystemsManifest.afterDOMLoaded = rollupScript
 
-SystemsManifest.afterDOMLoaded = `
-(function () {
-  var STORAGE_KEY = 'si_ping_cache';
-  var masonryTimer = null;
-  var isMasonryRunning = false;
+SystemsManifest.css = `
+.si-manifest { font-family: var(--bodyFont); margin-top: 2rem; }
+.si-summary { display: flex; gap: 1rem; margin-bottom: 2rem; }
+.si-sum-item { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; flex: 1; text-align: center; background: var(--lightgray); }
+.si-fresh { border-bottom: 3px solid #22c55e; }
+.si-stale { border-bottom: 3px solid #eab308; }
+.si-neglected { border-bottom: 3px solid #ef4444; }
 
-  function loadCache() {
-    try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
-  }
-  function saveCache(cache) {
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cache)); } catch {}
-  }
-  async function checkUrl(url) {
-    try {
-      await fetch(url, { mode: 'no-cors', signal: AbortSignal.timeout(7000) });
-      return true;
-    } catch { return false; }
-  }
+.si-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+.si-panel { background: var(--light); border: 1px solid var(--lightgray); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; }
+.si-border-fresh { border-left: 4px solid #22c55e; }
+.si-border-stale { border-left: 4px solid #eab308; }
+.si-border-neglected { border-left: 4px solid #ef4444; }
 
-  function runMasonry() {
-    if (isMasonryRunning) return;
-    var container = document.getElementById('si-masonry');
-    if (!container) return;
-    var panels = Array.from(container.querySelectorAll('[data-si-panel]'));
-    if (panels.length === 0) return;
+.si-panel-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+.si-panel-title { font-weight: 700; font-size: 1rem; color: var(--dark); }
+.si-panel-meta { margin-bottom: 1rem; }
 
-    isMasonryRunning = true;
-    container.querySelectorAll('.si-col').forEach(function (c) { c.remove(); });
-    container.classList.add('si-masonry-ready');
+.si-tree { margin-top: 0.5rem; }
+.si-tree summary { list-style: none; cursor: pointer; }
+.si-tree summary::-webkit-details-marker { display: none; }
+.si-children { margin-left: 0.75rem; padding-left: 0.75rem; border-left: 1px solid var(--lightgray); }
 
-    var numCols = container.offsetWidth < 480 ? 1 : 2;
-    var cols = [];
-    for (var i = 0; i < numCols; i++) {
-      var col = document.createElement('div');
-      col.className = 'si-col';
-      container.appendChild(col);
-      cols.push({ el: col, height: 0 });
-    }
+.si-row { display: flex; align-items: center; justify-content: space-between; padding: 0.2rem 0; font-size: 0.85rem; }
+.si-row-left, .si-row-right { display: flex; align-items: center; gap: 0.5rem; }
+.si-name { color: var(--darkgray); }
 
-    panels.forEach(function (panel) {
-      var shortest = cols.reduce(function (a, b) { return a.height <= b.height ? a : b; });
-      shortest.el.appendChild(panel);
-      shortest.height += panel.offsetHeight + 10;
-    });
+.si-fav { border-radius: 2px; }
+.si-fav-null { width: 14px; height: 14px; background: var(--lightgray); border-radius: 50%; }
 
-    isMasonryRunning = false;
-  }
+.si-attest { font-size: 0.75rem; font-weight: 500; }
+.si-attest-fresh { color: #16a34a; }
+.si-attest-stale { color: #ca8a04; }
+.si-attest-neglected { color: #dc2626; }
 
-  function debouncedMasonry() {
-    if (masonryTimer) clearTimeout(masonryTimer);
-    masonryTimer = setTimeout(runMasonry, 80);
-  }
+.si-ping-box { width: 12px; height: 12px; display: flex; align-items: center; }
+.si-pdot { width: 6px; height: 6px; border-radius: 50%; background: var(--lightgray); transition: all 0.3s; }
+.si-pdot.si-live { background: #22c55e; }
+.si-pdot.si-down { background: #ef4444; box-shadow: 0 0 4px #ef4444; }
+.si-pdot.si-checking { background: #eab308; opacity: 0.6; }
 
-  function initDashboard() {
-    if (!document.querySelector('.si-root')) return;
-
-    document.querySelectorAll('img.si-fav').forEach(function (img) {
-      img.addEventListener('error', function handler() {
-        img.removeEventListener('error', handler);
-        var domain = img.dataset.domain;
-        if (!domain) { img.style.display = 'none'; return; }
-        img.src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=32';
-        img.addEventListener('error', function () { img.style.display = 'none'; });
-      });
-    });
-
-    runMasonry();
-    window.addEventListener('resize', debouncedMasonry);
-
-    var cache = loadCache();
-    document.querySelectorAll('[id^="si-pdot-"]').forEach(async function (el) {
-      var url = el.dataset.pingUrl;
-      var id = el.id;
-      if (!url) { el.className = 'si-pdot si-down'; return; }
-      if (cache[id] !== undefined) {
-        el.className = 'si-pdot ' + (cache[id] ? 'si-cached' : 'si-down');
-      }
-      var live = await checkUrl(url);
-      cache[id] = live;
-      saveCache(cache);
-      el.className = 'si-pdot si-' + (live ? 'live' : 'down');
-    });
-  }
-
-  initDashboard();
-  document.addEventListener('nav', initDashboard);
-})();
+.si-chevron { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--gray); transition: transform 0.2s; }
+details[open] > summary .si-chevron { transform: rotate(-90deg); }
 `
 
 export default (() => SystemsManifest) satisfies QuartzComponentConstructor
