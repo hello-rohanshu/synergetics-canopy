@@ -5,7 +5,7 @@ import path from "path"
 // Markers you place directly in index.md:
 //   {{buildstat:audit-pct}}
 //   {{buildstat:changelog-version}}
-//   {{buildstat:systems-neglected}}
+//   {{buildstat:systems-status}}
 //
 // All are replaced with static text at build time, before markdown parsing.
 
@@ -72,12 +72,22 @@ function readSystemsStatus(): string {
     const roots: any[] = data?.roots ?? []
     if (!roots.length) return "No systems tracked"
 
-    const total = roots.length
-    const neglected = roots.filter(r => getDaysSince(r.attestation) > 21).length
+    let fresh = 0
+    let needsReview = 0
+    let stale = 0
 
-    if (neglected === 0) return "All systems functional"
-    if (neglected === 1) return "1 system needs review"
-    return `${neglected} systems need review`
+    for (const r of roots) {
+      const days = getDaysSince(r.attestation)
+      if (days <= 21) fresh++
+      else if (days <= 49) needsReview++
+      else stale++
+    }
+
+    if (needsReview === 0 && stale === 0) return "All systems fresh"
+    if (stale === 0) return `${needsReview} system${needsReview !== 1 ? 's' : ''} need review`
+    if (needsReview === 0) return `${stale} system${stale !== 1 ? 's' : ''} stale`
+
+    return `${needsReview} need review, ${stale} stale`
   } catch (err) {
     console.warn(`[BuildStats] Failed to read/parse ${SYSTEMS_JSON_PATH}:`, err)
     return "—"
