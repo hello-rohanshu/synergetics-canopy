@@ -90,7 +90,7 @@ button.link-btn {
 
 This is Buckminster Fuller's complete magnum opus _Synergetics_. For years, R. W. Gray's [1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) has been the online reference for anyone who needed the text. This site is built to take up that same need, and go further.
 
-The complete text was hand-transported from Gray's digitization, paragraph by paragraph, with additional images sourced from [Buckyverse.org](https://buckyverse.org). 
+The complete text was hand-transported from Gray's digitization, page by page, with additional images sourced from [Buckyverse.org](https://buckyverse.org). 
 
 The site uses [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8) static site builder. See the full [Systems Manifest](/systems-manifest) for the complete tool stack.
 
