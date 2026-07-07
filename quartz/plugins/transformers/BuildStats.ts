@@ -59,35 +59,45 @@ function readChangelogVersion(): string {
   }
 }
 
-function getDaysSince(dateStr: string): number {
-  if (!dateStr) return 999
-  const [y, m, d] = dateStr.split("-").map(Number)
-  return Math.floor((Date.now() - new Date(y, m - 1, d).getTime()) / 86_400_000)
-}
-
 function readSystemsStatus(): string {
   try {
     const raw = fs.readFileSync(SYSTEMS_JSON_PATH, "utf-8")
     const data = JSON.parse(raw)
     const roots: any[] = data?.roots ?? []
-    if (!roots.length) return "No systems tracked"
+
+    if (roots.length === 0) return "Nothing tracked"
 
     let fresh = 0
     let needsReview = 0
     let stale = 0
 
     for (const r of roots) {
-      const days = getDaysSince(r.attestation)
-      if (days <= 21) fresh++
-      else if (days <= 49) needsReview++
-      else stale++
+      // Use pre‑computed attestationStatus from the manifest generator
+      const status = r.attestationStatus || "stale"
+      if (status === "fresh") fresh++
+      else if (status === "needs-review") needsReview++
+      else if (status === "stale") stale++
     }
 
-    if (needsReview === 0 && stale === 0) return "All systems fresh"
-    if (stale === 0) return `${needsReview} system${needsReview !== 1 ? 's' : ''} need review`
-    if (needsReview === 0) return `${stale} system${stale !== 1 ? 's' : ''} stale`
+    const total = roots.length
 
-    return `${needsReview} need review, ${stale} stale`
+    // All fresh
+    if (fresh === total) return "All fresh"
+
+    // Everything is stale
+    if (stale === total) return "Fossilized"
+
+    // 3 or more stale
+    if (stale >= 3) return "Moldy"
+
+    // Any stale (1‑2) OR everything is needs‑review
+    if (stale > 0 || needsReview === total) return "Getting stale"
+
+    // 3 or more needs‑review, no stale
+    if (needsReview >= 3) return "Collecting dust"
+
+    // 1‑2 needs‑review, no stale
+    return "A little dusty"
   } catch (err) {
     console.warn(`[BuildStats] Failed to read/parse ${SYSTEMS_JSON_PATH}:`, err)
     return "—"
