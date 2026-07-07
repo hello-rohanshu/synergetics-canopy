@@ -9,6 +9,7 @@ interface SystemNode {
   url: string
   pingUrl: string
   attestation: string
+  attestationStatus?: string   // pre‑computed by the build script
   children: SystemNode[]
 }
 
@@ -21,8 +22,6 @@ const getDays = (dateStr: string): number => {
   const [y, m, d] = dateStr.split("-").map(Number)
   return Math.floor((Date.now() - new Date(y, m - 1, d).getTime()) / 86400000)
 }
-
-const getCat = (days: number) => (days <= 21 ? "fresh" : days <= 49 ? "needs-review" : "stale")
 
 const relativeDate = (dateStr: string): string => {
   if (!dateStr) return "Never reviewed"
@@ -109,10 +108,12 @@ const TreeNode = ({ node }: { node: SystemNode }) => {
 // --- Main Component ---
 
 const SystemsManifest: QuartzComponent = () => {
+  // Use pre‑computed attestationStatus from JSON
   const stats = roots.reduce((acc, r) => {
-    acc[getCat(getDays(r.attestation))]++
+    const status = r.attestationStatus || "stale"
+    acc[status] = (acc[status] || 0) + 1
     return acc
-  }, { fresh: 0, "needs-review": 0, stale: 0 })
+  }, { fresh: 0, "needs-review": 0, stale: 0 } as Record<string, number>)
 
   const countNodes = (node: SystemNode): number =>
     1 + node.children.reduce((sum, child) => sum + countNodes(child), 0)
@@ -137,8 +138,7 @@ const SystemsManifest: QuartzComponent = () => {
   const renderColumn = (columnRoots: SystemNode[]) => (
     <div class="si-column">
       {columnRoots.map(root => {
-        const days = getDays(root.attestation)
-        const cat = getCat(days)
+        const cat = root.attestationStatus || "stale"
         const accent = {
           fresh: "#22c55e",
           "needs-review": "#eab308",
@@ -171,19 +171,19 @@ const SystemsManifest: QuartzComponent = () => {
   return (
     <div class="si-root">
       <div class="si-summary-card">
-        <div class={`si-summary-badge ${stats.fresh === 0 ? 'si-summary-zero' : 'si-summary-fresh'}`}>
+        <div class={`si-summary-badge ${(stats.fresh || 0) === 0 ? 'si-summary-zero' : 'si-summary-fresh'}`}>
           <span class="si-summary-dot" style="background:#22c55e" />
-          <span class="si-summary-count">{stats.fresh}</span>
+          <span class="si-summary-count">{stats.fresh || 0}</span>
           <span class="si-summary-label">Fresh</span>
         </div>
-        <div class={`si-summary-badge ${stats["needs-review"] === 0 ? 'si-summary-zero' : 'si-summary-needs-review'}`}>
+        <div class={`si-summary-badge ${(stats["needs-review"] || 0) === 0 ? 'si-summary-zero' : 'si-summary-needs-review'}`}>
           <span class="si-summary-dot" style="background:#eab308" />
-          <span class="si-summary-count">{stats["needs-review"]}</span>
+          <span class="si-summary-count">{stats["needs-review"] || 0}</span>
           <span class="si-summary-label">Needs Review</span>
         </div>
-        <div class={`si-summary-badge ${stats.stale === 0 ? 'si-summary-zero' : 'si-summary-stale'}`}>
+        <div class={`si-summary-badge ${(stats.stale || 0) === 0 ? 'si-summary-zero' : 'si-summary-stale'}`}>
           <span class="si-summary-dot" style="background:#ef4444" />
-          <span class="si-summary-count">{stats.stale}</span>
+          <span class="si-summary-count">{stats.stale || 0}</span>
           <span class="si-summary-label">Stale</span>
         </div>
       </div>
@@ -218,7 +218,6 @@ SystemsManifest.afterDOMLoaded = `
 
   function handleBrokenFavicons() {
     document.querySelectorAll('img.si-fav').forEach(function(img) {
-      // Check if already errored (complete but no naturalWidth)
       function onError() {
         img.removeEventListener('error', onError);
         var hidePlaceholder = img.getAttribute('data-hide-placeholder') === 'true';
@@ -226,7 +225,6 @@ SystemsManifest.afterDOMLoaded = `
           img.style.display = 'none';
           return;
         }
-        // Replace with placeholder dot
         var placeholder = document.createElement('div');
         placeholder.className = 'si-fav si-fav-placeholder';
         placeholder.setAttribute('aria-hidden', 'true');
@@ -236,7 +234,6 @@ SystemsManifest.afterDOMLoaded = `
       }
 
       img.addEventListener('error', onError);
-      // In case the image is already broken before we attached the listener
       if (img.complete && img.naturalWidth === 0) {
         onError();
       }
@@ -374,8 +371,6 @@ SystemsManifest.css = `
   width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; opacity: 0.3; margin: 0 !important; 
 }
 .si-fav-placeholder span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
-
-/* Removed .si-fav-img and its ::after – no more transparent dot overlay */
 
 .si-chevron { width: 10px; height: 10px; color: var(--gray); transition: transform 0.15s ease; flex-shrink: 0; }
 .si-node-details[open] > summary .si-chevron { transform: rotate(90deg); }
