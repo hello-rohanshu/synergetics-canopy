@@ -22,7 +22,7 @@ const getDays = (dateStr: string): number => {
   return Math.floor((Date.now() - new Date(y, m - 1, d).getTime()) / 86400000)
 }
 
-const getCat = (days: number) => (days <= 21 ? "fresh" : days <= 49 ? "stale" : "neglected")
+const getCat = (days: number) => (days <= 21 ? "fresh" : days <= 49 ? "needs-review" : "stale")
 
 const relativeDate = (dateStr: string): string => {
   if (!dateStr) return "Never reviewed"
@@ -108,7 +108,7 @@ const SystemsManifest: QuartzComponent = () => {
   const stats = roots.reduce((acc, r) => {
     acc[getCat(getDays(r.attestation))]++
     return acc
-  }, { fresh: 0, stale: 0, neglected: 0 })
+  }, { fresh: 0, "needs-review": 0, stale: 0 })
 
   const countNodes = (node: SystemNode): number =>
     1 + node.children.reduce((sum, child) => sum + countNodes(child), 0)
@@ -135,7 +135,11 @@ const SystemsManifest: QuartzComponent = () => {
       {columnRoots.map(root => {
         const days = getDays(root.attestation)
         const cat = getCat(days)
-        const accent = { fresh: "#22c55e", stale: "#eab308", neglected: "#ef4444" }[cat]
+        const accent = {
+          fresh: "#22c55e",
+          "needs-review": "#eab308",
+          stale: "#ef4444"
+        }[cat]
 
         return (
           <div class="si-panel" style={`border-left-color: ${accent}`} key={root.slug}>
@@ -168,15 +172,15 @@ const SystemsManifest: QuartzComponent = () => {
           <span class="si-summary-count">{stats.fresh}</span>
           <span class="si-summary-label">Fresh</span>
         </div>
-        <div class={`si-summary-badge ${stats.stale === 0 ? 'si-summary-zero' : 'si-summary-stale'}`}>
+        <div class={`si-summary-badge ${stats["needs-review"] === 0 ? 'si-summary-zero' : 'si-summary-needs-review'}`}>
           <span class="si-summary-dot" style="background:#eab308" />
+          <span class="si-summary-count">{stats["needs-review"]}</span>
+          <span class="si-summary-label">Needs Review</span>
+        </div>
+        <div class={`si-summary-badge ${stats.stale === 0 ? 'si-summary-zero' : 'si-summary-stale'}`}>
+          <span class="si-summary-dot" style="background:#ef4444" />
           <span class="si-summary-count">{stats.stale}</span>
           <span class="si-summary-label">Stale</span>
-        </div>
-        <div class={`si-summary-badge ${stats.neglected === 0 ? 'si-summary-zero' : 'si-summary-neglected'}`}>
-          <span class="si-summary-dot" style="background:#ef4444" />
-          <span class="si-summary-count">{stats.neglected}</span>
-          <span class="si-summary-label">Neglected</span>
         </div>
       </div>
 
@@ -188,27 +192,75 @@ const SystemsManifest: QuartzComponent = () => {
   )
 }
 
-const rollupScript = `
-document.addEventListener("DOMContentLoaded", () => {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(m => {
-      if (m.type === "attributes" && m.attributeName === "class") {
-        if (m.target.classList.contains("si-down")) {
-          let parent = m.target.closest(".si-node-details")?.parentElement?.closest(".si-node-details, .si-panel")
-          while (parent) {
-            const pDot = parent.querySelector(":scope > summary .si-pdot, :scope > .si-panel-header .si-pdot")
-            if (pDot) pDot.classList.add("si-down")
-            parent = parent.parentElement?.closest(".si-node-details, .si-panel")
+// --- Scripts ---
+
+SystemsManifest.afterDOMLoaded = `
+(function () {
+  var STORAGE_KEY = 'si_ping_cache';
+
+  function loadCache() {
+    try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+  }
+  function saveCache(cache) {
+    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cache)); } catch {}
+  }
+
+  async function checkUrl(url) {
+    try {
+      await fetch(url, { mode: 'no-cors', signal: AbortSignal.timeout(7000) });
+      return true;
+    } catch { return false; }
+  }
+
+  function initPings() {
+    if (!document.querySelector('.si-root')) return;
+
+    var cache = loadCache();
+
+    document.querySelectorAll('.si-pdot[data-ping-url]').forEach(async function (dot) {
+      var url = dot.getAttribute('data-ping-url');
+      var id = dot.id || url;
+      if (!url) { dot.className = 'si-pdot si-down'; return; }
+
+      // If we already have a cached result, show it immediately
+      if (cache[id] !== undefined) {
+        dot.className = 'si-pdot ' + (cache[id] ? 'si-cached' : 'si-down');
+      } else {
+        dot.classList.add('si-checking');
+      }
+
+      var live = await checkUrl(url);
+      cache[id] = live;
+      saveCache(cache);
+
+      dot.className = 'si-pdot si-' + (live ? 'live' : 'down');
+    });
+
+    // Set up the observer that propagates .si-down up the tree
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        if (m.type === "attributes" && m.attributeName === "class") {
+          if (m.target.classList.contains("si-down")) {
+            var parent = m.target.closest(".si-node-details")?.parentElement?.closest(".si-node-details, .si-panel");
+            while (parent) {
+              var pDot = parent.querySelector(":scope > summary .si-pdot, :scope > .si-panel-header .si-pdot");
+              if (pDot) pDot.classList.add("si-down");
+              parent = parent.parentElement?.closest(".si-node-details, .si-panel");
+            }
           }
         }
-      }
-    })
-  })
-  document.querySelectorAll(".si-pdot").forEach(d => observer.observe(d, { attributes: true }))
-})
-`
+      });
+    });
 
-SystemsManifest.afterDOMLoaded = rollupScript
+    document.querySelectorAll(".si-pdot").forEach(function (d) {
+      observer.observe(d, { attributes: true });
+    });
+  }
+
+  initPings();
+  document.addEventListener('nav', initPings);
+})();
+`
 
 SystemsManifest.css = `
 .si-root * { box-sizing: border-box; }
@@ -225,8 +277,8 @@ SystemsManifest.css = `
   font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 20px; 
 }
 .si-summary-fresh { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
-.si-summary-stale { background: rgba(234, 179, 8, 0.1); color: #ca8a04; }
-.si-summary-neglected { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.si-summary-needs-review { background: rgba(234, 179, 8, 0.1); color: #ca8a04; }
+.si-summary-stale { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
 .si-summary-zero { background: var(--lightgray); color: var(--gray); opacity: 0.7; }
 .si-summary-zero .si-summary-dot { background: currentColor !important; opacity: 0.5; }
 .si-summary-dot { width: 6px; height: 6px; border-radius: 50%; }
@@ -260,13 +312,13 @@ SystemsManifest.css = `
 
 .si-attest { font-size: 10px; font-weight: 500; line-height: 1; }
 .si-attest-fresh { color: #16a34a; }
-.si-attest-stale { color: #ca8a04; }
-.si-attest-neglected { color: #dc2626; }
+.si-attest-needs-review { color: #ca8a04; }
+.si-attest-stale { color: #dc2626; }
 
 /* Tree Nodes */
 .si-node-summary { 
   list-style: none; cursor: pointer; margin: 0; padding: 0;
-  display: block; /* kills any native disclosure marker */
+  display: block;
 }
 .si-node-summary::-webkit-details-marker { display: none; } 
 
@@ -334,8 +386,11 @@ SystemsManifest.css = `
   margin: 0; padding: 0; border-radius: 50%; clip-path: circle(3px at center);
 }
 .si-pdot.si-live { background: #22c55e; }
+.si-pdot.si-cached { background: #22c55e; opacity: 0.5; }
 .si-pdot.si-down { background: #ef4444; box-shadow: 0 0 5px rgba(239,68,68,0.5); }
-.si-pdot.si-checking { background: #eab308; opacity: 0.7; }
+.si-pdot.si-checking { background: #eab308; animation: si-pulse 1.618s ease-in-out infinite; }
+
+@keyframes si-pulse { 0%, 100% { opacity: 1; } 61.8% { opacity: 0.2; } }
 `
 
 export default (() => SystemsManifest) satisfies QuartzComponentConstructor
