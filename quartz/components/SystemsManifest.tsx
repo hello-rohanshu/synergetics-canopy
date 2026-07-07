@@ -252,20 +252,21 @@ SystemsManifest.css = `
 .si-attest-neglected { color: #dc2626; }
 
 /* Tree Nodes */
+.si-node-details > summary { list-style: none; }
 .si-node-summary { list-style: none; cursor: pointer; margin: 0; padding: 0; }
-.si-node-summary::-webkit-details-marker { display: none; } 
+.si-node-summary::-webkit-details-marker { display: none; }
 
 .si-item-row { 
-  display: flex; align-items: center; justify-content: space-between; gap: 10px; 
-  padding: 3px 4px; min-height: 32px; border-radius: 3px; transition: background 0.1s ease; 
+  display: flex; align-items: center; justify-content: space-between; 
+  gap: 8px; padding: 2px 4px; min-height: 28px; border-radius: 3px; 
+  transition: background 0.1s ease; line-height: 1.2;
 }
 .si-node-summary:hover .si-item-row { background: rgba(0,0,0,0.035); }
-
 .si-node-children { margin-left: 8px; padding-left: 6px; border-left: 1.5px solid var(--lightgray); }
 .si-item-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .si-item-right { display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
+.si-iname { font-size: 12px; color: var(--darkgray); line-height: 1.2; word-break: break-word; overflow-wrap: anywhere; min-width: 0; }
 
-.si-iname { font-size: 12px; color: var(--darkgray); word-break: break-word; overflow-wrap: anywhere; min-width: 0; line-height: 1.3; }
 
 /* Icons & Indicators */
 .si-fav { width: 14px; height: 14px; flex-shrink: 0; border-radius: 3px; object-fit: contain; }
