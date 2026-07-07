@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 
-// Define paths based on running this script from the root of the Quartz project
 const CONTENT_DIR = path.join(__dirname, '../content/systems');
 const OUTPUT_FILE = path.join(__dirname, '../quartz/static/data/systems-manifest.json');
 
@@ -21,13 +20,6 @@ const parseWikilinks = (raw) => {
 
 const slugToName = (slug) => slug.split("/").pop()?.replace(/-/g, " ") ?? slug;
 
-const parseStatus = (raw) => {
-  const vals = Array.isArray(raw) ? raw : [raw];
-  if (vals.includes("defunct") || vals.includes("down")) return "down";
-  if (vals.includes("wip")) return "wip";
-  return "active";
-};
-
 const parseRetired = (raw) => {
   if (raw === true || raw === "true") return true;
   if (Array.isArray(raw)) {
@@ -38,18 +30,15 @@ const parseRetired = (raw) => {
   return false;
 };
 
-const parseCritical = (raw) => {
-  if (raw === true || raw === "true") return true;
-  if (Array.isArray(raw)) {
-    const arr = raw.map(String).map(s => s.toLowerCase());
-    if (arr.includes("true") || arr.includes("critical")) return true;
-  }
-  if (typeof raw === "string") {
-    const lower = raw.toLowerCase();
-    if (lower === "true" || lower === "critical") return true;
-  }
-  return false;
-};
+// Compute attestation status based on days since last review
+function getAttestationStatus(dateStr) {
+  if (!dateStr) return "stale"; // never reviewed → stale
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const days = Math.floor((Date.now() - new Date(y, m - 1, d).getTime()) / 86400000);
+  if (days <= 21) return "fresh";
+  if (days <= 49) return "needs-review";
+  return "stale";
+}
 
 // Recursive folder read
 function getFiles(dir, filesList = []) {
@@ -68,21 +57,18 @@ function getFiles(dir, filesList = []) {
 
 // ── Main Graph Logic ────────────────────────────────────────────────
 function generateManifest() {
-  // Apply depth and file type filtering immediately
   const allFiles = getFiles(CONTENT_DIR).filter(filePath => {
     const relPath = path.relative(CONTENT_DIR, filePath).replace(/\\/g, '/');
-    // Keep only files directly in the systems folder (no subdirectories)
     return !relPath.includes('/') && filePath.endsWith('.md') && relPath !== 'index.md';
   });
   
   const byName = new Map();
 
-  // 1. Build map of ALL valid nodes
+  // 1. Build map of ALL valid nodes (temporarily include retired flag for pruning)
   for (const filePath of allFiles) {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const { data: fm } = matter(fileContent);
 
-    // Replicate Quartz slug logic: systems/FileName
     const relPath = path.relative(CONTENT_DIR, filePath).replace(/\\/g, '/');
     const slug = `systems/${relPath.replace(/\.md$/, '')}`;
 
@@ -101,13 +87,12 @@ function generateManifest() {
     byName.set(name.toLowerCase(), {
       slug,
       name,
-      ownStatus: parseStatus(fm.status),
-      critical: parseCritical(fm.critical),
-      retired,
+      retired,               // kept only for pruning, removed later
       attestation,
+      attestationStatus: getAttestationStatus(attestation),
       pingUrl: fm.ping_url || "",
       url: fm.url || "",
-      childNames: parseWikilinks(fm.children),
+      childNames: parseWikilinks(fm.children),   // temp for linking
       children: []
     });
   }
@@ -116,7 +101,6 @@ function generateManifest() {
   for (const node of byName.values()) {
     for (const childName of node.childNames) {
       const searchKey = childName.toLowerCase();
-      // Try exact match, fallback to replacing hyphens with spaces
       let child = byName.get(searchKey) || byName.get(searchKey.replace(/-/g, " "));
       if (child) node.children.push(child);
     }
@@ -136,59 +120,25 @@ function generateManifest() {
     dfsMark(retiredNode);
   }
 
-  // 4. Clean tree (remove retired nodes)
-  const validNodes = [...byName.values()].filter(n => !n.retired && !descendantsOfRetired.has(n.name));
+  // 4. Clean tree (remove retired nodes + their descendants)
+  const validNodes = [...byName.values()].filter(
+    n => !n.retired && !descendantsOfRetired.has(n.name)
+  );
   const validMap = new Map(validNodes.map(n => [n.name.toLowerCase(), n]));
   
   for (const node of validNodes) {
     node.children = node.childNames
       .map(cn => {
         const searchKey = cn.toLowerCase();
-        // Also apply the fallback here when filtering out the pruned children
         return validMap.get(searchKey) || validMap.get(searchKey.replace(/-/g, " "));
       })
       .filter(c => c !== undefined);
+    // Remove temporary linking fields
+    delete node.childNames;
+    delete node.retired;
   }
 
-  // 5. Pre-calculate Rollup Statuses for everything
-  const hasCriticalDownInSubtree = (node) => {
-    for (const child of node.children) {
-      if (child.ownStatus === "down" && child.critical) return true;
-      if (hasCriticalDownInSubtree(child)) return true;
-    }
-    return false;
-  };
-
-  const hasNonCriticalDownInSubtree = (node) => {
-    for (const child of node.children) {
-      if (child.ownStatus === "down" && !child.critical) return true;
-      if (hasNonCriticalDownInSubtree(child)) return true;
-    }
-    return false;
-  };
-
-  const hasWipInSubtree = (node) => {
-    for (const child of node.children) {
-      if (child.ownStatus === "wip") return true;
-      if (hasWipInSubtree(child)) return true;
-    }
-    return false;
-  };
-
-  const calculateRolledStatus = (node) => {
-    if (node.ownStatus === "down") return "down";
-    if (node.ownStatus === "wip") return "wip";
-    if (hasCriticalDownInSubtree(node)) return "down";
-    if (hasNonCriticalDownInSubtree(node)) return "degraded";
-    if (hasWipInSubtree(node)) return "wip";
-    return "active";
-  };
-
-  for (const node of validNodes) {
-    node.rolledStatus = calculateRolledStatus(node);
-  }
-
-  // 6. Find absolute roots (Nodes that are not children of any other node)
+  // 5. Find absolute roots
   const allChildNames = new Set();
   for (const node of validNodes) {
     for (const child of node.children) {
@@ -198,9 +148,9 @@ function generateManifest() {
 
   const roots = validNodes.filter(n => !allChildNames.has(n.name.toLowerCase()));
 
-  // 7. Output Result
+  // 6. Output
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ roots }, null, 2));
-  console.log(`✅ systems.json successfully generated with ${roots.length} root systems.`);
+  console.log(`✅ systems-manifest.json generated with ${roots.length} root systems.`);
 }
 
 generateManifest();
