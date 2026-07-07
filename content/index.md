@@ -133,8 +133,8 @@ What you can do:
 <div class="status-card" style="margin: 1.5rem 0;">
   <a href="/systems-manifest" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
-      <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Systems Status</div>
-      <div style="font-size: 0.85rem; color: var(--gray);">View Systems Manifest -></div>
+      <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Systems Freshness</div>
+      <div style="font-size: 0.85rem; color: var(--gray);">View Manifest -></div>
     </div>
     <span style="font-size: 1.3rem; font-weight: 600; color: var(--tertiary); text-align: right; max-width: 45%; line-height: 1.3;">
       {{buildstat:systems-status}}
