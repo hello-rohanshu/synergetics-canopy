@@ -52,10 +52,14 @@ const Favicon = ({ url, hidePlaceholder }: { url: string; hidePlaceholder?: bool
   }
 
   return (
-    <span
-      class="si-fav-img"
-      style={{ backgroundImage: `url('https://www.google.com/s2/favicons?domain=${d}&sz=32')` }}
-      aria-hidden="true"
+    <img
+      class="si-fav"
+      src={`https://www.google.com/s2/favicons?domain=${d}&sz=32`}
+      data-domain={d}
+      data-hide-placeholder={hidePlaceholder ? "true" : "false"}
+      alt=""
+      width="14"
+      height="14"
     />
   )
 }
@@ -212,8 +216,37 @@ SystemsManifest.afterDOMLoaded = `
     } catch { return false; }
   }
 
+  function handleBrokenFavicons() {
+    document.querySelectorAll('img.si-fav').forEach(function(img) {
+      // Check if already errored (complete but no naturalWidth)
+      function onError() {
+        img.removeEventListener('error', onError);
+        var hidePlaceholder = img.getAttribute('data-hide-placeholder') === 'true';
+        if (hidePlaceholder) {
+          img.style.display = 'none';
+          return;
+        }
+        // Replace with placeholder dot
+        var placeholder = document.createElement('div');
+        placeholder.className = 'si-fav si-fav-placeholder';
+        placeholder.setAttribute('aria-hidden', 'true');
+        var span = document.createElement('span');
+        placeholder.appendChild(span);
+        img.parentNode.replaceChild(placeholder, img);
+      }
+
+      img.addEventListener('error', onError);
+      // In case the image is already broken before we attached the listener
+      if (img.complete && img.naturalWidth === 0) {
+        onError();
+      }
+    });
+  }
+
   function initPings() {
     if (!document.querySelector('.si-root')) return;
+
+    handleBrokenFavicons();
 
     var cache = loadCache();
 
@@ -222,7 +255,6 @@ SystemsManifest.afterDOMLoaded = `
       var id = dot.id || url;
       if (!url) { dot.className = 'si-pdot si-down'; return; }
 
-      // If we already have a cached result, show it immediately
       if (cache[id] !== undefined) {
         dot.className = 'si-pdot ' + (cache[id] ? 'si-cached' : 'si-down');
       } else {
@@ -236,7 +268,6 @@ SystemsManifest.afterDOMLoaded = `
       dot.className = 'si-pdot si-' + (live ? 'live' : 'down');
     });
 
-    // Set up the observer that propagates .si-down up the tree
     var observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
         if (m.type === "attributes" && m.attributeName === "class") {
@@ -344,32 +375,7 @@ SystemsManifest.css = `
 }
 .si-fav-placeholder span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
 
-/* Favicon via Google's service – fallback dot behind image */
-.si-fav-img {
-  width: 14px;
-  height: 14px;
-  display: inline-block;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 3px;
-  position: relative;
-  flex-shrink: 0;
-  background-color: transparent;
-}
-.si-fav-img::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.3;
-  z-index: 0;
-}
+/* Removed .si-fav-img and its ::after – no more transparent dot overlay */
 
 .si-chevron { width: 10px; height: 10px; color: var(--gray); transition: transform 0.15s ease; flex-shrink: 0; }
 .si-node-details[open] > summary .si-chevron { transform: rotate(90deg); }
