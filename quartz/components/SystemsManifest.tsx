@@ -75,7 +75,7 @@ const TreeNode = ({ node }: { node: SystemNode }) => {
         <span class="si-iname">{node.name}</span>
       </div>
       <div class="si-item-right">
-        <PingDot slug={node.slug} pingUrl={node.pingUrl} />
+        {!hasChildren && <PingDot slug={node.slug} pingUrl={node.pingUrl} />}
       </div>
     </div>
   )
@@ -134,7 +134,7 @@ const SystemsManifest: QuartzComponent = () => {
                 <div class="si-panel-title-row">
                   <Favicon url={root.url} />
                   <span class="si-panel-name">{root.name}</span>
-                  <PingDot slug={root.slug} pingUrl={root.pingUrl} />
+                  {root.children.length === 0 && <PingDot slug={root.slug} pingUrl={root.pingUrl} />}
                 </div>
                 <span class={`si-attest si-attest-${cat}`}>{relativeDate(root.attestation)}</span>
               </div>
@@ -153,17 +153,17 @@ const SystemsManifest: QuartzComponent = () => {
   return (
     <div class="si-root">
       <div class="si-summary-card">
-        <div class="si-summary-badge si-summary-fresh">
+        <div class={`si-summary-badge ${stats.fresh === 0 ? 'si-summary-zero' : 'si-summary-fresh'}`}>
           <span class="si-summary-dot" style="background:#22c55e" />
           <span class="si-summary-count">{stats.fresh}</span>
           <span class="si-summary-label">Fresh</span>
         </div>
-        <div class="si-summary-badge si-summary-stale">
+        <div class={`si-summary-badge ${stats.stale === 0 ? 'si-summary-zero' : 'si-summary-stale'}`}>
           <span class="si-summary-dot" style="background:#eab308" />
           <span class="si-summary-count">{stats.stale}</span>
           <span class="si-summary-label">Stale</span>
         </div>
-        <div class="si-summary-badge si-summary-neglected">
+        <div class={`si-summary-badge ${stats.neglected === 0 ? 'si-summary-zero' : 'si-summary-neglected'}`}>
           <span class="si-summary-dot" style="background:#ef4444" />
           <span class="si-summary-count">{stats.neglected}</span>
           <span class="si-summary-label">Neglected</span>
@@ -217,6 +217,8 @@ SystemsManifest.css = `
 .si-summary-fresh { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
 .si-summary-stale { background: rgba(234, 179, 8, 0.1); color: #ca8a04; }
 .si-summary-neglected { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.si-summary-zero { background: var(--lightgray); color: var(--gray); opacity: 0.7; }
+.si-summary-zero .si-summary-dot { background: currentColor !important; opacity: 0.5; }
 .si-summary-dot { width: 6px; height: 6px; border-radius: 50%; }
 
 @media (max-width: 480px) {
@@ -252,25 +254,30 @@ SystemsManifest.css = `
 .si-attest-neglected { color: #dc2626; }
 
 /* Tree Nodes */
-.si-node-details > summary { list-style: none; }
 .si-node-summary { list-style: none; cursor: pointer; margin: 0; padding: 0; }
-.si-node-summary::-webkit-details-marker { display: none; }
+.si-node-summary::-webkit-details-marker { display: none; } 
 
 .si-item-row { 
-  display: flex; align-items: center; justify-content: space-between; 
-  gap: 8px; padding: 2px 4px; min-height: 28px; border-radius: 3px; 
-  transition: background 0.1s ease; line-height: 1.2;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; 
+  padding: 3px 4px; min-height: 32px; border-radius: 3px; transition: background 0.1s ease; 
 }
 .si-node-summary:hover .si-item-row { background: rgba(0,0,0,0.035); }
+
 .si-node-children { margin-left: 8px; padding-left: 6px; border-left: 1.5px solid var(--lightgray); }
 .si-item-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .si-item-right { display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
-.si-iname { font-size: 12px; color: var(--darkgray); line-height: 1.2; word-break: break-word; overflow-wrap: anywhere; min-width: 0; }
 
+.si-iname { font-size: 12px; color: var(--darkgray); word-break: break-word; overflow-wrap: anywhere; min-width: 0; line-height: 1.3; }
 
 /* Icons & Indicators */
-.si-fav { width: 14px; height: 14px; flex-shrink: 0; border-radius: 3px; object-fit: contain; }
-.si-fav-placeholder { width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; opacity: 0.3; }
+/* Added !important to block inherited global Quartz styles (like max-height or margins) */
+.si-fav { 
+  width: 14px !important; height: 14px !important; margin: 0 !important; padding: 0 !important; 
+  flex-shrink: 0; border-radius: 3px; object-fit: contain; display: block; 
+}
+.si-fav-placeholder { 
+  width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; opacity: 0.3; margin: 0 !important; 
+}
 .si-fav-placeholder span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
 
 .si-chevron { width: 10px; height: 10px; color: var(--gray); transition: transform 0.15s ease; flex-shrink: 0; }
