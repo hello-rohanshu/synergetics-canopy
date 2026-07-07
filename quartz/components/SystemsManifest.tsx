@@ -51,8 +51,6 @@ const Favicon = ({ url, hidePlaceholder }: { url: string; hidePlaceholder?: bool
     return <div class="si-fav si-fav-placeholder" aria-hidden="true"><span /></div>
   }
 
-  // Use a span with background-image from Google's reliable favicon service.
-  // The CSS pseudo-element shows a faint dot behind it – if the image loads, it covers the dot.
   return (
     <span
       class="si-fav-img"
@@ -220,7 +218,7 @@ SystemsManifest.css = `
 .si-summary-card { 
   display: flex; gap: 12px; justify-content: space-between; 
   margin-bottom: 1.25rem; background: var(--light); padding: 12px 14px; 
-  border-radius: 8px; border: 1px solid var(--lightgray); box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
+  border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
 }
 .si-summary-badge { 
   display: flex; align-items: center; justify-content: center; flex: 1; gap: 6px; 
