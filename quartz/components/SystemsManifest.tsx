@@ -1,7 +1,7 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import systemsData from "../static/data/systems-manifest.json"
 
-// --- Types & Data Fetching ---
+// --- Types ---
 
 interface SystemNode {
   slug: string
@@ -24,8 +24,9 @@ const getDays = (dateStr: string): number => {
 
 const getCat = (days: number) => (days <= 21 ? "fresh" : days <= 49 ? "stale" : "neglected")
 
-const formatRelTime = (days: number): string => {
-  if (days >= 999) return "Never reviewed"
+const relativeDate = (dateStr: string): string => {
+  if (!dateStr) return "Never reviewed"
+  const days = getDays(dateStr)
   if (days === 0) return "Reviewed today"
   if (days === 1) return "Reviewed yesterday"
   if (days < 7) return `Reviewed ${days}d ago`
@@ -38,53 +39,53 @@ const getDomain = (url: string) => {
   try { return new URL(url).hostname.replace(/^www\./, "") } catch { return "" }
 }
 
+const formatPingId = (slug: string) => 
+  slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase()
+
 // --- Sub-Components ---
 
 const Favicon = ({ url }: { url: string }) => {
-  const domain = getDomain(url)
-  if (!domain) return <div class="si-fav-null" />
-  return <img class="si-fav" src={`https://icon.horse/icon/${domain}`} alt="" width="14" height="14" />
+  const d = getDomain(url)
+  if (!d) return <div class="si-fav si-fav-placeholder" aria-hidden="true"><span /></div>
+  return <img class="si-fav" src={`https://icon.horse/icon/${d}`} alt="" width="14" height="14" />
 }
+
+const Chevron = () => (
+  <svg class="si-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+)
 
 const PingDot = ({ slug, pingUrl }: { slug: string; pingUrl: string }) => {
   if (!pingUrl) return null
-  const id = slug.replace("systems/", "").replace(/\s+/g, "-").toLowerCase()
   return (
-    <div class="si-ping-box">
-      <span class="si-pdot" id={`si-pdot-${id}`} data-ping-url={pingUrl} />
+    <div class="si-ping-wrap">
+      <span class="si-pdot" id={`si-pdot-${formatPingId(slug)}`} data-ping-url={pingUrl} />
     </div>
   )
 }
 
-const Attestation = ({ date }: { date: string }) => {
-  const days = getDays(date)
-  const cat = getCat(days)
-  return <span class={`si-attest si-attest-${cat}`}>{formatRelTime(days)}</span>
-}
-
 const TreeNode = ({ node }: { node: SystemNode }) => {
   const hasChildren = node.children.length > 0
-  
-  const content = (
-    <div class="si-row">
-      <div class="si-row-left">
-        {hasChildren && <span class="si-chevron" />}
+  const RowContent = (
+    <div class="si-item-row">
+      <div class="si-item-left">
+        {hasChildren ? <Chevron /> : <span class="si-chevron-spacer" />}
         <Favicon url={node.url} />
-        <span class="si-name">{node.name}</span>
+        <span class="si-iname">{node.name}</span>
       </div>
-      <div class="si-row-right">
-        <Attestation date={node.attestation} />
+      <div class="si-item-right">
         <PingDot slug={node.slug} pingUrl={node.pingUrl} />
       </div>
     </div>
   )
 
-  if (!hasChildren) return content
+  if (!hasChildren) return RowContent
 
   return (
-    <details class="si-tree" open>
-      <summary>{content}</summary>
-      <div class="si-children">
+    <details class="si-node-details" open>
+      <summary class="si-node-summary">{RowContent}</summary>
+      <div class="si-node-children">
         {node.children.map(child => <TreeNode key={child.slug} node={child} />)}
       </div>
     </details>
@@ -94,34 +95,48 @@ const TreeNode = ({ node }: { node: SystemNode }) => {
 // --- Main Component ---
 
 const SystemsManifest: QuartzComponent = () => {
-  const stats = roots.reduce(
-    (acc, r) => {
-      acc[getCat(getDays(r.attestation))]++
-      return acc
-    },
-    { fresh: 0, stale: 0, neglected: 0 }
-  )
+  const stats = roots.reduce((acc, r) => {
+    acc[getCat(getDays(r.attestation))]++
+    return acc
+  }, { fresh: 0, stale: 0, neglected: 0 })
 
   return (
-    <div class="si-manifest">
-      <div class="si-summary">
-        <div class="si-sum-item si-fresh"><b>{stats.fresh}</b> Fresh</div>
-        <div class="si-sum-item si-stale"><b>{stats.stale}</b> Stale</div>
-        <div class="si-sum-item si-neglected"><b>{stats.neglected}</b> Neglected</div>
+    <div class="si-root">
+      <div class="si-summary-card">
+        <div class="si-summary-badge si-summary-fresh">
+          <span class="si-summary-dot" style="background:#22c55e" />
+          <span class="si-summary-count">{stats.fresh}</span>
+          <span class="si-summary-label">Fresh</span>
+        </div>
+        <div class="si-summary-badge si-summary-stale">
+          <span class="si-summary-dot" style="background:#eab308" />
+          <span class="si-summary-count">{stats.stale}</span>
+          <span class="si-summary-label">Stale</span>
+        </div>
+        <div class="si-summary-badge si-summary-neglected">
+          <span class="si-summary-dot" style="background:#ef4444" />
+          <span class="si-summary-count">{stats.neglected}</span>
+          <span class="si-summary-label">Neglected</span>
+        </div>
       </div>
 
       <div class="si-grid">
         {roots.map(root => {
-          const cat = getCat(getDays(root.attestation))
+          const days = getDays(root.attestation)
+          const cat = getCat(days)
+          const accent = { fresh: "#22c55e", stale: "#eab308", neglected: "#ef4444" }[cat]
+          
           return (
-            <div class={`si-panel si-border-${cat}`} key={root.slug}>
+            <div class="si-panel" style={`border-left-color: ${accent}`} key={root.slug}>
               <div class="si-panel-header">
-                <Favicon url={root.url} />
-                <span class="si-panel-title">{root.name}</span>
-                <PingDot slug={root.slug} pingUrl={root.pingUrl} />
-              </div>
-              <div class="si-panel-meta">
-                <Attestation date={root.attestation} />
+                <div class="si-panel-title-group">
+                  <div class="si-panel-title-row">
+                    <Favicon url={root.url} />
+                    <span class="si-panel-name">{root.name}</span>
+                    <PingDot slug={root.slug} pingUrl={root.pingUrl} />
+                  </div>
+                  <span class={`si-attest si-attest-${cat}`}>{relativeDate(root.attestation)}</span>
+                </div>
               </div>
               {root.children.length > 0 && (
                 <div class="si-panel-body">
@@ -136,73 +151,78 @@ const SystemsManifest: QuartzComponent = () => {
   )
 }
 
-// Client-side Rollup Logic: If a child dot becomes .si-down, propagate to parent
 const rollupScript = `
 document.addEventListener("DOMContentLoaded", () => {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach(m => {
       if (m.type === "attributes" && m.attributeName === "class") {
-        const dot = m.target;
-        if (dot.classList.contains("si-down")) {
-          let parent = dot.closest(".si-tree")?.parentElement?.closest(".si-tree, .si-panel");
+        if (m.target.classList.contains("si-down")) {
+          let parent = m.target.closest(".si-node-details")?.parentElement?.closest(".si-node-details, .si-panel")
           while (parent) {
-            const parentDot = parent.querySelector(":scope > summary .si-pdot, :scope > .si-panel-header .si-pdot");
-            if (parentDot) parentDot.classList.add("si-down");
-            parent = parent.parentElement?.closest(".si-tree, .si-panel");
+            const pDot = parent.querySelector(":scope > summary .si-pdot, :scope > .si-panel-header .si-pdot")
+            if (pDot) pDot.classList.add("si-down")
+            parent = parent.parentElement?.closest(".si-node-details, .si-panel")
           }
         }
       }
-    });
-  });
-  document.querySelectorAll(".si-pdot").forEach(d => observer.observe(d, { attributes: true }));
-});
+    })
+  })
+  document.querySelectorAll(".si-pdot").forEach(d => observer.observe(d, { attributes: true }))
+})
 `
 
 SystemsManifest.afterDOMLoaded = rollupScript
 
 SystemsManifest.css = `
-.si-manifest { font-family: var(--bodyFont); margin-top: 2rem; }
-.si-summary { display: flex; gap: 1rem; margin-bottom: 2rem; }
-.si-sum-item { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; flex: 1; text-align: center; background: var(--lightgray); }
-.si-fresh { border-bottom: 3px solid #22c55e; }
-.si-stale { border-bottom: 3px solid #eab308; }
-.si-neglected { border-bottom: 3px solid #ef4444; }
+.si-root { margin-top: 2rem; }
+.si-summary-card { display: flex; gap: 8px; margin-bottom: 1.5rem; background: var(--light); padding: 12px; border-radius: 6px; border: 1px solid var(--lightgray); }
+.si-summary-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: var(--lightgray); }
+.si-summary-fresh { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+.si-summary-stale { background: rgba(234, 179, 8, 0.1); color: #ca8a04; }
+.si-summary-neglected { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.si-summary-dot { width: 6px; height: 6px; border-radius: 50%; }
 
-.si-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-.si-panel { background: var(--light); border: 1px solid var(--lightgray); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; }
-.si-border-fresh { border-left: 4px solid #22c55e; }
-.si-border-stale { border-left: 4px solid #eab308; }
-.si-border-neglected { border-left: 4px solid #ef4444; }
+.si-grid { column-count: 2; column-gap: 10px; width: 100%; }
+@media (max-width: 600px) { .si-grid { column-count: 1; } }
 
-.si-panel-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
-.si-panel-title { font-weight: 700; font-size: 1rem; color: var(--dark); }
-.si-panel-meta { margin-bottom: 1rem; }
+.si-panel { 
+  break-inside: avoid; margin-bottom: 10px; background: var(--light); 
+  border: 1px solid var(--lightgray); border-left: 3px solid #22c55e; border-radius: 6px; 
+  overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.si-panel-header { padding: 8px 12px; border-bottom: 1px solid var(--lightgray); background: rgba(0,0,0,0.01); }
+.si-panel-title-group { display: flex; flex-direction: column; gap: 2px; }
+.si-panel-title-row { display: flex; align-items: center; gap: 6px; }
+.si-panel-name { font-size: 12px; font-weight: 600; color: var(--dark); }
+.si-panel-body { padding: 4px 8px; }
 
-.si-tree { margin-top: 0.5rem; }
-.si-tree summary { list-style: none; cursor: pointer; }
-.si-tree summary::-webkit-details-marker { display: none; }
-.si-children { margin-left: 0.75rem; padding-left: 0.75rem; border-left: 1px solid var(--lightgray); }
-
-.si-row { display: flex; align-items: center; justify-content: space-between; padding: 0.2rem 0; font-size: 0.85rem; }
-.si-row-left, .si-row-right { display: flex; align-items: center; gap: 0.5rem; }
-.si-name { color: var(--darkgray); }
-
-.si-fav { border-radius: 2px; }
-.si-fav-null { width: 14px; height: 14px; background: var(--lightgray); border-radius: 50%; }
-
-.si-attest { font-size: 0.75rem; font-weight: 500; }
+.si-attest { font-size: 10px; font-weight: 600; }
 .si-attest-fresh { color: #16a34a; }
 .si-attest-stale { color: #ca8a04; }
 .si-attest-neglected { color: #dc2626; }
 
-.si-ping-box { width: 12px; height: 12px; display: flex; align-items: center; }
-.si-pdot { width: 6px; height: 6px; border-radius: 50%; background: var(--lightgray); transition: all 0.3s; }
-.si-pdot.si-live { background: #22c55e; }
-.si-pdot.si-down { background: #ef4444; box-shadow: 0 0 4px #ef4444; }
-.si-pdot.si-checking { background: #eab308; opacity: 0.6; }
+.si-item-row { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px; min-height: 28px; border-radius: 4px; }
+.si-node-summary:hover .si-item-row { background: rgba(0,0,0,0.03); }
+.si-node-children { margin-left: 8px; padding-left: 6px; border-left: 1px solid var(--lightgray); }
+.si-item-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.si-iname { font-size: 12px; color: var(--darkgray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.si-chevron { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--gray); transition: transform 0.2s; }
-details[open] > summary .si-chevron { transform: rotate(-90deg); }
+.si-fav { width: 14px; height: 14px; flex-shrink: 0; border-radius: 2px; }
+.si-fav-placeholder { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; opacity: 0.3; }
+.si-fav-placeholder span { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+
+.si-chevron { width: 10px; height: 10px; color: var(--gray); transition: transform 0.15s ease; flex-shrink: 0; }
+.si-node-details[open] > summary .si-chevron { transform: rotate(90deg); }
+.si-chevron-spacer { width: 10px; flex-shrink: 0; }
+
+.si-ping-wrap { display: flex; align-items: center; justify-content: center; width: 12px; height: 12px; contain: strict; }
+.si-pdot { 
+  display: block; width: 6px; height: 6px; background: var(--lightgray); border-radius: 50%;
+  transition: background 0.3s ease; clip-path: circle(3px at center);
+}
+.si-pdot.si-live { background: #22c55e; }
+.si-pdot.si-down { background: #ef4444; box-shadow: 0 0 4px rgba(239,68,68,0.5); }
+.si-pdot.si-checking { background: #eab308; opacity: 0.6; }
 `
 
 export default (() => SystemsManifest) satisfies QuartzComponentConstructor
