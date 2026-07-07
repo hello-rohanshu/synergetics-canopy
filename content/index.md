@@ -88,9 +88,11 @@ button.link-btn {
 
 # About
 
-This is Buckminster Fuller's complete magnum opus _Synergetics_. For years, R. W. Gray's [1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) was the online reference for anyone who needed the text. This site is built to take up that same need, and go further.
+This is Buckminster Fuller's complete magnum opus _Synergetics_. For years, R. W. Gray's [1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) has been the online reference for anyone who needed the text. This site is built to take up that same need, and go further.
 
-The complete text was hand-transported from Gray's digitization, paragraph by paragraph, with additional images sourced from [Buckyverse.org](https://buckyverse.org). See the full [Systems Manifest](/systems-manifest) for everything running under the hood.
+The complete text was hand-transported from Gray's digitization, paragraph by paragraph, with additional images sourced from [Buckyverse.org](https://buckyverse.org). 
+
+The site uses [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8) static site builder. See the full [Systems Manifest](/systems-manifest) for the complete tool stack.
 
 What you can do:
 - Use the explorer on the left sidebar for navigating the text
@@ -155,5 +157,18 @@ What you can do:
   </svg>
   Send Feedback
 </button>
+
+&nbsp;
+
+# Cool Stuff 
+
+This example here shows the original printed diagram, paired with its web redesigned interactive version. While it is the only diagram I did this to, it does a good job of showing where the horizon might be. 
+
+![[Fig. 100.103]]
+
+![[Fig. 100.103 (New)]]
+
+
+&nbsp;
 
 
