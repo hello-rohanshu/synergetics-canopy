@@ -47,10 +47,19 @@ const formatPingId = (slug: string) =>
 const Favicon = ({ url, hidePlaceholder }: { url: string; hidePlaceholder?: boolean }) => {
   const d = getDomain(url)
   if (!d) {
-    if (hidePlaceholder) return null // no dot for parents
+    if (hidePlaceholder) return null
     return <div class="si-fav si-fav-placeholder" aria-hidden="true"><span /></div>
   }
-  return <img class="si-fav" src={`https://icon.horse/icon/${d}`} alt="" width="14" height="14" />
+
+  // Use a span with background-image from Google's reliable favicon service.
+  // The CSS pseudo-element shows a faint dot behind it – if the image loads, it covers the dot.
+  return (
+    <span
+      class="si-fav-img"
+      style={{ backgroundImage: `url('https://www.google.com/s2/favicons?domain=${d}&sz=32')` }}
+      aria-hidden="true"
+    />
+  )
 }
 
 const Chevron = () => (
@@ -284,6 +293,33 @@ SystemsManifest.css = `
   width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; opacity: 0.3; margin: 0 !important; 
 }
 .si-fav-placeholder span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
+
+/* Favicon via Google's service – fallback dot behind image */
+.si-fav-img {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 3px;
+  position: relative;
+  flex-shrink: 0;
+  background-color: transparent;
+}
+.si-fav-img::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  z-index: 0;
+}
 
 .si-chevron { width: 10px; height: 10px; color: var(--gray); transition: transform 0.15s ease; flex-shrink: 0; }
 .si-node-details[open] > summary .si-chevron { transform: rotate(90deg); }
