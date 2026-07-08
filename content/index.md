@@ -1,6 +1,6 @@
 ---
 title: Home
-description: "Buckminster Fuller's Synergetics — a navigable digital edition of all 1,468 pages with instant search, AI assistant, and paragraph-level links."
+description: "Buckminster Fuller's Synergetics — Explorations in the Geometry of Thinking, on the modern web."
 ---
 
 <img src="bucky-classroom.jpg" 
