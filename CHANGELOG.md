@@ -1,19 +1,27 @@
-
 # Changelog
 
-## [1.0.0] — 2026-07-04
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0] — 2026-07-09
 
 ### Added
 
-- The complete text of *Synergetics*, transported by hand from R. W. Gray’s [Synergetics Online](https://rwgrayprojects.com/synergetics/synergetics.html).
-- An A.I. assistant trained on the whole of Synergetics
-- Paragraph anchors: click to copy a direct link to any paragraph.
-- GitHub-linked feedback system, no login required.
-- Click any image to zoom (Glightbox, with Picasa-style UX).
-- Content Audit — a dashboard of content quality check
-- An interactive diagram ([see it here](https://synergetics.pages.dev/#preview-gallery)).
-- Custom brand: logo, name, domain, typography, and social preview.
-- Full Quartz 4 foundation: wikilinks, embeds, graph view, page previews, backlinks, fuzzy search, file explorer, reader mode, dark mode, KaTeX, Prism.js, CLI.
+- Complete text from R. W. Gray's Synergetics Online, with supplementary images from Buckyverse.org
+- AI assistant grounded on the full text
+- Paragraph-level anchors with one-click copy
+- Anonymous feedback via GitHub Issues
+- Zoomable images (Glightbox)
+- Content Audit — live formatting and completeness dashboard
+- Systems Manifest — tool-stack transparency and project freshness
+- Changelog — version history, kept current
+- Interactive diagram
+- Quartz 4 foundation (graph, backlinks, search, reader mode, dark mode, KaTeX, Prism.js, CLI)
+- Custom branding (domain, logo, typography, social preview card)
 
 <!-- ### Changed
 
