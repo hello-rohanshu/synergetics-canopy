@@ -88,19 +88,21 @@ button.link-btn {
 
 # About
 
-This is Buckminster Fuller's complete magnum opus _Synergetics_. For years, R. W. Gray's [1997 digitization](https://rwgrayprojects.com/synergetics/synergetics.html) has been the online reference for anyone who needed the text. This site is built to take up that same need, and go further.
+This is Buckminster Fuller's Synergetics.
 
-The complete text was hand-transported from Gray's digitization, page by page, with additional images sourced from [Buckyverse.org](https://buckyverse.org). 
+Buckminster Fuller published his magnum opus *Synergetics* in the 1970s. In 1997, R. W. Gray scanned the text and made it freely available online. His site, Synergetics Online, has been the primary digital reference since.
 
-The site uses [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8) static site builder. See the full [Systems Manifest](/systems-manifest) for the complete tool stack.
+This project carries that lineage forward into 2026. It brings the complete text over page by page from [Gray's digitization](https://rwgrayprojects.com/synergetics/synergetics.html), with additional editorial help from [Buckyverse.org](https://buckyverse.org) — rebuilt with modern web-tech.
 
-What you can do:
-- Use the explorer on the left sidebar for navigating the text
-- Use the searchbar to find anything across it
-- Ask the AI any questions you have
-- Copy anchor links to any paragraph and share them with friends
-- Report any problems using the feedback button on this page or via GitHub directly
-- Join the inactive Discord server because it's the only one of its kind
+The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8), chosen for its fervour for bidirectional linking, among many other things. See the [Systems Manifest](/systems-manifest) for the full tool stack.
+
+**What you can do:**
+
+- Navigate — use the explorer in the sidebar, or head to the [Table of Contents](/table-of-contents)
+- Search — find anything across the full text
+- Ask — the AI assistant is grounded on the whole book
+- Share — copy a direct link to any paragraph and send it to someone
+- Report — the feedback button on this page takes anonymous input, no login needed. You can also open an issue directly on [GitHub](https://github.com/hello-rohanshu/synergetics-canopy/issues)
 
 
 <a class="link-btn" href="https://discord.gg/xwvydhzXut" target="_blank" rel="noopener noreferrer">
