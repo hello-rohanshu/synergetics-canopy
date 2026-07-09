@@ -12,13 +12,13 @@
 
       /* Default Light Mode Tab Color */
       .cls-2 {
-        fill: #284b63;
+        fill: #44633a;
       }
 
       /* Automatic Dark Mode Tab Variant */
       @media (prefers-color-scheme: dark) {
         .cls-2 {
-          fill: #7b97aa;
+          fill: #768E65;
         }
       }
     </style>

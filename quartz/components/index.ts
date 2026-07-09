@@ -26,10 +26,11 @@ import ConditionalRender from "./ConditionalRender"
 import SynergeticsAI from "./SynergeticsAI"
 import AIButton from "./AIButton"
 import Feedback from "./Feedback"
-import SystemsDashboard from "./SystemsDashboard"
+import SystemsManifest from "./SystemsManifest"
 import ContentAudit from "./ContentAudit"
 import TrendsManifest from "./TrendsManifest"
 import ImageZoom from "./ImageZoom"
+import Changelog from "./Changelog"
 
 export {
   ArticleTitle,
@@ -60,8 +61,9 @@ export {
   SynergeticsAI,
   AIButton,
   Feedback,
-  SystemsDashboard,
+  SystemsManifest,
   ContentAudit,
   TrendsManifest,
   ImageZoom,
+  Changelog,
 }

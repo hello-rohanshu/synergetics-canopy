@@ -13,8 +13,8 @@
   },
   "scripts": {
     "build": "npx quartz build",
-    "prebuild": "node scripts/content-audit.cjs",
-    "preserve": "node scripts/content-audit.cjs",
+    "prebuild": "node scripts/content-audit.cjs && node scripts/changelog.cjs && node scripts/systems-manifest.cjs",
+    "preserve": "node scripts/content-audit.cjs && node scripts/changelog.cjs && node scripts/systems-manifest.cjs",
     "serve": "npx quartz build --serve",
     "quartz": "./quartz/bootstrap-cli.mjs",
     "docs": "npx quartz build --serve -d docs",
@@ -58,7 +58,6 @@
     "hast-util-to-jsx-runtime": "^2.3.6",
     "hast-util-to-string": "^3.0.1",
     "is-absolute-url": "^5.0.0",
-    "js-yaml": "^4.1.1",
     "lightningcss": "^1.31.1",
     "mdast-util-find-and-replace": "^3.0.2",
     "mdast-util-to-hast": "^13.2.1",

@@ -67,8 +67,8 @@ export const sharedPageComponents: SharedLayout = {
   ],
   footer: Component.Footer({
     links: {
-      GitHub: "",
-      "Discord Community": "",
+      // GitHub: "",
+      // "Discord Community": "",
     },
   }),
 }
@@ -84,8 +84,8 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ContentMeta(),
     //Component.TagList(),
     Component.ConditionalRender({
-      component: Component.SystemsDashboard(),
-      condition: (page) => page.fileData.slug === "systems-stack",
+      component: Component.SystemsManifest(),
+      condition: (page) => page.fileData.slug === "systems-manifest",
     }),
     Component.ConditionalRender({
       component: Component.TrendsManifest(),
@@ -94,6 +94,10 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ConditionalRender({
       component: Component.ContentAudit(),
       condition: (page) => page.fileData.slug === "content-audit",
+    }),
+    Component.ConditionalRender({
+      component: Component.Changelog(),
+      condition: (page) => page.fileData.slug === "changelog",
     }),
   ],
   left: [

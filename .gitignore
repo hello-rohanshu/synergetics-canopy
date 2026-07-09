@@ -13,4 +13,6 @@ replit.nix
 scripts/.env
 synergetics-worker/dev.vars
 .wrangler/
-quartz/static/data/vault-audit.jsonquartz/static/data/content-audit.json
+quartz/static/data/content-audit.json
+quartz/static/data/changelog.json
+quartz/static/data/systems-manifest.json

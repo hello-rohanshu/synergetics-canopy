@@ -34,32 +34,33 @@ const config: QuartzConfig = {
 
       colors: {
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          light: "#FFF8E7",       // Cosmic Latte
+          lightgray: "#EBE3D5",   // Soft, warm gray for subtle backgrounds/borders
+          gray: "#8C847A",        // Natural stone gray for meta text
+          darkgray: "#4A443F",    // Deep bark brown for highly readable body text
+          dark: "#2C2825",        // Near-black espresso for strong headings
+          secondary: "#44633a",   // Synergetic botanical green for links
+          tertiary: "#b6bd38",    // Earthy green-yellow hover
+          highlight: "rgba(58, 99, 81, 0.12)",
+          textHighlight: "#F4D35E88",
         },
         darkMode: {
-          light: "#161618",
-          lightgray: "#393639",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          light: "#1A1918",       // Deep warm void
+          lightgray: "#36312D",
+          gray: "#8C847A",
+          darkgray: "#D4CFC9",    // Soft ash for readable dark mode text
+          dark: "#FFF8E7",        // Cosmic Latte as the heading text!
+          secondary: "#768E65",   // Calmed down to a dusty, muted moss green
+          tertiary: "#a99f4e",    // Calmed down to a faint, pale linen/straw yellow
+          highlight: "rgba(118, 142, 101, 0.12)", // Updated to match the calmer green
+          textHighlight: "#D4A37388",
         },
       },
     },
   },
   plugins: {
     transformers: [
+      Plugin.BuildStats(),
       Plugin.HardLineBreaks(),
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
@@ -95,7 +96,7 @@ const config: QuartzConfig = {
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
       // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      // Plugin.CustomOgImages(),
     ],
   },
 }
