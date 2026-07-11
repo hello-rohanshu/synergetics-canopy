@@ -31,7 +31,7 @@ The live site is at **[synergetics.pages.dev](https://synergetics.pages.dev)**.
 
 See the [Changelog](/changelog) for a full list.
 
-# Install
+## Install
 
 Built on [Quartz v4](https://github.com/jackyzha0/quartz/tree/v4) — see the v4 branch for framework-level details (build config, plugins, deployment).
 
