@@ -82,7 +82,6 @@ const Changelog: QuartzComponent = () => (
     `}</style>
 
     <div className="chg-container">
-      {data.generated && <span className="chg-timestamp">Last updated {formatTime(data.generated)}</span>}
 
       {(!data.releases || data.releases.length === 0) && (
         <p className="chg-empty">No releases logged yet.</p>
