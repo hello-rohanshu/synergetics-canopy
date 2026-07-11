@@ -31,14 +31,16 @@ The live site is at **[synergetics.pages.dev](https://synergetics.pages.dev)**.
 
 See the [Changelog](/changelog) for a full list.
 
-## Install
+# Install
 
-```bash
+Built on [Quartz v4](https://github.com/jackyzha0/quartz/tree/v4) — see the v4 branch for framework-level details (build config, plugins, deployment).
+
+​```bash
 git clone https://github.com/hello-rohanshu/synergetics-canopy.git
 cd synergetics-canopy
 npm install
 npm run serve
-```
+​```
 
 The site opens at `http://localhost:8080`.
 
