@@ -30,7 +30,7 @@ async function generateSocialImage(
   userOpts: SocialImageOptions,
 ): Promise<Readable> {
   const { width, height } = userOpts
-  const iconPath = joinSegments(QUARTZ, "static", "icon-night.png")
+  const iconPath = joinSegments(QUARTZ, "static", "night-icon.png")
   let iconBase64: string | undefined = undefined
   try {
     const iconData = await fs.readFile(iconPath)
