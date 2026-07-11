@@ -25,7 +25,7 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/dynamic-logo.svg")
+    const iconPath = joinSegments(baseDir, "static/logo-dynamic.svg")
 
     // Url of current page
     const socialUrl =
@@ -85,7 +85,7 @@ export default (() => {
 
         <link rel="icon" href={iconPath} type="image/svg+xml" />
         <link rel="icon" href={joinSegments(baseDir, "favicon.ico")} type="image/x-icon" />
-        <link rel="icon" sizes="48x48" href={joinSegments(baseDir, "static/icon-day.png")} type="image/png" />
+        <link rel="icon" sizes="48x48" href={joinSegments(baseDir, "static/day-icon.png")} type="image/png" />
         <link rel="preload" href={`${baseDir}/static/fonts/inter-v20-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href={`${baseDir}/static/fonts/literata-v40-latin-600.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* <link rel="preload" href={`${baseDir}/static/fonts/bebas-neue-v16-latin-regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" /> */}
@@ -111,7 +111,7 @@ export default (() => {
               "@type": "Organization",
               "url": "https://synergetics.pages.dev",
               "name": "Synergetics",
-              "logo": "https://synergetics.pages.dev/static/icon-day.png"
+              "logo": "https://synergetics.pages.dev/static/day-icon.png"
             })
           }} />
         )}
