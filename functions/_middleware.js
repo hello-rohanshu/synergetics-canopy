@@ -25,9 +25,9 @@ export async function onRequest() {
 </head>
 <body>
   <p>
-    You may have been misdirected here. Return back to 
+    You may have been misdirected here. This preview site is staged for retirement. Return back to 
     <a href="https://synergetics.pages.dev">synergetics.pages.dev</a>. 
-    Feel free to use the feedback options therein.
+    Feel free to use the feedback options therein. Have a great day.
   </p>
 </body>
 </html>`;
