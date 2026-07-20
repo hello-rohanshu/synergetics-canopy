@@ -1,26 +1,25 @@
-export async function onRequest(context) {
-  const response = await context.next();
-  const contentType = response.headers.get("content-type") || "";
-
-  if (!contentType.includes("text/html")) {
-    return response;
-  }
-
-  const banner = `
-    <div style="position:fixed;top:0;left:0;right:0;z-index:999999;
-      background:#1a1a1a;color:#fff;padding:12px 16px;text-align:center;
-      font-family:sans-serif;font-size:14px;line-height:1.4;">
-      This link is outdated and staged for removal — apologies for the confusion.
-      Please visit <a href="https://synergetics.pages.dev" style="color:#7fd4ff;text-decoration:underline;">synergetics.pages.dev</a> for the actual site.
-    </div>
-    <div style="height:52px;"></div>
+export async function onRequest() {
+  const page = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Moved</title>
+      <style>
+        body { font-family: sans-serif; background:#111; color:#eee;
+          display:flex; align-items:center; justify-content:center;
+          height:100vh; margin:0; text-align:center; padding:20px; }
+        a { color:#7fd4ff; }
+      </style>
+    </head>
+    <body>
+      <div>
+        <h2>This link is outdated</h2>
+        <p>This preview site is being retired.<br>
+        Please visit <a href="https://synergetics.pages.dev">synergetics.pages.dev</a> for the actual site.</p>
+      </div>
+    </body>
+    </html>
   `;
-
-  let html = await response.text();
-  html = html.replace(/<body([^>]*)>/i, `<body$1>${banner}`);
-
-  return new Response(html, {
-    status: response.status,
-    headers: response.headers,
-  });
+  return new Response(page, { status: 200, headers: { "content-type": "text/html" } });
 }
