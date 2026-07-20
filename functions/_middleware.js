@@ -6,6 +6,7 @@ export async function onRequest() {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>410 Gone</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -18,17 +19,41 @@ export async function onRequest() {
       padding: 24px;
       text-align: center;
     }
-    p { max-width: 380px; line-height: 1.6; font-size: 0.9rem; }
-    a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-    a:hover { color: #7fd4ff; }
+    main {
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .status-code {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+    p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color 0.15s ease;
+    }
+    a:hover {
+      color: #7fd4ff;
+    }
   </style>
 </head>
 <body>
-  <p>
-    You may have been misdirected here. This preview site is staged for retirement. Return back to 
-    <a href="https://synergetics.pages.dev">synergetics.pages.dev</a>. 
-    Feel free to use the feedback options therein. Have a great day.
-  </p>
+  <main>
+    <div class="status-code">410</div>
+    <p>You may have been misdirected here. This preview site is staged for retirement.</p>
+    <p>Return back to <a href="https://synergetics.pages.dev">synergetics.pages.dev</a>. Feel free to use the feedback options therein. Have a great day.</p>
+  </main>
 </body>
 </html>`;
 
