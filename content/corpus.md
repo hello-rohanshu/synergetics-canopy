@@ -16,6 +16,7 @@ tags:
 ![[Moral of the Work]]
 ![[Explicit - A note to the reader]]
 ![[Humans In Universe]]
+![[Scenarios]]
 
 # Chapters 
 ![[100.01 Introduction - Scenario of the Child]]
