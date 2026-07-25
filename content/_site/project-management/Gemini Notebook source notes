@@ -1,0 +1,37 @@
+# Gemini Notebook (NotebookLM) Source Notes
+
+## Source refresh behavior
+Web page sources (e.g. /corpus) are static snapshots taken at import time.
+No auto-refresh — unlike Google Docs/Sheets/Slides, which Google added
+auto-sync for in May 2026. Any edit to the live page after it's added as
+a source requires manually opening the source and re-syncing, or removing
+and re-adding it. No notification when a source goes stale.
+
+## Practice going forward
+- Do corpus content edits in batches, not continuously.
+- Re-sync /corpus in NotebookLM immediately after any edit.
+- Prefer editing during low-traffic hours (late night IST lines up with
+  low US/EU traffic).
+- Refresh itself takes seconds to low minutes to reflect — the real risk
+  is forgetting to trigger it at all, not the refresh window itself.
+
+## Favicon cache-bust
+Source list can show a stale/wrong favicon — this is Google's crawler
+caching the icon keyed to the exact URL, not to the "add source" action.
+Fix: append an unused query string to force a fresh crawl, e.g.
+https://synergetics.pages.dev/corpus?v=2 — confirmed working.
+Quartz ignores unknown query params, so the real page is unaffected.
+
+Current value in use: v=2
+Next time it's needed: bump to v=3 (never reuse or randomize — keeps it
+unambiguous which cache-bust has already been tried).
+
+## Known cosmetic non-issue
+White background tile behind source icons in NotebookLM's source menu is
+NotebookLM's own UI chrome, not fixable from the site side. Not pursued.
+
+## Index question (from book, not repo)
+Canopy doesn't yet have the print index page. Not needed for NotebookLM —
+the corpus text is the searchable substrate already; a page-locator index
+adds nothing. Only worth adding later if Fuller's actual index contains
+real cross-referencing content, not just page numbers.
