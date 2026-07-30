@@ -13,7 +13,7 @@ tags:
     <div style="font-family:'Literata', Georgia, serif; font-weight:700; font-size:1rem; color:var(--dark); line-height:1.2;">
       Go Deeper ->
     </div>
-    <p style="font-size:0.875rem; color:var(--darkgray); line-height:1.6; margin:0;">
+    <div style="font-size:0.875rem; color:var(--darkgray); line-height:1.6; margin:0;">
       Find Synergetics notebook on
       <span style="display:inline-flex; align-items:center; background:var(--light); padding:2px 6px; border-radius:4px; line-height:0; vertical-align:middle; margin-left:2px;">
         <img 
@@ -21,6 +21,6 @@ tags:
           alt="Gemini Notebook" 
           style="height:14px; width:auto; display:block;" />
       </span>
-    </p>
+    </div>
   </div>
 </a>
