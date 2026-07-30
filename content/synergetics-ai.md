@@ -61,8 +61,6 @@ tags:
     margin-left: 2px;
   }
   .synergetics-card .wordmark {
-    height: 0.75rem;
-    width: auto;
     display: block;
     max-width: none;
   }
@@ -78,7 +76,7 @@ tags:
       <span class="nobreak">
         on 
         <span class="wordmark-pill">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" style="height:0.75rem !important; min-height:0.75rem !important; max-height:0.75rem !important; width:auto !important; display:block; max-width:none;" />
         </span>
       </span>
     </p>
