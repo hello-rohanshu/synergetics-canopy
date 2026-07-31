@@ -27,7 +27,7 @@ tags:
     color: #18181b;
     line-height: 1.2;
   }
-  .synergetics-card .wordmark-pill {
+  .wordmark-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -37,19 +37,25 @@ tags:
     border-radius: 4px;
     text-decoration: none;
     transition: transform 0.15s ease;
+    align-self: center;        /* stop flex stretch from card */
+    line-height: 0;            /* kill any text‑baseline spacing */
+    max-height: 2rem;          /* safety cap for the whole pill */
   }
-  .synergetics-card .wordmark-pill:hover {
+  .wordmark-pill:hover {
     transform: translateY(-1px);
   }
-  .synergetics-card .wordmark {
+  .wordmark {
     display: block;
-    max-width: none;
+    height: 0.75rem !important;
+    width: auto !important;
+    max-height: 0.75rem;       /* double‑lock the height */
+    object-fit: contain;       /* ensure no overflow */
   }
 </style>
 
 <div class="synergetics-card">
   <span class="headline">Go Deeper -&gt;</span>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="wordmark-pill" target="_blank" rel="noopener">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" style="height:0.75rem !important; width:auto !important; display:block;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark">
   </a>
 </div>
