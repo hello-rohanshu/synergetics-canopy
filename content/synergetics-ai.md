@@ -61,24 +61,13 @@ tags:
     margin-left: 2px;
   }
   .synergetics-card .wordmark {
+    height: 0.75rem !important;
+    min-height: 0.75rem !important;
+    max-height: 0.75rem !important;
+    width: auto !important;
     display: block;
     max-width: none;
   }
 </style>
 
-<a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="synergetics-card" target="_blank" rel="noopener">
-  <div class="text-container">
-    <div class="headline">
-      <span>Go Deeper -&gt;</span>
-    </div>
-    <p class="subtext">
-      Find Synergetics notebook 
-      <span class="nobreak">
-        on 
-        <span class="wordmark-pill">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" style="height:0.75rem !important; min-height:0.75rem !important; max-height:0.75rem !important; width:auto !important; display:block; max-width:none;" />
-        </span>
-      </span>
-    </p>
-  </div>
-</a>
+<a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="synergetics-card" target="_blank" rel="noopener"><div class="text-container"><div class="headline"><span>Go Deeper -&gt;</span></div><p class="subtext">Find Synergetics notebook <span class="nobreak">on <span class="wordmark-pill"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark"></span></span></p></div></a>
