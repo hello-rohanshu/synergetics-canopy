@@ -55,14 +55,14 @@ tags:
     justify-content: center;
     background-color: #ffffff;
     border: none;
-    padding: 3px 8px;
+    padding: 2px 6px;               /* slightly tighter */
     border-radius: 4px;
     vertical-align: baseline;
     margin-left: 2px;
+    font-size: 0.875rem;            /* match subtext */
+    line-height: 1;                 /* avoid extra height */
   }
   .synergetics-card .wordmark {
-    height: 0.75rem;
-    width: auto;
     display: block;
     max-width: none;
   }
@@ -72,14 +72,14 @@ tags:
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="synergetics-card" target="_blank" rel="noopener">
     <div class="text-container">
       <div class="headline">
-        <span>Go Deeper -></span>
+        <span>Go Deeper -&gt;</span>
       </div>
       <p class="subtext">
         Find Synergetics notebook 
         <span class="nobreak">
           on 
           <span class="wordmark-pill">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" style="height:0.75rem !important; width:auto !important; display:block;">
           </span>
         </span>
       </p>
