@@ -33,29 +33,40 @@ tags:
     justify-content: center;
     background-color: #ffffff;
     border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     text-decoration: none;
     transition: transform 0.15s ease;
-    align-self: center;        /* don't let the card stretch it vertically */
-    line-height: 0;            /* kill any invisible text spacing */
-    font-size: 0;              /* extra safety for whitespace nodes */
-    max-height: 2.5rem;        /* hard cap on the whole pill */
-    overflow: hidden;          /* hide anything that still overflows */
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #18181b;
+    line-height: 1;
+    align-self: center;          /* prevents flex stretching from card */
+    max-height: 2.5rem;          /* hard cap */
+    overflow: hidden;
+    white-space: nowrap;
   }
   .wordmark-pill:hover {
     transform: translateY(-1px);
   }
-  /* No image CSS needed – the inline style does the heavy lifting */
+  .wordmark-icon {
+    display: block;
+    height: 0.75rem;
+    width: auto;
+    flex-shrink: 0;
+  }
 </style>
 
 <div class="synergetics-card">
   <span class="headline">Go Deeper -&gt;</span>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="wordmark-pill" target="_blank" rel="noopener">
     <img
-      src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg"
-      alt="Gemini Notebook"
-      style="height: 0.75rem; width: auto; max-height: 0.75rem; max-width: 100%; object-fit: contain; display: block;"
+      src="https://storage.googleapis.com/gweb-workspace-assets/uploads/7uffzv9dk4sn-1yEQVNOiXWnIFsag6LY35x-4c874ce7eb3de919c4a23d9577e9522a-gemini-notebook__full-color.optimized.svg"
+      alt=""
+      class="wordmark-icon"
+      style="height: 0.75rem; width: auto; display: block;"
     >
+    <span>Gemini Notebook</span>
   </a>
 </div>
