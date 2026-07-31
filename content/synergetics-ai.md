@@ -33,18 +33,16 @@ tags:
     justify-content: center;
     background-color: #ffffff;
     border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
+    padding: 0 8px;               /* horizontal breathing room only */
+    border-radius: 4px;
     text-decoration: none;
     transition: transform 0.15s ease;
-    gap: 6px;
+    gap: 5px;
     font-size: 0.8rem;
     font-weight: 500;
     color: #18181b;
-    line-height: 1;
-    align-self: center;          /* prevents flex stretching from card */
-    max-height: 2.5rem;          /* hard cap */
-    overflow: hidden;
+    line-height: 1;               /* exactly the text height, no extra */
+    align-self: center;
     white-space: nowrap;
   }
   .wordmark-pill:hover {
