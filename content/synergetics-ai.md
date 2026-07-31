@@ -37,25 +37,25 @@ tags:
     border-radius: 4px;
     text-decoration: none;
     transition: transform 0.15s ease;
-    align-self: center;        /* stop flex stretch from card */
-    line-height: 0;            /* kill any text‑baseline spacing */
-    max-height: 2rem;          /* safety cap for the whole pill */
+    align-self: center;        /* don't let the card stretch it vertically */
+    line-height: 0;            /* kill any invisible text spacing */
+    font-size: 0;              /* extra safety for whitespace nodes */
+    max-height: 2.5rem;        /* hard cap on the whole pill */
+    overflow: hidden;          /* hide anything that still overflows */
   }
   .wordmark-pill:hover {
     transform: translateY(-1px);
   }
-  .wordmark {
-    display: block;
-    height: 0.75rem !important;
-    width: auto !important;
-    max-height: 0.75rem;       /* double‑lock the height */
-    object-fit: contain;       /* ensure no overflow */
-  }
+  /* No image CSS needed – the inline style does the heavy lifting */
 </style>
 
 <div class="synergetics-card">
   <span class="headline">Go Deeper -&gt;</span>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="wordmark-pill" target="_blank" rel="noopener">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg"
+      alt="Gemini Notebook"
+      style="height: 0.75rem; width: auto; max-height: 0.75rem; max-width: 100%; object-fit: contain; display: block;"
+    >
   </a>
 </div>
