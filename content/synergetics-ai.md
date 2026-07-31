@@ -27,44 +27,29 @@ tags:
     color: #18181b;
     line-height: 1.2;
   }
-  .wordmark-pill {
+  .synergetics-card .wordmark-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
     border: none;
-    padding: 0 8px;               /* horizontal breathing room only */
+    padding: 4px 8px;
     border-radius: 4px;
     text-decoration: none;
     transition: transform 0.15s ease;
-    gap: 5px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #18181b;
-    line-height: 1;               /* exactly the text height, no extra */
-    align-self: center;
-    white-space: nowrap;
   }
-  .wordmark-pill:hover {
+  .synergetics-card .wordmark-pill:hover {
     transform: translateY(-1px);
   }
-  .wordmark-icon {
+  .synergetics-card .wordmark {
     display: block;
-    height: 0.75rem;
-    width: auto;
-    flex-shrink: 0;
+    max-width: none;
   }
 </style>
 
 <div class="synergetics-card">
   <span class="headline">Go Deeper -&gt;</span>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="wordmark-pill" target="_blank" rel="noopener">
-    <img
-      src="https://storage.googleapis.com/gweb-workspace-assets/uploads/7uffzv9dk4sn-1yEQVNOiXWnIFsag6LY35x-4c874ce7eb3de919c4a23d9577e9522a-gemini-notebook__full-color.optimized.svg"
-      alt=""
-      class="wordmark-icon"
-      style="height: 0.75rem; width: auto; display: block;"
-    >
-    <span>Gemini Notebook</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Gemini_Notebook_logo.svg" alt="Gemini Notebook" class="wordmark" style="height:0.75rem !important; width:auto !important; display:block;">
   </a>
 </div>
