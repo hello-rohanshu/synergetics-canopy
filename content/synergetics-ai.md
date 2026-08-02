@@ -37,6 +37,7 @@ tags:
     text-decoration: none;
     transition: background 0.2s;
     cursor: pointer;
+    color: var(--darkgray);
   }
   .synergetics-card .wordmark-pill:hover {
     background: var(--highlight);
@@ -44,7 +45,7 @@ tags:
 </style>
 
 <div class="synergetics-card">
-  <span class="headline">Go Deeper →</span>
+  <span class="headline">Go Deeper</span>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="wordmark-pill" target="_blank" rel="noopener">
     <svg width="1537" height="131" viewBox="0 0 1537 131" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:1rem; width:auto; display:block;">
       <g clip-path="url(#clip0_84_3360)">
