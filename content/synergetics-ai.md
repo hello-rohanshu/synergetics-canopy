@@ -11,35 +11,36 @@ tags:
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background: #f4f4f5;
-    border: 1px dashed #d4d4d8;
-    border-radius: 4px;
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
     padding: 14px 16px;
-    color: #18181b;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    color: var(--darkgray);
+    font-family: inherit;
     margin: 1rem 0;
     box-sizing: border-box;
   }
   .synergetics-card .headline {
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: bold;
+    font-family: var(--headerFont);
+    font-weight: 600;
     font-size: 1rem;
-    color: #18181b;
+    color: var(--dark);
     line-height: 1.2;
   }
   .synergetics-card .wordmark-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff;
-    border: none;
+    background-color: var(--light);
+    border: 1px solid var(--lightgray);
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 6px;
     text-decoration: none;
-    transition: transform 0.15s ease;
+    transition: background 0.2s, border-color 0.2s;
   }
   .synergetics-card .wordmark-pill:hover {
-    transform: translateY(-1px);
+    background: var(--highlight);
+    border-color: var(--gray);
   }
   .synergetics-card .wordmark {
     display: block;
