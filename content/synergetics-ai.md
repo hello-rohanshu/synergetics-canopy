@@ -8,13 +8,12 @@ tags:
 <style>
   .synergetics-card {
     display: flex;
-    flex-wrap: wrap; /* Allows the button to drop down when space runs out */
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     width: 100%;
     background: color-mix(in srgb, var(--secondary) 12%, transparent);
-    // border: 1px solid color-mix(in srgb, var(--tertiary) 33%, transparent);
     border-radius: 8px;
     padding: 12px 16px;
     color: var(--darkgray);
@@ -26,8 +25,7 @@ tags:
     display: flex;
     align-items: center;
     gap: 12px;
-    /* High grow factor keeps text expanded on line 1, forcing wrap if space runs out */
-    flex: 999 1 max-content; 
+    flex: 1 1 auto; 
   }
   .synergetics-card .notebook-icon {
     width: 28px;
@@ -42,6 +40,31 @@ tags:
     color: var(--dark);
     line-height: 1.3;
   }
+
+  /* Desktop: Make text link unclickable plain text */
+  .synergetics-card .notebook-link {
+    color: inherit;
+    text-decoration: none !important;
+    font-weight: normal;
+    cursor: default;
+    pointer-events: none;
+    background-image: none !important; /* Clears CSS background icons */
+    padding-right: 0 !important;       /* Clears icon padding */
+  }
+
+  /* Hide all potential SSG icon variants on Desktop */
+  .synergetics-card .notebook-link::after,
+  .synergetics-card .notebook-link::before,
+  .synergetics-card .notebook-link svg,
+  .synergetics-card .notebook-link img,
+  .synergetics-card .notebook-link span,
+  .synergetics-card .notebook-link + svg,
+  .synergetics-card .notebook-link + span,
+  .synergetics-card .notebook-link + i {
+    display: none !important;
+    content: none !important;
+  }
+
   .synergetics-card .visit-btn {
     display: inline-flex;
     align-items: center;
@@ -50,20 +73,41 @@ tags:
     padding: 6px 14px;
     border-radius: 6px;
     background: color-mix(in srgb, var(--secondary) 21%, transparent);
-    // border: 1px solid color-mix(in srgb, var(--tertiary) 21%, transparent);
     color: var(--dark);
     font-family: var(--bodyFont);
     font-size: 0.9em;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s ease;
-    /* Allows button to stay compact on line 1, but expand to 100% width when wrapped */
-    flex: 1 1 auto; 
+    flex-shrink: 0; 
     box-sizing: border-box;
   }
   .synergetics-card .visit-btn:hover {
     background: var(--highlight);
     border-color: color-mix(in srgb, var(--tertiary) 50%, transparent);
+  }
+
+  /* Mobile: Hide Visit button, activate text link, show underline & arrow */
+  @media (max-width: 480px) {
+    .synergetics-card .visit-btn {
+      display: none !important;
+    }
+    .synergetics-card .notebook-link {
+      text-decoration: underline !important;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .synergetics-card .notebook-link::after,
+    .synergetics-card .notebook-link::before,
+    .synergetics-card .notebook-link svg,
+    .synergetics-card .notebook-link img,
+    .synergetics-card .notebook-link span,
+    .synergetics-card .notebook-link + svg,
+    .synergetics-card .notebook-link + span,
+    .synergetics-card .notebook-link + i {
+      display: inline-block !important;
+      content: normal !important;
+    }
   }
 </style>
 
@@ -83,7 +127,7 @@ tags:
         </radialGradient>
       </defs>
     </svg>
-    <span class="headline">Go Deeper with Gemini Notebook</span>
+    <span class="headline">Go deeper with <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="notebook-link" target="_blank" rel="noopener">Gemini Notebook</a></span>
   </div>
   <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="visit-btn" target="_blank" rel="noopener">
     Visit
