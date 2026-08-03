@@ -19,7 +19,7 @@ tags:
     -webkit-mask-image: none !important;
     mask-image: none !important;
     border-radius: 8px;
-    padding: 12px 24px !important; /* Increased horizontal padding to inset the arrow naturally */
+    padding: 12px 28px !important; /* Increased horizontal padding to inset the arrow naturally */
     color: var(--dark);
     font-family: inherit;
     margin: 1rem 0;
@@ -27,10 +27,12 @@ tags:
     text-decoration: none !important;
     cursor: pointer;
     transition: background 0.2s ease;
+    --arrow-color: var(--dark); /* Default arrow color */
   }
 
   html body a.synergetics-card:hover {
     background: color-mix(in srgb, var(--secondary) 20%, transparent) !important;
+    --arrow-color: #3186FF; /* Blue on hover */
   }
 
   .synergetics-card .card-content {
@@ -58,23 +60,24 @@ tags:
     line-height: 1.3;
   }
 
-  /* Right slot mirrored to 28x28, pushed right with a slight inward offset */
+  /* Right slot mirrored to 32x32, pushed right with a slight inward offset */
   .synergetics-card .arrow-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    color: #3186FF;
+    width: 32px;
+    height: 32px;
+    color: var(--arrow-color); /* Use the CSS variable */
     flex-shrink: 0;
     margin-left: auto;
     margin-right: 4px; /* Pulls arrow slightly further inward */
+    transition: color 0.2s ease; /* Smooth color transition */
   }
 
-  /* Crisp minimal arrow centered inside the right slot */
+  /* Crisp minimal arrow centered inside the right slot - now bigger */
   .synergetics-card .slant-arrow {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     stroke: currentColor;
   }
 
@@ -118,7 +121,7 @@ tags:
         </radialGradient>
       </defs>
     </svg>
-    <span class="headline">The Synergetics Notebook</span>
+    <span class="headline">Synergetics Notebook</span>
     <span class="arrow-badge">
       <svg class="slant-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
         <line x1="7" y1="17" x2="17" y2="7"></line>
