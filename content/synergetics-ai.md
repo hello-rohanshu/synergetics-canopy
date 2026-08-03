@@ -6,112 +6,103 @@ tags:
 ---
 
 <style>
-  .synergetics-card {
+  html body a.synergetics-card,
+  html body .synergetics-card {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px;
     width: 100%;
-    background: color-mix(in srgb, var(--secondary) 12%, transparent);
+    background: color-mix(in srgb, var(--secondary) 12%, transparent) !important;
+    background-image: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
     border-radius: 8px;
-    padding: 12px 16px;
-    color: var(--darkgray);
+    padding: 12px 24px !important; /* Increased horizontal padding to inset the arrow naturally */
+    color: var(--dark);
     font-family: inherit;
     margin: 1rem 0;
     box-sizing: border-box;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: background 0.2s ease;
   }
+
+  html body a.synergetics-card:hover {
+    background: color-mix(in srgb, var(--secondary) 20%, transparent) !important;
+  }
+
   .synergetics-card .card-content {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex: 1 1 auto; 
+    flex: 1 1 auto;
   }
+
   .synergetics-card .notebook-icon {
     width: 28px;
     height: 28px;
     flex-shrink: 0;
     display: block;
   }
+
+  /* Title text container */
   .synergetics-card .headline {
+    display: inline-flex;
+    align-items: center;
     font-family: var(--bodyFont);
-    font-weight: 400;
+    font-weight: 500;
     font-size: var(--text-base);
     color: var(--dark);
     line-height: 1.3;
   }
 
-  /* Desktop: Make text link unclickable plain text */
-  .synergetics-card .notebook-link {
-    color: inherit;
-    text-decoration: none !important;
-    font-weight: normal;
-    cursor: default;
-    pointer-events: none;
-    background-image: none !important; /* Clears CSS background icons */
-    padding-right: 0 !important;       /* Clears icon padding */
-  }
-
-  /* Hide all potential SSG icon variants on Desktop */
-  .synergetics-card .notebook-link::after,
-  .synergetics-card .notebook-link::before,
-  .synergetics-card .notebook-link svg,
-  .synergetics-card .notebook-link img,
-  .synergetics-card .notebook-link span,
-  .synergetics-card .notebook-link + svg,
-  .synergetics-card .notebook-link + span,
-  .synergetics-card .notebook-link + i {
-    display: none !important;
-    content: none !important;
-  }
-
-  .synergetics-card .visit-btn {
+  /* Right slot mirrored to 28x28, pushed right with a slight inward offset */
+  .synergetics-card .arrow-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 6px;
-    background: color-mix(in srgb, var(--secondary) 21%, transparent);
-    color: var(--dark);
-    font-family: var(--bodyFont);
-    font-size: 0.9em;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    flex-shrink: 0; 
-    box-sizing: border-box;
-  }
-  .synergetics-card .visit-btn:hover {
-    background: var(--highlight);
-    border-color: color-mix(in srgb, var(--tertiary) 50%, transparent);
+    width: 28px;
+    height: 28px;
+    color: #3186FF;
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: 4px; /* Pulls arrow slightly further inward */
   }
 
-  /* Mobile: Hide Visit button, activate text link, show underline & arrow */
-  @media (max-width: 480px) {
-    .synergetics-card .visit-btn {
-      display: none !important;
-    }
-    .synergetics-card .notebook-link {
-      text-decoration: underline !important;
-      cursor: pointer;
-      pointer-events: auto;
-    }
-    .synergetics-card .notebook-link::after,
-    .synergetics-card .notebook-link::before,
-    .synergetics-card .notebook-link svg,
-    .synergetics-card .notebook-link img,
-    .synergetics-card .notebook-link span,
-    .synergetics-card .notebook-link + svg,
-    .synergetics-card .notebook-link + span,
-    .synergetics-card .notebook-link + i {
-      display: inline-block !important;
-      content: normal !important;
-    }
+  /* Crisp minimal arrow centered inside the right slot */
+  .synergetics-card .slant-arrow {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+  }
+
+  /* Hide SSG auto-injected icons */
+  .synergetics-card,
+  .synergetics-card *,
+  .synergetics-card::before,
+  .synergetics-card::after,
+  .synergetics-card *::before,
+  .synergetics-card *::after {
+    content: none !important;
+    background-image: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+
+  .synergetics-card > :not(.card-content),
+  .synergetics-card .card-content > :not(.notebook-icon):not(.headline):not(.arrow-badge) {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 </style>
 
-<div class="synergetics-card">
+<a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="synergetics-card" target="_blank" rel="noopener">
   <div class="card-content">
     <svg class="notebook-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
       <path stroke="#3186FF" stroke-miterlimit="10" stroke-width="20.8" d="M15.33 125.57c0-2.459 0-1.205-.024-3.208m88.91 2.723.008.485m-88.884 0-.034-4.406m124.893 0-.007 4.406m-124.843.001-.043-5.635c0-44.447 36.033-80.48 80.48-80.48s80.48 36.033 80.48 80.48v5.635"/>
@@ -127,9 +118,12 @@ tags:
         </radialGradient>
       </defs>
     </svg>
-    <span class="headline">Go deeper with <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="notebook-link" target="_blank" rel="noopener">Gemini Notebook</a></span>
+    <span class="headline">The Synergetics Notebook</span>
+    <span class="arrow-badge">
+      <svg class="slant-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="7" y1="17" x2="17" y2="7"></line>
+        <polyline points="7 7 17 7 17 17"></polyline>
+      </svg>
+    </span>
   </div>
-  <a href="https://notebooklm.google.com/notebook/fde697c8-ace7-4855-a636-e7fa2ae304b5?utm_source=nlmm_share" class="visit-btn" target="_blank" rel="noopener">
-    Visit
-  </a>
-</div>
+</a>
