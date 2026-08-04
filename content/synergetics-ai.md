@@ -19,7 +19,8 @@ tags:
     -webkit-mask-image: none !important;
     mask-image: none !important;
     border-radius: 8px;
-    padding: 12px 28px !important; /* Increased horizontal padding to inset the arrow naturally */
+    padding: 12px 28px !important;
+    padding-right: 44px !important;
     color: var(--dark);
     font-family: inherit;
     margin: 1rem 0;
@@ -27,12 +28,11 @@ tags:
     text-decoration: none !important;
     cursor: pointer;
     transition: background 0.2s ease;
-    --arrow-color: var(--dark); /* Default arrow color */
+    
   }
 
   html body a.synergetics-card:hover {
     background: color-mix(in srgb, var(--secondary) 20%, transparent) !important;
-    --arrow-color: #3186FF; /* Blue on hover */
   }
 
   .synergetics-card .card-content {
@@ -60,25 +60,39 @@ tags:
     line-height: 1.3;
   }
 
-  /* Right slot mirrored to 32x32, pushed right with a slight inward offset */
-  .synergetics-card .arrow-badge {
+  /* Visit Text Link — Light Theme Base */
+  .synergetics-card .visit-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: var(--arrow-color); /* Use the CSS variable */
+    font-family: var(--bodyFont);
+    font-size: var(--text-base);
+    font-weight: 500;
+    line-height: 1.3;
+    color: #3186FF;
     flex-shrink: 0;
     margin-left: auto;
-    margin-right: 4px; /* Pulls arrow slightly further inward */
-    transition: color 0.2s ease; /* Smooth color transition */
+    transition: color 0.2s ease;
   }
 
-  /* Crisp minimal arrow centered inside the right slot - now bigger */
-  .synergetics-card .slant-arrow {
-    width: 26px;
-    height: 26px;
-    stroke: currentColor;
+  /* Dark Theme Base */
+  html.dark .synergetics-card .visit-btn,
+  html[data-theme="dark"] .synergetics-card .visit-btn,
+  [class*="dark"] .synergetics-card .visit-btn,
+  [data-theme*="dark"] .synergetics-card .visit-btn {
+    color: #76BBFF;
+  }
+
+  /* Light Theme Hover */
+  html body a.synergetics-card:hover .visit-btn {
+    color: #4FA0FF;
+  }
+
+  /* Dark Theme Hover */
+  html.dark a.synergetics-card:hover .visit-btn,
+  html[data-theme="dark"] a.synergetics-card:hover .visit-btn,
+  [class*="dark"] a.synergetics-card:hover .visit-btn,
+  [data-theme*="dark"] a.synergetics-card:hover .visit-btn {
+    color: #A9A8FF;
   }
 
   /* Hide SSG auto-injected icons */
@@ -95,7 +109,7 @@ tags:
   }
 
   .synergetics-card > :not(.card-content),
-  .synergetics-card .card-content > :not(.notebook-icon):not(.headline):not(.arrow-badge) {
+  .synergetics-card .card-content > :not(.notebook-icon):not(.headline):not(.visit-btn) {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
@@ -122,11 +136,6 @@ tags:
       </defs>
     </svg>
     <span class="headline">Synergetics Notebook</span>
-    <span class="arrow-badge">
-      <svg class="slant-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="7" y1="17" x2="17" y2="7"></line>
-        <polyline points="7 7 17 7 17 17"></polyline>
-      </svg>
-    </span>
+    <span class="visit-btn">visit</span>
   </div>
 </a>
