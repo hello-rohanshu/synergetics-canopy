@@ -24,7 +24,7 @@ tags:
     padding-right: 44px !important;
     color: var(--dark);
     font-family: inherit;
-    margin: 1rem 0;
+    margin: 1.618rem 0;
     box-sizing: border-box;
     text-decoration: none !important;
     cursor: pointer;
