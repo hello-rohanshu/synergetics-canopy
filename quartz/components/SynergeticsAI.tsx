@@ -11,7 +11,7 @@ const SynergeticsAI: QuartzComponent = () => {
         ></textarea>
         <button id="chat-send" aria-label="Send">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M21 12L3 2L3 22L21 12Z" />
+            <path d="M4.5 3.2c-1.1-.6-2.5.2-2.5 1.5v14.6c0 1.3 1.4 2.1 2.5 1.5l14.8-7.3c1.2-.6 1.2-2.4 0-3L4.5 3.2z" />
           </svg>
         </button>
       </div>
