@@ -1,5 +1,6 @@
 ---
 title: Synergetics AI
+description: "Get your energetic questions answered"
 e-issues: "Last Indexed: 12th of March 2026"
 tags:
   - hide-from-nav
@@ -135,7 +136,7 @@ tags:
         </radialGradient>
       </defs>
     </svg>
-    <span class="headline">Synergetics Notebook</span>
+    <span class="headline">Go deeper with Notebook</span>
     <span class="visit-btn">visit</span>
   </div>
 </a>
