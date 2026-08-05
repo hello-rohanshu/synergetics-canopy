@@ -1,6 +1,6 @@
 // ============================================================
 // SYNERGETICS Canopy — AI WORKER (v2.4)
-// Pipeline: Embed (HF Space) → Hybrid Search (Qdrant) → Generate (Google → Cerebras → Groq)
+// Pipeline: Embed (HF Space) → Hybrid Search (Qdrant) → Generate
 // ============================================================
 
 // --- ENDPOINTS ----------------------------------------------
@@ -12,15 +12,19 @@ const QDRANT_COLLECTION = "synergetics";
 const CEREBRAS_MODEL = "gpt-oss-120b";
 const GROQ_MODEL = "qwen/qwen3.6-27b";
 const GOOGLE_MODEL = "gemini-3.6-flash";
+const MISTRAL_MODEL = "open-mixtral-8x7b";
+const OLLAMA_MODEL = "kimi-k2.6:cloud";
 
 // --- RETRIEVAL DEFAULT --------------------------------------
 const DEFAULT_TOP_K = 7;
 
 // --- FINAL MODEL PROVIDER ORDER (remove a provider here to ignore it completely) ---
 const PROVIDER_ORDER = [
+  "ollama",
   "google",
   "cerebras",
   "groq",
+  "mistral",
 
 ] as const;
 
@@ -29,6 +33,18 @@ const PROVIDER_CONFIG = {
   groq: { name: "Groq", keyEnv: "GROQ_API_KEY" as keyof Env, url: "https://api.groq.com/openai/v1/chat/completions", model: GROQ_MODEL },
   google: { name: "Google AI Studio", keyEnv: "GOOGLE_API_KEY" as keyof Env, url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", model: GOOGLE_MODEL },
   cerebras: { name: "Cerebras", keyEnv: "CEREBRAS_API_KEY" as keyof Env, url: "https://api.cerebras.ai/v1/chat/completions", model: CEREBRAS_MODEL },
+  mistral: {
+    name: "Mistral",
+    keyEnv: "MISTRAL_API_KEY" as keyof Env,
+    url: "https://api.mistral.ai/v1/chat/completions",
+    model: MISTRAL_MODEL,
+  },
+  ollama: {
+    name: "Ollama",
+    keyEnv: "OLLAMA_API_KEY" as keyof Env,
+    url: "https://ollama.com/v1/chat/completions",
+    model: OLLAMA_MODEL,
+  },
 } as const;
 
 // --- GENERATION DEFAULTS & PER‑MODEL OVERRIDES ---------------
@@ -64,6 +80,17 @@ const MODEL_OVERRIDES: Record<string, ModelOverrides> = {
     temperature: 0.7,
     context_chunks: 7,
   },
+  [MISTRAL_MODEL]: {
+    max_tokens: 1024,
+    temperature: 0.7,
+    context_chunks: 7,
+  },
+  [OLLAMA_MODEL]: {
+    max_tokens: 2048,
+    temperature: 0.7,
+    context_chunks: 7,
+    reasoning_effort: "none",
+  },
 };
 
 // ============================================================
@@ -96,6 +123,8 @@ export interface Env {
   CEREBRAS_API_KEY: string;
   GROQ_API_KEY: string;
   GOOGLE_API_KEY: string;
+  MISTRAL_API_KEY: string;
+  OLLAMA_API_KEY: string;
 }
 
 type Chunk = { content: string; source: string; score: number };
