@@ -61,8 +61,8 @@ tags:
     line-height: 1.3;
   }
 
-  /* Visit Text Link — Light Theme Base */
-  .synergetics-card .visit-btn {
+  /* Open Text Link — Light Theme Base */
+  .synergetics-card .open-btn {
     display: inline-flex;
     align-items: center;
     font-family: var(--bodyFont);
@@ -76,23 +76,23 @@ tags:
   }
 
   /* Dark Theme Base */
-  html.dark .synergetics-card .visit-btn,
-  html[data-theme="dark"] .synergetics-card .visit-btn,
-  [class*="dark"] .synergetics-card .visit-btn,
-  [data-theme*="dark"] .synergetics-card .visit-btn {
+  html.dark .synergetics-card .open-btn,
+  html[data-theme="dark"] .synergetics-card .open-btn,
+  [class*="dark"] .synergetics-card .open-btn,
+  [data-theme*="dark"] .synergetics-card .open-btn {
     color: #76BBFF;
   }
 
   /* Light Theme Hover */
-  html body a.synergetics-card:hover .visit-btn {
+  html body a.synergetics-card:hover .open-btn {
     color: #4FA0FF;
   }
 
   /* Dark Theme Hover */
-  html.dark a.synergetics-card:hover .visit-btn,
-  html[data-theme="dark"] a.synergetics-card:hover .visit-btn,
-  [class*="dark"] a.synergetics-card:hover .visit-btn,
-  [data-theme*="dark"] a.synergetics-card:hover .visit-btn {
+  html.dark a.synergetics-card:hover .open-btn,
+  html[data-theme="dark"] a.synergetics-card:hover .open-btn,
+  [class*="dark"] a.synergetics-card:hover .open-btn,
+  [data-theme*="dark"] a.synergetics-card:hover .open-btn {
     color: #A9A8FF;
   }
 
@@ -110,7 +110,7 @@ tags:
   }
 
   .synergetics-card > :not(.card-content),
-  .synergetics-card .card-content > :not(.notebook-icon):not(.headline):not(.visit-btn) {
+  .synergetics-card .card-content > :not(.notebook-icon):not(.headline):not(.open-btn) {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
@@ -137,6 +137,6 @@ tags:
       </defs>
     </svg>
     <span class="headline">Go deeper with Notebook</span>
-    <span class="visit-btn">visit</span>
+    <span class="open-btn">open</span>
   </div>
 </a>
