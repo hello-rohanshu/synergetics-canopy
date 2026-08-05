@@ -277,11 +277,11 @@ SynergeticsAI.afterDOMLoaded = `
 
   function renderMarkdown(text) {
     if (window.marked) return window.marked.parse(text);
-    // fallback while marked loads
+    // fallback while marked loads (properly escaped)
     return text
-      .replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>")
-      .replace(/\\n\\n/g, "<br><br>")
-      .replace(/\\n/g, "<br>");
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\n\n/g, "<br><br>")
+      .replace(/\n/g, "<br>");
   }
 
   const PLACEHOLDER_MESSAGES = [
@@ -484,7 +484,8 @@ if (!outputEl || !sendBtn) return;
 
           buffer += decoder.decode(value, { stream: true });
 
-          const lines = buffer.split("\\n");
+          // *** FIXED: split on real newline, not the literal string "\n" ***
+          const lines = buffer.split("\n");
           buffer = lines.pop() ?? "";
 
           for (const line of lines) {
