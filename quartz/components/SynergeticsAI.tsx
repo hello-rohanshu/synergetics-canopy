@@ -549,8 +549,7 @@ if (!outputEl || !sendBtn) return;
         contentEl.textContent = "Something went wrong. Try again.";
       }
 
-      sendBtn.disabled = false;
-      inputEl.focus();
+      sendBtn.disabled = false;   // ← focus removed from here
     }
 
     sendBtn.addEventListener("click", handleQuery);
@@ -569,6 +568,6 @@ document.addEventListener("nav", () => {
 });
 tryInit();
 })();
-`
+`;
 
 export default (() => SynergeticsAI) satisfies QuartzComponentConstructor
