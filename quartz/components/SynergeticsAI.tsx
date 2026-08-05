@@ -277,9 +277,9 @@ SynergeticsAI.afterDOMLoaded = `
 
   function renderMarkdown(text) {
     if (window.marked) return window.marked.parse(text);
-    // fallback while marked loads (properly escaped)
+    // fallback while marked loads
     return text
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>")
       .replace(/\n\n/g, "<br><br>")
       .replace(/\n/g, "<br>");
   }
@@ -484,7 +484,6 @@ if (!outputEl || !sendBtn) return;
 
           buffer += decoder.decode(value, { stream: true });
 
-          // *** FIXED: split on real newline, not the literal string "\n" ***
           const lines = buffer.split("\n");
           buffer = lines.pop() ?? "";
 
@@ -517,7 +516,7 @@ if (!outputEl || !sendBtn) return;
           copyWrapper.style.pointerEvents = "auto";
 
           copyBtn.addEventListener("click", async () => {
-            const clipboardText = \`Q: \${query}\\n\\nA: \${content}\`;
+            const clipboardText = \`Q: \${query}\n\nA: \${content}\`;
             try {
               await navigator.clipboard.writeText(clipboardText);
               
