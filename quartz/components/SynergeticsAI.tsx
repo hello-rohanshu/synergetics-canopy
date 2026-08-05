@@ -277,7 +277,7 @@ SynergeticsAI.afterDOMLoaded = `
 
   function renderMarkdown(text) {
     if (window.marked) return window.marked.parse(text);
-    // fallback while marked loads (properly escaped)
+    // fallback while marked loads
     return text
       .replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>")
       .replace(/\\n\\n/g, "<br><br>")
@@ -390,7 +390,11 @@ if (!outputEl || !sendBtn) return;
       }
 
       const firstMsg = pickMessage("early");
-      contentEl.innerHTML = '<div class="thinking-status"><span class="thinking-message">' + firstMsg + '</span></div>';
+      contentEl.innerHTML = \`
+        <div class="thinking-status">
+          <span class="thinking-message">\${firstMsg}</span>
+        </div>
+      \`;
 
       const msgEl = contentEl.querySelector(".thinking-message");
 
@@ -438,19 +442,21 @@ if (!outputEl || !sendBtn) return;
       sendBtn.disabled = true;
 
       // Injected copy button starts hidden (opacity 0, pointer-events none)
-      outputEl.innerHTML = '<div class="query-label">Question</div>' +
-        '<div class="query-text">' + query + '</div>' +
-        '<div class="query-label">Answer</div>' +
-        '<div class="answer-content"></div>' +
-        '<div class="copy-action-wrapper" style="opacity: 0; pointer-events: none; transition: opacity 0.4s ease;">' +
-          '<button class="copy-dialogue-btn" aria-label="Copy Response">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-              '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
-              '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
-            '</svg>' +
-            '<span>Copy Response</span>' +
-          '</button>' +
-        '</div>';
+      outputEl.innerHTML = \`
+        <div class="query-label">Question</div>
+        <div class="query-text">\${query}</div>
+        <div class="query-label">Answer</div>
+        <div class="answer-content"></div>
+        <div class="copy-action-wrapper" style="opacity: 0; pointer-events: none; transition: opacity 0.4s ease;">
+          <button class="copy-dialogue-btn" aria-label="Copy Response">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy Response</span>
+          </button>
+        </div>
+      \`;
 
       const contentEl = outputEl.querySelector(".answer-content");
       const copyWrapper = outputEl.querySelector(".copy-action-wrapper");
@@ -478,7 +484,6 @@ if (!outputEl || !sendBtn) return;
 
           buffer += decoder.decode(value, { stream: true });
 
-          // split on real newline, not the literal string "\n"
           const lines = buffer.split("\\n");
           buffer = lines.pop() ?? "";
 
@@ -511,15 +516,26 @@ if (!outputEl || !sendBtn) return;
           copyWrapper.style.pointerEvents = "auto";
 
           copyBtn.addEventListener("click", async () => {
-            const clipboardText = "Q: " + query + "\\n\\nA: " + content;
+            const clipboardText = \`Q: \${query}\\n\\nA: \${content}\`;
             try {
               await navigator.clipboard.writeText(clipboardText);
               
-              copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>';
+              copyBtn.innerHTML = \`
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Copied!</span>
+              \`;
               copyBtn.classList.add("success");
               
               setTimeout(() => {
-                copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy Response</span>';
+                copyBtn.innerHTML = \`
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span>Copy Response</span>
+                \`;
                 copyBtn.classList.remove("success");
               }, 2000);
             } catch (err) {
