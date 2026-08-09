@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Jitterbug · VE ↔ octahedron</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            overflow: hidden;
+            font-family: var(--bodyFont, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+            width: 100vw;
+            min-height: 340px;
+            touch-action: none;
+        }
+
+        .widget-box {
+            width: 340px;
+            height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 340px;
+            height: 256px;
+        }
+
+        canvas {
+            display: block;
+            width: 340px;
+            height: 256px;
+            background: transparent;
+            cursor: default;
+            touch-action: none;
+        }
+
+        .controls {
+            width: 340px;
+            height: 84px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0 16px 10px 16px;
+        }
+
+        .slider-track-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #phase-labels {
+            position: relative;
+            width: 100%;
+            height: 28px;
+            pointer-events: none;
+        }
+
+        .phase-lbl {
+            position: absolute;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            font-family: var(--bodyFont, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace, sans-serif);
+            font-weight: 600;
+            color: var(--tick-color, #888);
+            line-height: 1;
+            transition: color 0.15s ease;
+        }
+
+        .phase-lbl.active {
+            font-weight: 700;
+            color: var(--slider-thumb, #2b2b2b);
+        }
+
+        #slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            background: var(--slider-track, #c0c0c0);
+            display: block;
+        }
+
+        /* Play Icon appears inside Thumb only when paused */
+        #slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--slider-thumb, #2b2b2b);
+            background-image: var(--thumb-icon);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 12px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+            transition: transform 0.1s ease, background-color 0.15s ease;
+        }
+
+        #slider::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--slider-thumb, #2b2b2b);
+            background-image: var(--thumb-icon);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 12px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+            transition: transform 0.1s ease, background-color 0.15s ease;
+        }
+
+        #slider::-webkit-slider-thumb:hover,
+        #slider::-moz-range-thumb:hover {
+            transform: scale(1.08);
+        }
+
+        #slider::-webkit-slider-thumb:active,
+        #slider::-moz-range-thumb:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="widget-box">
+        <div class="canvas-container">
+            <canvas id="jitterbug" aria-label="Jitterbug transformation from cuboctahedron to octahedron"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="slider-track-wrap">
+                <div id="phase-labels"></div>
+                <input type="range" id="slider" min="-1000" max="1000" value="0" step="1" aria-label="Jitterbug phase slider">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            function sendHeight() {
+                if (window.parent !== window) {
+                    const h = document.body.scrollHeight;
+                    window.parent.postMessage({ type: 'iframeResize', height: h }, '*');
+                    try {
+                        const iframes = window.parent.document.querySelectorAll('iframe');
+                        for (let iframe of iframes) {
+                            if (iframe.contentWindow === window) {
+                                iframe.style.height = h + 'px';
+                                break;
+                            }
+                        }
+                    } catch (e) { }
+                }
+            }
+            new ResizeObserver(sendHeight).observe(document.body);
+            window.addEventListener('load', sendHeight);
+            sendHeight();
+
+            const canvas = document.getElementById('jitterbug');
+            const ctx = canvas.getContext('2d');
+
+            const nominalW = 340;
+            const nominalH = 256;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = nominalW * dpr;
+            canvas.height = nominalH * dpr;
+            canvas.style.width = nominalW + 'px';
+            canvas.style.height = nominalH + 'px';
+
+            const W = nominalW;
+            const H = nominalH;
+            const cx = W / 2;
+            const cy = H / 2 - 2;
+            const HIT_RADIUS_SQ = 115 * 115;
+
+            const FALLBACK_COLORS = {
+                '--light': '#FFF8E7',
+                '--lightgray': '#EBE3D5',
+                '--gray': '#8C847A',
+                '--darkgray': '#4A443F',
+                '--dark': '#2C2825',
+                '--secondary': '#44633a',
+                '--tertiary': '#b6bd38',
+            };
+
+            function getColor(name) {
+                try {
+                    const v = getComputedStyle(parent.document.documentElement).getPropertyValue(name).trim();
+                    if (v) return v;
+                } catch (e) { }
+                return FALLBACK_COLORS[name] || '#888';
+            }
+
+            function applyThemeToSlider() {
+                const dark = getColor('--dark');
+                const gray = getColor('--gray');
+                document.documentElement.style.setProperty('--slider-track', gray + '55');
+                document.documentElement.style.setProperty('--slider-thumb', dark);
+                document.documentElement.style.setProperty('--tick-color', gray);
+                updateThumbIcon();
+            }
+
+            function isInsideDiagram(clientX, clientY) {
+                const rect = canvas.getBoundingClientRect();
+                const canvasX = (clientX - rect.left) * (nominalW / rect.width);
+                const canvasY = (clientY - rect.top) * (nominalH / rect.height);
+                const dx = canvasX - cx;
+                const dy = canvasY - cy;
+                return (dx * dx + dy * dy) <= HIT_RADIUS_SQ;
+            }
+
+            const R = 100;
+            const s = R / Math.sqrt(2);
+            const GAMMA_MAX = Math.atan(3);
+
+            function qOf(gamma) { return Math.atan(Math.tan(gamma) / Math.sqrt(3)); }
+            function Vradial(gamma) { return R * Math.cos(qOf(gamma)) * Math.sqrt(2 / 3); }
+
+            function rotAboutAxis(v, axis, theta) {
+                const [ax, ay, az] = axis;
+                const c = Math.cos(theta), si = Math.sin(theta);
+                const d = ax * v[0] + ay * v[1] + az * v[2];
+                return [
+                    v[0] * c + (ay * v[2] - az * v[1]) * si + ax * d * (1 - c),
+                    v[1] * c + (az * v[0] - ax * v[2]) * si + ay * d * (1 - c),
+                    v[2] * c + (ax * v[1] - ay * v[0]) * si + az * d * (1 - c)
+                ];
+            }
+            function norm3(v) {
+                const l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                return [v[0] / l, v[1] / l, v[2] / l];
+            }
+            function sub3(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+            function add3(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+            function scale3(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
+
+            const FACE_DEFS = [
+                { idx: [0, 4, 8], verts: [[s, s, 0], [s, 0, s], [0, s, s]], axRaw: [1, 1, 1] },
+                { idx: [0, 5, 9], verts: [[s, s, 0], [s, 0, -s], [0, s, -s]], axRaw: [1, 1, -1] },
+                { idx: [1, 4, 10], verts: [[s, -s, 0], [s, 0, s], [0, -s, s]], axRaw: [1, -1, 1] },
+                { idx: [1, 5, 11], verts: [[s, -s, 0], [s, 0, -s], [0, -s, -s]], axRaw: [1, -1, -1] },
+                { idx: [2, 6, 8], verts: [[-s, s, 0], [-s, 0, s], [0, s, s]], axRaw: [-1, 1, 1] },
+                { idx: [2, 7, 9], verts: [[-s, s, 0], [-s, 0, -s], [0, s, -s]], axRaw: [-1, 1, -1] },
+                { idx: [3, 6, 10], verts: [[-s, -s, 0], [-s, 0, s], [0, -s, s]], axRaw: [-1, -1, 1] },
+                { idx: [3, 7, 11], verts: [[-s, -s, 0], [-s, 0, -s], [0, -s, -s]], axRaw: [-1, -1, -1] }
+            ];
+            const faces = FACE_DEFS.map(f => {
+                const ax = norm3(f.axRaw);
+                const centerVE = scale3(f.verts.reduce((a, v) => add3(a, v), [0, 0, 0]), 1 / 3);
+                const parity = (f.axRaw[0] > 0 ? 1 : 0) + (f.axRaw[1] > 0 ? 1 : 0) + (f.axRaw[2] > 0 ? 1 : 0);
+                const sign = (parity % 2 === 1) ? 1 : -1;
+                return { idx: f.idx, verts: f.verts, ax, centerVE, sign };
+            });
+
+            function getVerts(t) {
+                const gamma = t * GAMMA_MAX;
+                const pos = new Array(12);
+                for (const f of faces) {
+                    const g = f.sign * gamma;
+                    const q = qOf(g);
+                    const newCenter = scale3(f.ax, Vradial(g));
+                    for (let k = 0; k < 3; k++) {
+                        const local = sub3(f.verts[k], f.centerVE);
+                        const rotatedLocal = rotAboutAxis(local, f.ax, q);
+                        pos[f.idx[k]] = add3(newCenter, rotatedLocal);
+                    }
+                }
+                return pos;
+            }
+
+            const r00 = (1 + Math.sqrt(3)) / (2 * Math.sqrt(3));
+            const r01 = -1 / Math.sqrt(3);
+            const r02 = (1 - Math.sqrt(3)) / (2 * Math.sqrt(3));
+            const r10 = 1 / Math.sqrt(3);
+            const r11 = 1 / Math.sqrt(3);
+            const r12 = 1 / Math.sqrt(3);
+            const r20 = (1 - Math.sqrt(3)) / (2 * Math.sqrt(3));
+            const r21 = -1 / Math.sqrt(3);
+            const r22 = (1 + Math.sqrt(3)) / (2 * Math.sqrt(3));
+
+            function rTT(v) {
+                return [
+                    r00 * v[0] + r01 * v[1] + r02 * v[2],
+                    r10 * v[0] + r11 * v[1] + r12 * v[2],
+                    r20 * v[0] + r21 * v[1] + r22 * v[2]
+                ];
+            }
+
+            const drawFaces = faces.map(f => f.idx);
+
+            function rotYcam(p, a) {
+                const c = Math.cos(a), sn = Math.sin(a);
+                return [p[0] * c + p[2] * sn, p[1], -p[0] * sn + p[2] * c];
+            }
+            function rotXcam(p, a) {
+                const c = Math.cos(a), sn = Math.sin(a);
+                return [p[0], p[1] * c - p[2] * sn, p[1] * sn + p[2] * c];
+            }
+
+            const DEFAULT_ROTY = 0.95;
+            const DEFAULT_ROTX = 0.20;
+            let rotYangle = DEFAULT_ROTY;
+            let rotXangle = DEFAULT_ROTX;
+            let dragging = false, lastX, lastY;
+            let isResetting = false;
+
+            function triggerReset() { isResetting = true; }
+
+            canvas.addEventListener('dblclick', e => {
+                if (isInsideDiagram(e.clientX, e.clientY)) triggerReset();
+            });
+
+            canvas.addEventListener('mousemove', e => {
+                canvas.style.cursor = isInsideDiagram(e.clientX, e.clientY) ? 'grab' : 'default';
+            });
+
+            canvas.addEventListener('mousedown', e => {
+                if (!isInsideDiagram(e.clientX, e.clientY)) return;
+                dragging = true;
+                isResetting = false;
+                canvas.style.cursor = 'grabbing';
+                lastX = e.clientX; lastY = e.clientY;
+            });
+
+            window.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                const dx = e.clientX - lastX;
+                const dy = e.clientY - lastY;
+                rotYangle += dx * 0.008;
+                rotXangle += dy * 0.008;
+                rotXangle = Math.min(Math.PI / 2.1, Math.max(-Math.PI / 2.1, rotXangle));
+                lastX = e.clientX; lastY = e.clientY;
+            });
+
+            window.addEventListener('mouseup', () => {
+                dragging = false;
+                canvas.style.cursor = 'default';
+            });
+
+            let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+
+            canvas.addEventListener('touchstart', e => {
+                if (e.touches.length !== 1) return;
+                const touch = e.touches[0];
+                if (!isInsideDiagram(touch.clientX, touch.clientY)) return;
+
+                const now = performance.now();
+                const distSq = (touch.clientX - lastTapX) ** 2 + (touch.clientY - lastTapY) ** 2;
+
+                if (now - lastTapTime < 300 && distSq < 900) {
+                    triggerReset();
+                    lastTapTime = 0;
+                } else {
+                    lastTapTime = now;
+                    lastTapX = touch.clientX;
+                    lastTapY = touch.clientY;
+                }
+
+                if (e.cancelable) e.preventDefault();
+                dragging = true;
+                isResetting = false;
+                lastX = touch.clientX; lastY = touch.clientY;
+            });
+
+            canvas.addEventListener('touchmove', e => {
+                if (!dragging) return;
+                if (e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                const dx = touch.clientX - lastX;
+                const dy = touch.clientY - lastY;
+                rotYangle += dx * 0.008;
+                rotXangle += dy * 0.008;
+                rotXangle = Math.min(Math.PI / 2.1, Math.max(-Math.PI / 2.1, rotXangle));
+                lastX = touch.clientX; lastY = touch.clientY;
+            });
+
+            canvas.addEventListener('touchend', () => { dragging = false; });
+            canvas.addEventListener('touchcancel', () => { dragging = false; });
+
+            const sliderEl = document.getElementById('slider');
+            const labelsEl = document.getElementById('phase-labels');
+
+            const phases = [
+                { t: -1, label: 'D' },
+                { t: -0.6667, label: 'C' },
+                { t: -0.3333, label: 'B' },
+                { t: 0, label: 'A' },
+                { t: 0.3333, label: 'B' },
+                { t: 0.6667, label: 'C' },
+                { t: 1, label: 'D' },
+            ];
+
+            const labelEls = phases.map((p) => {
+                const pct = (p.t + 1) / 2 * 100;
+                const el = document.createElement('span');
+                el.className = 'phase-lbl';
+                el.style.left = pct + '%';
+                el.textContent = p.label;
+                labelsEl.appendChild(el);
+                return el;
+            });
+
+            function sliderToT(val) { return val / 1000; }
+            function tToSlider(t) { return Math.round(t * 1000); }
+
+            function updatePhaseLabel(t) {
+                let closestIdx = 0, minDist = Infinity;
+                phases.forEach((p, i) => {
+                    const d = Math.abs(t - p.t);
+                    if (d < minDist) { minDist = d; closestIdx = i; }
+                });
+                labelEls.forEach((el, i) => {
+                    el.classList.toggle('active', i === closestIdx && minDist < 0.2);
+                });
+            }
+
+            let tParam = 0;
+            let tDir = 1;
+            let autoPlay = true;
+            let endpointPauseUntil = 0;
+            const ENDPOINT_HOLD_MS = 1000;
+
+            // Shows play icon on thumb when paused; hides it when playing
+            function updateThumbIcon() {
+                if (!autoPlay) {
+                    const lightColor = getColor('--light');
+                    const playPath = "<path d='M4.5 2.5v11l9-5.5z'/>";
+                    const svgData = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='${encodeURIComponent(lightColor)}'>${playPath}</svg>")`;
+                    sliderEl.style.setProperty('--thumb-icon', svgData);
+                } else {
+                    sliderEl.style.setProperty('--thumb-icon', 'none');
+                }
+            }
+
+            let isDraggingSlider = false;
+
+            sliderEl.addEventListener('pointerdown', () => {
+                isDraggingSlider = false;
+            });
+
+            sliderEl.addEventListener('input', () => {
+                isDraggingSlider = true;
+                tParam = sliderToT(parseInt(sliderEl.value));
+                autoPlay = false;
+                endpointPauseUntil = 0;
+                updatePhaseLabel(tParam);
+                updateThumbIcon();
+            });
+
+            sliderEl.addEventListener('pointerup', () => {
+                if (!isDraggingSlider) {
+                    autoPlay = !autoPlay;
+                    endpointPauseUntil = 0;
+                    updateThumbIcon();
+                }
+            });
+
+            function animate(timestamp) {
+                const now = performance.now();
+                const frameTime = timestamp || now;
+
+                if (isResetting && !dragging) {
+                    rotYangle += (DEFAULT_ROTY - rotYangle) * 0.12;
+                    rotXangle += (DEFAULT_ROTX - rotXangle) * 0.12;
+                    if (Math.abs(rotYangle - DEFAULT_ROTY) < 0.0005 && Math.abs(rotXangle - DEFAULT_ROTX) < 0.0005) {
+                        rotYangle = DEFAULT_ROTY;
+                        rotXangle = DEFAULT_ROTX;
+                        isResetting = false;
+                    }
+                }
+
+                if (autoPlay) {
+                    if (endpointPauseUntil > 0) {
+                        if (frameTime >= endpointPauseUntil) {
+                            tDir = (tParam >= 1) ? -1 : 1;
+                            endpointPauseUntil = 0;
+                        }
+                    } else {
+                        const speed = 0.004;
+                        tParam += speed * tDir;
+                        if (tParam >= 1) {
+                            tParam = 1;
+                            endpointPauseUntil = frameTime + ENDPOINT_HOLD_MS;
+                        } else if (tParam <= -1) {
+                            tParam = -1;
+                            endpointPauseUntil = frameTime + ENDPOINT_HOLD_MS;
+                        }
+                    }
+                    sliderEl.value = tToSlider(tParam);
+                    updatePhaseLabel(tParam);
+                }
+
+                const lightBg = getColor('--light');
+                document.body.style.backgroundColor = lightBg;
+                applyThemeToSlider();
+
+                const darkEdge = getColor('--dark');
+                const grayBack = getColor('--gray');
+                const faceColor = getColor('--secondary');
+
+                ctx.save();
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, W, H);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                const verts3D_raw = getVerts(tParam);
+                const verts3D = verts3D_raw.map(rTT);
+
+                const proj2D = verts3D.map(v => {
+                    const r = rotXcam(rotYcam(v, rotYangle), rotXangle);
+                    return [cx + r[0], cy - r[1]];
+                });
+                const zVals = verts3D.map(v => {
+                    const r = rotXcam(rotYcam(v, rotYangle), rotXangle);
+                    return r[2];
+                });
+
+                const facesWithZ = drawFaces.map(f => ({
+                    face: f,
+                    z: (zVals[f[0]] + zVals[f[1]] + zVals[f[2]]) / 3
+                })).sort((a, b) => a.z - b.z);
+
+                const edgeOffsetFraction = 0.08;
+
+                function insetVertex(faceIdx, vertIdx, centerX, centerY) {
+                    const p = proj2D[faceIdx[vertIdx]];
+                    return [
+                        p[0] + (centerX - p[0]) * edgeOffsetFraction,
+                        p[1] + (centerY - p[1]) * edgeOffsetFraction
+                    ];
+                }
+
+                // BACK FACES
+                ctx.globalAlpha = 0.10;
+                for (let item of facesWithZ) {
+                    if (item.z >= 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    const p0 = insetVertex(f, 0, cX, cY);
+                    const p1 = insetVertex(f, 1, cX, cY);
+                    const p2 = insetVertex(f, 2, cX, cY);
+                    ctx.beginPath();
+                    ctx.moveTo(p0[0], p0[1]);
+                    ctx.lineTo(p1[0], p1[1]);
+                    ctx.lineTo(p2[0], p2[1]);
+                    ctx.closePath();
+                    ctx.fillStyle = faceColor;
+                    ctx.fill();
+                }
+
+                ctx.globalAlpha = 0.65;
+                ctx.lineWidth = 1.3;
+                ctx.setLineDash([6, 5]);
+                for (let item of facesWithZ) {
+                    if (item.z >= 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    for (let i = 0; i < 3; i++) {
+                        const p1 = insetVertex(f, i, cX, cY);
+                        const p2 = insetVertex(f, (i + 1) % 3, cX, cY);
+                        ctx.beginPath();
+                        ctx.moveTo(p1[0], p1[1]);
+                        ctx.lineTo(p2[0], p2[1]);
+                        ctx.strokeStyle = grayBack;
+                        ctx.stroke();
+                    }
+                }
+                ctx.setLineDash([]);
+
+                ctx.globalAlpha = 0.22;
+                ctx.lineWidth = 0.6;
+                ctx.setLineDash([2, 3]);
+                for (let item of facesWithZ) {
+                    if (item.z >= 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    for (let i = 0; i < 3; i++) {
+                        const trueV = proj2D[f[i]];
+                        const insetV = insetVertex(f, i, cX, cY);
+                        ctx.beginPath();
+                        ctx.moveTo(trueV[0], trueV[1]);
+                        ctx.lineTo(insetV[0], insetV[1]);
+                        ctx.strokeStyle = grayBack;
+                        ctx.stroke();
+                    }
+                }
+                ctx.setLineDash([]);
+
+                // FRONT FACES
+                ctx.globalAlpha = 0.28;
+                for (let item of facesWithZ) {
+                    if (item.z < 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    const p0 = insetVertex(f, 0, cX, cY);
+                    const p1 = insetVertex(f, 1, cX, cY);
+                    const p2 = insetVertex(f, 2, cX, cY);
+                    ctx.beginPath();
+                    ctx.moveTo(p0[0], p0[1]);
+                    ctx.lineTo(p1[0], p1[1]);
+                    ctx.lineTo(p2[0], p2[1]);
+                    ctx.closePath();
+                    ctx.fillStyle = faceColor;
+                    ctx.fill();
+                }
+
+                ctx.globalAlpha = 1.0;
+                ctx.lineWidth = 1.9;
+                ctx.setLineDash([]);
+                for (let item of facesWithZ) {
+                    if (item.z < 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    for (let i = 0; i < 3; i++) {
+                        const p1 = insetVertex(f, i, cX, cY);
+                        const p2 = insetVertex(f, (i + 1) % 3, cX, cY);
+                        ctx.beginPath();
+                        ctx.moveTo(p1[0], p1[1]);
+                        ctx.lineTo(p2[0], p2[1]);
+                        ctx.strokeStyle = darkEdge;
+                        ctx.stroke();
+                    }
+                }
+
+                ctx.globalAlpha = 0.28;
+                ctx.lineWidth = 0.7;
+                ctx.setLineDash([2, 3]);
+                for (let item of facesWithZ) {
+                    if (item.z < 0) continue;
+                    const f = item.face;
+                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
+                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
+                    for (let i = 0; i < 3; i++) {
+                        const trueV = proj2D[f[i]];
+                        const insetV = insetVertex(f, i, cX, cY);
+                        ctx.beginPath();
+                        ctx.moveTo(trueV[0], trueV[1]);
+                        ctx.lineTo(insetV[0], insetV[1]);
+                        ctx.strokeStyle = darkEdge;
+                        ctx.stroke();
+                    }
+                }
+                ctx.setLineDash([]);
+
+                ctx.restore();
+                requestAnimationFrame(animate);
+            }
+
+            applyThemeToSlider();
+            requestAnimationFrame(animate);
+            sendHeight();
+        })();
+    </script>
+</body>
+
+</html>
