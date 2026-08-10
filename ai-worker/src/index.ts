@@ -201,6 +201,13 @@ export default {
       });
     }
 
+    // ── GET /ping/worker ─────────────────────────────────────
+    // Lightweight check — confirms the worker itself is running,
+    // no external dependencies.
+    if (request.method === "GET" && url.pathname === "/ping/worker") {
+      return jsonOk({ status: "ok", timestamp: Date.now() });
+    }
+
     // ── POST / — RAG pipeline ──────────────────────────────
     if (request.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
