@@ -6,7 +6,7 @@ const TrendsManifest: QuartzComponent = () => {
   return (
     <div id="trends-manifest-container">
       <h2 class="trends-title">Trends Manifest</h2>
-      <p class="trends-subtitle">Ship's log — what's moving on Synergetics Isle.</p>
+      <p class="trends-subtitle">Ship's log — what's moving on Synergetics Canopy.</p>
       <div id="trends-content">
         <p class="trends-loading">Fetching from the bridge…</p>
       </div>

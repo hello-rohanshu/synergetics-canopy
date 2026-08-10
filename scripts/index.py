@@ -1,5 +1,5 @@
 """
-Synergetics-Isle Indexing Script
+Synergetics-Canopy Indexing Script
 Crawls local markdown files → chunks by Fuller's section headings
 → BGE-M3 hybrid (dense + sparse) embeddings → Qdrant
 """
