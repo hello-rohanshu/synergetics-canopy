@@ -20,6 +20,7 @@
 // ============================================================
 
 export interface Env {
+  HF_API_KEY: string;
   QDRANT_API_KEY: string;
   CEREBRAS_API_KEY: string;
   GROQ_API_KEY: string;

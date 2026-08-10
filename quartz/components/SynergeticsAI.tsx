@@ -260,7 +260,7 @@ SynergeticsAI.css = `
 SynergeticsAI.afterDOMLoaded = `
 (function() {
 
-  const WORKER_URL = "https://synergetics-worker.rohanshu.workers.dev";
+  const WORKER_URL = "https://synergetics-canopy-ai.rohanshu.workers.dev";
 
   // Load marked.js for proper markdown rendering
   if (!window.__markedLoaded) {

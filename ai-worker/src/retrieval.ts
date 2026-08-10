@@ -5,7 +5,7 @@
 import type { Chunk } from "./generate";
 
 const HF_EMBED_URL = "https://hello-rohanshu-synergetics-embed.hf.space/embed";
-const QDRANT_URL = "https://80d0a4b3-7608-4a78-9554-4edafcf7db1b.europe-west3-0.gcp.cloud.qdrant.io";
+export const QDRANT_URL = "https://80d0a4b3-7608-4a78-9554-4edafcf7db1b.europe-west3-0.gcp.cloud.qdrant.io";
 const QDRANT_COLLECTION = "synergetics";
 
 export type Embedding = { dense: number[]; indices: number[]; values: number[] };
@@ -48,11 +48,4 @@ export async function hybridSearch(embed: Embedding, apiKey: string, topK: numbe
     source: point.payload?.source ?? point.payload?.section ?? "unknown",
     score: point.score ?? 0,
   }));
-}
-
-export async function pingQdrant(apiKey: string): Promise<number> {
-  const res = await fetch(`${QDRANT_URL}/collections/${QDRANT_COLLECTION}`, {
-    headers: { "api-key": apiKey },
-  });
-  return res.status;
 }
