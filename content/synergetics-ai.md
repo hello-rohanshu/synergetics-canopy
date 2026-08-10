@@ -20,7 +20,7 @@ tags:
     -webkit-mask-image: none !important;
     mask-image: none !important;
     border-radius: 8px;
-    padding: 12px 28px !important;
+    padding: 16px 28px !important;
     padding-right: 44px !important;
     color: var(--dark);
     font-family: inherit;
