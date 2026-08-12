@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Jitterbug · VE ↔ octahedron</title>
+    <title>Jitterbug · VE ↔ octahedron (Stationary Poles)</title>
     <style>
         * {
             margin: 0;
@@ -237,8 +237,12 @@
             const s = R / Math.sqrt(2);
             const GAMMA_MAX = Math.atan(3);
 
+            const DIST_CENTER_TO_VERT = s * Math.sqrt(2 / 3); 
+            const CORNER_INSET_3D = 5; 
+            const VERT_SCALE = 1; 
+
             function qOf(gamma) { return Math.atan(Math.tan(gamma) / Math.sqrt(3)); }
-            function Vradial(gamma) { return R * Math.cos(qOf(gamma)) * Math.sqrt(2 / 3); }
+            function Vradial(gamma) { return R * Math.cos(qOf(gamma)) * Math.sqrt(2 / 3) + CORNER_INSET_3D; }
 
             function rotAboutAxis(v, axis, theta) {
                 const [ax, ay, az] = axis;
@@ -259,37 +263,50 @@
             function scale3(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
 
             const FACE_DEFS = [
-                { idx: [0, 4, 8], verts: [[s, s, 0], [s, 0, s], [0, s, s]], axRaw: [1, 1, 1] },
-                { idx: [0, 5, 9], verts: [[s, s, 0], [s, 0, -s], [0, s, -s]], axRaw: [1, 1, -1] },
-                { idx: [1, 4, 10], verts: [[s, -s, 0], [s, 0, s], [0, -s, s]], axRaw: [1, -1, 1] },
-                { idx: [1, 5, 11], verts: [[s, -s, 0], [s, 0, -s], [0, -s, -s]], axRaw: [1, -1, -1] },
-                { idx: [2, 6, 8], verts: [[-s, s, 0], [-s, 0, s], [0, s, s]], axRaw: [-1, 1, 1] },
-                { idx: [2, 7, 9], verts: [[-s, s, 0], [-s, 0, -s], [0, s, -s]], axRaw: [-1, 1, -1] },
-                { idx: [3, 6, 10], verts: [[-s, -s, 0], [-s, 0, s], [0, -s, s]], axRaw: [-1, -1, 1] },
-                { idx: [3, 7, 11], verts: [[-s, -s, 0], [-s, 0, -s], [0, -s, -s]], axRaw: [-1, -1, -1] }
+                { verts: [[s, s, 0], [s, 0, s], [0, s, s]], axRaw: [1, 1, 1] },
+                { verts: [[s, s, 0], [s, 0, -s], [0, s, -s]], axRaw: [1, 1, -1] },
+                { verts: [[s, -s, 0], [s, 0, s], [0, -s, s]], axRaw: [1, -1, 1] },
+                { verts: [[s, -s, 0], [s, 0, -s], [0, -s, -s]], axRaw: [1, -1, -1] },
+                { verts: [[-s, s, 0], [-s, 0, s], [0, s, s]], axRaw: [-1, 1, 1] },
+                { verts: [[-s, s, 0], [-s, 0, -s], [0, s, -s]], axRaw: [-1, 1, -1] },
+                { verts: [[-s, -s, 0], [-s, 0, s], [0, -s, s]], axRaw: [-1, -1, 1] },
+                { verts: [[-s, -s, 0], [-s, 0, -s], [0, -s, -s]], axRaw: [-1, -1, -1] }
             ];
             const faces = FACE_DEFS.map(f => {
                 const ax = norm3(f.axRaw);
                 const centerVE = scale3(f.verts.reduce((a, v) => add3(a, v), [0, 0, 0]), 1 / 3);
                 const parity = (f.axRaw[0] > 0 ? 1 : 0) + (f.axRaw[1] > 0 ? 1 : 0) + (f.axRaw[2] > 0 ? 1 : 0);
                 const sign = (parity % 2 === 1) ? 1 : -1;
-                return { idx: f.idx, verts: f.verts, ax, centerVE, sign };
+                return { verts: f.verts, ax, centerVE, sign };
             });
 
-            function getVerts(t) {
+            // Calculates vertices with stationary poles by applying a global counter-rotation
+            function getFaceVerts(t) {
                 const gamma = t * GAMMA_MAX;
-                const pos = new Array(12);
-                for (const f of faces) {
+                
+                // Track the rotation of the top pole [1, 1, 1] so we can mathematically cancel it out
+                const topQ = qOf(gamma);
+                const globalAxis = norm3([1, 1, 1]); 
+
+                return faces.map(f => {
                     const g = f.sign * gamma;
                     const q = qOf(g);
                     const newCenter = scale3(f.ax, Vradial(g));
-                    for (let k = 0; k < 3; k++) {
-                        const local = sub3(f.verts[k], f.centerVE);
-                        const rotatedLocal = rotAboutAxis(local, f.ax, q);
-                        pos[f.idx[k]] = add3(newCenter, rotatedLocal);
-                    }
-                }
-                return pos;
+                    return f.verts.map(v => {
+                        const local = sub3(v, f.centerVE);
+                        const insetLocal = scale3(local, VERT_SCALE);
+                        
+                        // Local rotation in space
+                        const rotatedLocal = rotAboutAxis(insetLocal, f.ax, q);
+                        let pos = add3(newCenter, rotatedLocal);
+                        
+                        // Counter-rotate the entire system backwards around the [1, 1, 1] axis
+                        // This pins the top and bottom faces so they don't rotate at all!
+                        pos = rotAboutAxis(pos, globalAxis, -topQ);
+                        
+                        return pos;
+                    });
+                });
             }
 
             const r00 = (1 + Math.sqrt(3)) / (2 * Math.sqrt(3));
@@ -302,6 +319,7 @@
             const r21 = -1 / Math.sqrt(3);
             const r22 = (1 + Math.sqrt(3)) / (2 * Math.sqrt(3));
 
+            // rTT matrices align the [1,1,1] vector perfectly to the [0,1,0] screen UP vector
             function rTT(v) {
                 return [
                     r00 * v[0] + r01 * v[1] + r02 * v[2],
@@ -309,8 +327,6 @@
                     r20 * v[0] + r21 * v[1] + r22 * v[2]
                 ];
             }
-
-            const drawFaces = faces.map(f => f.idx);
 
             function rotYcam(p, a) {
                 const c = Math.cos(a), sn = Math.sin(a);
@@ -321,7 +337,7 @@
                 return [p[0], p[1] * c - p[2] * sn, p[1] * sn + p[2] * c];
             }
 
-            const DEFAULT_ROTY = 0.95;
+            const DEFAULT_ROTY = 0.2 + Math.PI;
             const DEFAULT_ROTX = 0.20;
             let rotYangle = DEFAULT_ROTY;
             let rotXangle = DEFAULT_ROTX;
@@ -444,7 +460,6 @@
             let endpointPauseUntil = 0;
             const ENDPOINT_HOLD_MS = 1000;
 
-            // Shows play icon on thumb when paused; hides it when playing
             function updateThumbIcon() {
                 if (!autoPlay) {
                     const lightColor = getColor('--light');
@@ -525,152 +540,110 @@
                 ctx.save();
                 ctx.scale(dpr, dpr);
                 ctx.clearRect(0, 0, W, H);
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
 
-                const verts3D_raw = getVerts(tParam);
-                const verts3D = verts3D_raw.map(rTT);
+                // Calculate positions for each face with precision tube clearance
+                const faces3D = getFaceVerts(tParam);
 
-                const proj2D = verts3D.map(v => {
-                    const r = rotXcam(rotYcam(v, rotYangle), rotXangle);
-                    return [cx + r[0], cy - r[1]];
-                });
-                const zVals = verts3D.map(v => {
-                    const r = rotXcam(rotYcam(v, rotYangle), rotXangle);
-                    return r[2];
-                });
+                const facesWithZ = faces3D.map(verts3D => {
+                    const transformed = verts3D.map(v => {
+                        const r = rotXcam(rotYcam(rTT(v), rotYangle), rotXangle);
+                        return { pt2d: [cx + r[0], cy - r[1]], z: r[2] };
+                    });
+                    return {
+                        pts: transformed.map(t => t.pt2d),
+                        z: (transformed[0].z + transformed[1].z + transformed[2].z) / 3
+                    };
+                }).sort((a, b) => a.z - b.z);
 
-                const facesWithZ = drawFaces.map(f => ({
-                    face: f,
-                    z: (zVals[f[0]] + zVals[f[1]] + zVals[f[2]]) / 3
-                })).sort((a, b) => a.z - b.z);
+                // Seamless tubular triangle renderer
+                function drawTubularTriangle(p0, p1, p2, options) {
+                    const {
+                        baseWidth,
+                        highlightWidth,
+                        baseColor,
+                        highlightColor,
+                        alpha
+                    } = options;
 
-                const edgeOffsetFraction = 0.08;
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
 
-                function insetVertex(faceIdx, vertIdx, centerX, centerY) {
-                    const p = proj2D[faceIdx[vertIdx]];
-                    return [
-                        p[0] + (centerX - p[0]) * edgeOffsetFraction,
-                        p[1] + (centerY - p[1]) * edgeOffsetFraction
-                    ];
-                }
-
-                // BACK FACES
-                ctx.globalAlpha = 0.10;
-                for (let item of facesWithZ) {
-                    if (item.z >= 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    const p0 = insetVertex(f, 0, cX, cY);
-                    const p1 = insetVertex(f, 1, cX, cY);
-                    const p2 = insetVertex(f, 2, cX, cY);
+                    // 1. Outer Continuous Base Tube
                     ctx.beginPath();
                     ctx.moveTo(p0[0], p0[1]);
                     ctx.lineTo(p1[0], p1[1]);
                     ctx.lineTo(p2[0], p2[1]);
                     ctx.closePath();
-                    ctx.fillStyle = faceColor;
-                    ctx.fill();
-                }
+                    ctx.lineWidth = baseWidth;
+                    ctx.strokeStyle = baseColor;
+                    ctx.stroke();
 
-                ctx.globalAlpha = 0.65;
-                ctx.lineWidth = 1.3;
-                ctx.setLineDash([6, 5]);
-                for (let item of facesWithZ) {
-                    if (item.z >= 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    for (let i = 0; i < 3; i++) {
-                        const p1 = insetVertex(f, i, cX, cY);
-                        const p2 = insetVertex(f, (i + 1) % 3, cX, cY);
-                        ctx.beginPath();
-                        ctx.moveTo(p1[0], p1[1]);
-                        ctx.lineTo(p2[0], p2[1]);
-                        ctx.strokeStyle = grayBack;
-                        ctx.stroke();
-                    }
-                }
-                ctx.setLineDash([]);
-
-                ctx.globalAlpha = 0.22;
-                ctx.lineWidth = 0.6;
-                ctx.setLineDash([2, 3]);
-                for (let item of facesWithZ) {
-                    if (item.z >= 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    for (let i = 0; i < 3; i++) {
-                        const trueV = proj2D[f[i]];
-                        const insetV = insetVertex(f, i, cX, cY);
-                        ctx.beginPath();
-                        ctx.moveTo(trueV[0], trueV[1]);
-                        ctx.lineTo(insetV[0], insetV[1]);
-                        ctx.strokeStyle = grayBack;
-                        ctx.stroke();
-                    }
-                }
-                ctx.setLineDash([]);
-
-                // FRONT FACES
-                ctx.globalAlpha = 0.28;
-                for (let item of facesWithZ) {
-                    if (item.z < 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    const p0 = insetVertex(f, 0, cX, cY);
-                    const p1 = insetVertex(f, 1, cX, cY);
-                    const p2 = insetVertex(f, 2, cX, cY);
+                    // 2. Inner Highlight core for tubular sheen
                     ctx.beginPath();
                     ctx.moveTo(p0[0], p0[1]);
                     ctx.lineTo(p1[0], p1[1]);
                     ctx.lineTo(p2[0], p2[1]);
                     ctx.closePath();
+                    ctx.lineWidth = highlightWidth;
+                    ctx.strokeStyle = highlightColor;
+                    ctx.stroke();
+
+                    ctx.restore();
+                }
+
+                // BACK FACES (Fill & Tubes)
+                ctx.globalAlpha = 0.0;
+                for (let item of facesWithZ) {
+                    if (item.z >= 0) continue;
+                    const pts = item.pts;
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0][0], pts[0][1]);
+                    ctx.lineTo(pts[1][0], pts[1][1]);
+                    ctx.lineTo(pts[2][0], pts[2][1]);
+                    ctx.closePath();
                     ctx.fillStyle = faceColor;
                     ctx.fill();
                 }
 
-                ctx.globalAlpha = 1.0;
-                ctx.lineWidth = 1.9;
-                ctx.setLineDash([]);
                 for (let item of facesWithZ) {
-                    if (item.z < 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    for (let i = 0; i < 3; i++) {
-                        const p1 = insetVertex(f, i, cX, cY);
-                        const p2 = insetVertex(f, (i + 1) % 3, cX, cY);
-                        ctx.beginPath();
-                        ctx.moveTo(p1[0], p1[1]);
-                        ctx.lineTo(p2[0], p2[1]);
-                        ctx.strokeStyle = darkEdge;
-                        ctx.stroke();
-                    }
+                    if (item.z >= 0) continue;
+                    const pts = item.pts;
+                    drawTubularTriangle(pts[0], pts[1], pts[2], {
+                        baseWidth: 7,
+                        highlightWidth: 2.5,
+                        baseColor: grayBack,
+                        highlightColor: lightBg,
+                        alpha: 0.35
+                    });
                 }
 
-                ctx.globalAlpha = 0.28;
-                ctx.lineWidth = 0.7;
-                ctx.setLineDash([2, 3]);
+                // FRONT FACES (Fill & Tubes)
+                ctx.globalAlpha = 0.0;
                 for (let item of facesWithZ) {
                     if (item.z < 0) continue;
-                    const f = item.face;
-                    const cX = (proj2D[f[0]][0] + proj2D[f[1]][0] + proj2D[f[2]][0]) / 3;
-                    const cY = (proj2D[f[0]][1] + proj2D[f[1]][1] + proj2D[f[2]][1]) / 3;
-                    for (let i = 0; i < 3; i++) {
-                        const trueV = proj2D[f[i]];
-                        const insetV = insetVertex(f, i, cX, cY);
-                        ctx.beginPath();
-                        ctx.moveTo(trueV[0], trueV[1]);
-                        ctx.lineTo(insetV[0], insetV[1]);
-                        ctx.strokeStyle = darkEdge;
-                        ctx.stroke();
-                    }
+                    const pts = item.pts;
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0][0], pts[0][1]);
+                    ctx.lineTo(pts[1][0], pts[1][1]);
+                    ctx.lineTo(pts[2][0], pts[2][1]);
+                    ctx.closePath();
+                    ctx.fillStyle = faceColor;
+                    ctx.fill();
                 }
-                ctx.setLineDash([]);
+
+                for (let item of facesWithZ) {
+                    if (item.z < 0) continue;
+                    const pts = item.pts;
+                    drawTubularTriangle(pts[0], pts[1], pts[2], {
+                        baseWidth: 7,
+                        highlightWidth: 2.5,
+                        baseColor: darkEdge,
+                        highlightColor: lightBg,
+                        alpha: 1.0
+                    });
+                }
 
                 ctx.restore();
                 requestAnimationFrame(animate);
