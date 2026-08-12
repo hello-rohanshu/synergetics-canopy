@@ -70,15 +70,15 @@ let index = new FlexSearch.Document<Item>({
     index: [
       {
         field: "title",
-        tokenize: "forward",
+        tokenize: "tolerant",
       },
       {
         field: "content",
-        tokenize: "forward",
+        tokenize: "tolerant",
       },
       {
         field: "tags",
-        tokenize: "forward",
+        tokenize: "tolerant",
       },
     ],
   },
@@ -457,6 +457,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           limit: Math.max(numSearchResults, 10000),
           index: ["title", "content"],
           tag: { tags: tag },
+          suggest: true,
         })
         for (let searchResult of searchResults) {
           searchResult.result = searchResult.result.slice(0, numSearchResults)
@@ -470,6 +471,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           query: currentSearchTerm,
           limit: numSearchResults,
           index: ["tags"],
+          suggest: true,
         })
       }
     } else if (searchType === "basic") {
@@ -477,6 +479,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         query: currentSearchTerm,
         limit: numSearchResults,
         index: ["title", "content"],
+        suggest: true,
       })
     }
 
