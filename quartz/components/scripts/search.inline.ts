@@ -70,15 +70,15 @@ let index = new FlexSearch.Document<Item>({
     index: [
       {
         field: "title",
-        tokenize: "tolerant",
+        tokenize: "forward",
       },
       {
         field: "content",
-        tokenize: "tolerant",
+        tokenize: "forward",
       },
       {
         field: "tags",
-        tokenize: "tolerant",
+        tokenize: "forward",
       },
     ],
   },
