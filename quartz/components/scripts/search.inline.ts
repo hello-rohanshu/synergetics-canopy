@@ -494,6 +494,36 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       ...getByField("content"),
       ...getByField("tags"),
     ])
+
+    // Fallback cascade: if no results for a basic search, try softer queries
+    if (searchType === "basic" && allIds.size === 0 && currentSearchTerm.length >= 2) {
+      const words = currentSearchTerm.split(/\s+/).filter(w => w.length >= 2)
+      for (const word of words) {
+        const fallback = await index.searchAsync({
+          query: word,
+          limit: numSearchResults,
+          index: ["title", "content"],
+          suggest: true,
+        })
+        fallback.forEach(r => r.result.forEach(id => allIds.add(id as number)))
+      }
+    }
+
+    // If still nothing, try a trimmed prefix of the longest word
+    if (searchType === "basic" && allIds.size === 0 && currentSearchTerm.length >= 4) {
+      const longestWord = currentSearchTerm
+        .split(/\s+/)
+        .sort((a, b) => b.length - a.length)[0]
+      const prefix = longestWord.slice(0, Math.ceil(longestWord.length * 0.7))
+      const fallback = await index.searchAsync({
+        query: prefix,
+        limit: numSearchResults,
+        index: ["title", "content"],
+        suggest: true,
+      })
+      fallback.forEach(r => r.result.forEach(id => allIds.add(id as number)))
+    }
+
     const finalResults = [...allIds]
       .map((id) => formatForDisplay(currentSearchTerm, id))
       .filter((r) => !data[r.slug]?.tags?.includes("hide-from-nav"))
