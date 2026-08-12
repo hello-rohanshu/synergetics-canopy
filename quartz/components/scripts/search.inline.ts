@@ -204,6 +204,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   if (!searchLayout) return
 
   const idDataMap = Object.keys(data) as FullSlug[]
+  const slugToId = new Map<string, number>()
+  idDataMap.forEach((slug, id) => slugToId.set(slug, id))
+
   const appendLayout = (el: HTMLElement) => {
     searchLayout.appendChild(el)
   }
@@ -437,6 +440,30 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     highlights[0]?.scrollIntoView({ block: "start" })
   }
 
+  // Simple Levenshtein distance implementation
+  const levenshtein = (a: string, b: string): number => {
+    const alen = a.length
+    const blen = b.length
+    if (alen === 0) return blen
+    if (blen === 0) return alen
+
+    const matrix = Array.from({ length: alen + 1 }, () => new Array(blen + 1).fill(0))
+    for (let i = 0; i <= alen; i++) matrix[i][0] = i
+    for (let j = 0; j <= blen; j++) matrix[0][j] = j
+
+    for (let i = 1; i <= alen; i++) {
+      for (let j = 1; j <= blen; j++) {
+        const cost = a[i - 1] === b[j - 1] ? 0 : 1
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,   // deletion
+          matrix[i][j - 1] + 1,   // insertion
+          matrix[i - 1][j - 1] + cost // substitution
+        )
+      }
+    }
+    return matrix[alen][blen]
+  }
+
   async function onType(e: HTMLElementEventMap["input"]) {
     if (!searchLayout || !index) return
     currentSearchTerm = (e.target as HTMLInputElement).value
@@ -522,6 +549,55 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         suggest: true,
       })
       fallback.forEach(r => r.result.forEach(id => allIds.add(id as number)))
+    }
+
+    // Final fallback: manual fuzzy search over all documents
+    if (searchType === "basic" && allIds.size === 0 && currentSearchTerm.length >= 2) {
+      const query = currentSearchTerm.toLowerCase().trim()
+      const candidates: { id: number; score: number }[] = []
+
+      for (const [slug, fileData] of Object.entries<ContentDetails>(data)) {
+        if (fileData.tags?.includes("hide-from-nav")) continue
+        const id = slugToId.get(slug as FullSlug)
+        if (id === undefined) continue
+
+        const title = fileData.title.toLowerCase()
+        const content = fileData.content.toLowerCase()
+        let score = Infinity
+
+        // Substring match
+        if (title.includes(query)) score = Math.min(score, 0)
+        if (content.includes(query)) score = Math.min(score, 1)
+
+        // Levenshtein on title words (length >= 4)
+        const titleWords = title.split(/\s+/)
+        for (const word of titleWords) {
+          if (word.length < 4) continue
+          const dist = levenshtein(query, word)
+          if (dist <= 2) {
+            score = Math.min(score, dist + 2)
+          }
+        }
+
+        // Levenshtein on first 50 content words
+        const contentWords = content.split(/\s+/).slice(0, 50)
+        for (const word of contentWords) {
+          if (word.length < 4) continue
+          const dist = levenshtein(query, word)
+          if (dist <= 2) {
+            score = Math.min(score, dist + 3)  // slightly lower priority than title
+          }
+        }
+
+        if (score !== Infinity) {
+          candidates.push({ id, score })
+        }
+      }
+
+      candidates.sort((a, b) => a.score - b.score)
+      for (const c of candidates.slice(0, numSearchResults)) {
+        allIds.add(c.id)
+      }
     }
 
     const finalResults = [...allIds]
