@@ -6,11 +6,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const baseDir = url.pathname
 
   return (
-    <article class="popover-hint">
-      <h1>404</h1>
-      <p>{i18n(cfg.locale).pages.error.notFound}</p>
-      <p class="not-found-hint">The page may have moved. Try searching below:</p>
-      <div id="not-found-search">
+    <article class="popover-hint nf-article">
+      <div class="nf-header">
+        <p class="nf-label">Your link was imprecise</p>
+        <code id="nf-attempted-url" class="nf-url"></code>
+      </div>
+
+      <div class="nf-search-row">
         <input
           id="not-found-input"
           type="text"
@@ -18,145 +20,198 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           autocomplete="off"
           spellcheck={false}
         />
-        <ul id="not-found-results" />
       </div>
-      <a href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
+
+      <div class="nf-columns">
+        <ul id="nf-list" class="nf-result-list" />
+        <div id="nf-preview" class="nf-preview-pane">
+          <p class="nf-preview-hint">← Select a result</p>
+        </div>
+      </div>
+
+      <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+
+      <script dangerouslySetInnerHTML={{ __html: `
 (function () {
-  // ── 1. Extract a search query from the current URL path ──────────────────
-  function slugToQuery(pathname) {
-    // Strip leading slash and trailing slash
-    var clean = pathname.replace(/^\\//, "").replace(/\\/$/, "")
-    // Drop anchor (shouldn't be in pathname but just in case)
-    clean = clean.split("#")[0]
-    // Take the last path segment (most specific)
-    var segments = clean.split("/")
-    var last = segments[segments.length - 1] || segments[segments.length - 2] || ""
-    // Collapse runs of hyphens (handles "Definition---Tensegrity") into spaces
-    last = last.replace(/-+/g, " ")
-    // URL-decode percent-encoded characters
-    try { last = decodeURIComponent(last) } catch (e) {}
-    return last.trim()
+  var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
+
+  // ── Query extraction ─────────────────────────────────────────────────────
+  function extractQuery(href) {
+    // href is window.location.href — includes hash
+    var hashIndex = href.indexOf("#");
+    var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
+    var pathname  = hashIndex > -1 ? href.slice(0, hashIndex) : href;
+
+    // Remove origin
+    var path = pathname.replace(/^https?:\\/\\/[^\\/]+/, "").replace(/\\/$/, "");
+
+    // Last non-empty path segment
+    var segments = path.split("/").filter(Boolean);
+    var lastSeg  = segments[segments.length - 1] || "";
+
+    try { lastSeg = decodeURIComponent(lastSeg); } catch(e) {}
+
+    if (hash) {
+      // Extract only leading digits from hash (ignore trailing slug text)
+      var hashDigits = hash.match(/^(\\d+)/);
+      if (!hashDigits) return slugText(lastSeg); // no digits, fall back to slug
+
+      var digits = hashDigits[1];
+
+      // Determine dot position from the leading number in lastSeg
+      var segNum = lastSeg.match(/^(\\d+)\\./);
+      var dotPos = segNum ? segNum[1].length : 3; // default 3 if we can't tell
+
+      // Insert dot
+      var coord = digits.slice(0, dotPos) + "." + digits.slice(dotPos);
+      return coord;
+    }
+
+    // No hash — use slug text
+    return slugText(lastSeg);
   }
 
-  // ── 2. Minimal Flexsearch-free search against contentIndex.json ──────────
-  // Quartz's contentIndex.json shape:
-  //   { "slug": { title, content, tags, date, description }, … }
-  // We do a simple scored keyword match — no extra deps needed on the 404 page.
-  function scoreEntry(query, slug, entry) {
-    var terms = query.toLowerCase().split(/\\s+/).filter(Boolean)
-    var titleLower = (entry.title || "").toLowerCase()
-    var contentLower = (entry.content || "").toLowerCase()
-    var slugLower = slug.toLowerCase()
-    var score = 0
+  function slugText(seg) {
+    // Collapse any run of hyphens to space, keep dots (section numbers)
+    return seg.replace(/-+/g, " ").trim();
+  }
+
+  // ── Scoring ──────────────────────────────────────────────────────────────
+  function score(query, slug, entry) {
+    var terms = query.toLowerCase().split(/\\s+/).filter(Boolean);
+    var t = (entry.title   || "").toLowerCase();
+    var c = (entry.content || "").toLowerCase();
+    var s = slug.toLowerCase();
+    var n = 0;
     for (var i = 0; i < terms.length; i++) {
-      var t = terms[i]
-      if (titleLower.includes(t))   score += 10
-      if (slugLower.includes(t))    score += 8
-      if (contentLower.includes(t)) score += 2
+      var q = terms[i];
+      if (t.includes(q)) n += 10;
+      if (s.includes(q)) n += 8;
+      if (c.includes(q)) n += 2;
     }
-    return score
+    return n;
   }
 
-  function search(index, query) {
-    if (!query) return []
-    var results = []
-    var slugs = Object.keys(index)
-    for (var i = 0; i < slugs.length; i++) {
-      var slug = slugs[i]
-      var entry = index[slug]
-      var score = scoreEntry(query, slug, entry)
-      if (score > 0) results.push({ slug: slug, entry: entry, score: score })
+  function runSearch(index, query) {
+    if (!query || !index) return [];
+    var out = [];
+    var keys = Object.keys(index);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var sc = score(query, k, index[k]);
+      if (sc > 0) out.push({ slug: k, entry: index[k], score: sc });
     }
-    results.sort(function (a, b) { return b.score - a.score })
-    return results.slice(0, 8)
+    out.sort(function(a,b){ return b.score - a.score; });
+    return out.slice(0, 10);
   }
 
-  // ── 3. Render results into the list ──────────────────────────────────────
-  function render(results, baseDir) {
-    var list = document.getElementById("not-found-results")
-    if (!list) return
-    list.innerHTML = ""
-    if (results.length === 0) {
-      list.innerHTML = "<li class=\\"nf-empty\\">No results found.</li>"
-      return
+  // ── Render ───────────────────────────────────────────────────────────────
+  function renderList(results, activeSlug) {
+    var list = document.getElementById("nf-list");
+    if (!list) return;
+    list.innerHTML = "";
+    if (!results.length) {
+      list.innerHTML = '<li class="nf-empty">No results — try editing the query above</li>';
+      return;
     }
     for (var i = 0; i < results.length; i++) {
-      var r = results[i]
-      var href = (baseDir || "/").replace(/\\/$/, "") + "/" + r.slug
-      var li = document.createElement("li")
-      li.className = "nf-result"
-      var desc = r.entry.description || (r.entry.content || "").slice(0, 100)
-      li.innerHTML =
-        '<a href="' + href + '">' +
-          '<span class="nf-title">' + (r.entry.title || r.slug) + '</span>' +
-          (desc ? '<span class="nf-desc">' + desc + '</span>' : "") +
-        '</a>'
-      list.appendChild(li)
+      (function(r) {
+        var li   = document.createElement("li");
+        li.className = "nf-item" + (r.slug === activeSlug ? " nf-active" : "");
+        li.dataset.slug = r.slug;
+        li.innerHTML =
+          '<span class="nf-item-title">' + (r.entry.title || r.slug) + '</span>';
+        li.addEventListener("click", function() {
+          showPreview(r);
+          document.querySelectorAll(".nf-item").forEach(function(el){ el.classList.remove("nf-active"); });
+          li.classList.add("nf-active");
+        });
+        list.appendChild(li);
+      })(results[i]);
     }
+    // Auto-select first
+    if (results.length) showPreview(results[0]);
   }
 
-  // ── 4. Boot ──────────────────────────────────────────────────────────────
-  var contentIndex = null
-  var baseDir = ${JSON.stringify(baseDir)}
+  function showPreview(r) {
+    var pane = document.getElementById("nf-preview");
+    if (!pane) return;
+    var href = BASE + "/" + r.slug;
+    var desc = r.entry.description || (r.entry.content || "").slice(0, 300);
+    pane.innerHTML =
+      '<a class="nf-preview-title" href="' + href + '">' + (r.entry.title || r.slug) + '</a>' +
+      (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : '') +
+      '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+  }
 
-  // Debounce helper
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  var contentIndex = null;
+  var currentQuery = "";
+
   function debounce(fn, ms) {
-    var t
-    return function () {
-      clearTimeout(t)
-      var args = arguments
-      t = setTimeout(function () { fn.apply(null, args) }, ms)
+    var t;
+    return function() { clearTimeout(t); var a = arguments; t = setTimeout(function(){ fn.apply(null,a); }, ms); };
+  }
+
+  function go(query) {
+    currentQuery = query;
+    var results = runSearch(contentIndex, query);
+    renderList(results, null);
+  }
+
+  // Show attempted URL
+  document.addEventListener("DOMContentLoaded", function() {
+    var urlEl = document.getElementById("nf-attempted-url");
+    if (urlEl) urlEl.textContent = window.location.href;
+
+    var query = extractQuery(window.location.href);
+    var input = document.getElementById("not-found-input");
+    if (input) {
+      input.value = query;
+      input.addEventListener("input", debounce(function(){ go(input.value); }, 150));
     }
-  }
+    currentQuery = query;
+    if (contentIndex) go(query);
+  });
 
-  function runSearch(query) {
-    if (!contentIndex) return
-    render(search(contentIndex, query), baseDir)
-  }
-
-  // Fetch the content index once
-  fetch(baseDir.replace(/\\/$/, "") + "/static/contentIndex.json")
-    .then(function (r) { return r.json() })
-    .then(function (data) {
-      contentIndex = data
-      // Run initial search with the URL-derived query
-      var input = document.getElementById("not-found-input")
-      if (input && input.value) runSearch(input.value)
+  fetch(BASE + "/static/contentIndex.json")
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      contentIndex = data;
+      if (currentQuery) go(currentQuery);
     })
-    .catch(function (e) { console.warn("Canopy 404: could not load contentIndex", e) })
+    .catch(function(e){ console.warn("Canopy 404: contentIndex load failed", e); });
 
-  // Wire up the input
-  document.addEventListener("DOMContentLoaded", function () {
-    var input = document.getElementById("not-found-input")
-    if (!input) return
+})();
+      ` }} />
 
-    // Pre-fill from URL
-    var query = slugToQuery(window.location.pathname)
-    input.value = query
+      <style dangerouslySetInnerHTML={{ __html: `
+.nf-article { max-width: 100%; }
 
-    // If index already loaded (cached), search immediately
-    if (contentIndex && query) runSearch(query)
-
-    input.addEventListener("input", debounce(function () {
-      runSearch(input.value)
-    }, 120))
-  })
-})()
-          `,
-        }}
-      />
-      <style dangerouslySetInnerHTML={{
-        __html: `
-#not-found-search {
-  margin: 1.5rem 0 1.25rem;
-  max-width: 560px;
+.nf-header { margin-bottom: 1.25rem; }
+.nf-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  margin: 0 0 0.35rem;
 }
+.nf-url {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--secondary);
+  word-break: break-all;
+  background: var(--highlight);
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-family: var(--codeFont, monospace);
+}
+
+.nf-search-row { margin-bottom: 1rem; }
 #not-found-input {
   width: 100%;
-  padding: 0.55rem 0.85rem;
+  max-width: 480px;
+  padding: 0.5rem 0.75rem;
   font-size: 1rem;
   font-family: inherit;
   border: 1px solid var(--lightgray);
@@ -166,56 +221,97 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   outline: none;
   box-sizing: border-box;
 }
-#not-found-input:focus {
-  border-color: var(--secondary);
+#not-found-input:focus { border-color: var(--secondary); }
+
+/* Two-column layout */
+.nf-columns {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--lightgray);
+  border-radius: 4px;
+  min-height: 280px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
 }
-#not-found-results {
+
+/* Left — result list */
+.nf-result-list {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0;
+  width: 38%;
+  min-width: 180px;
+  border-right: 1px solid var(--lightgray);
+  overflow-y: auto;
+  flex-shrink: 0;
 }
-#not-found-results .nf-result {
+.nf-item {
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
   border-bottom: 1px solid var(--lightgray);
+  transition: background 0.1s;
 }
-#not-found-results .nf-result:last-child {
-  border-bottom: none;
-}
-#not-found-results .nf-result a {
-  display: block;
-  padding: 0.55rem 0.25rem;
-  text-decoration: none;
-  color: inherit;
-}
-#not-found-results .nf-result a:hover {
+.nf-item:last-child { border-bottom: none; }
+.nf-item:hover, .nf-item.nf-active {
   background: var(--highlight);
-  border-radius: 3px;
 }
-#not-found-results .nf-title {
-  display: block;
-  font-weight: 600;
-  color: var(--secondary);
-}
-#not-found-results .nf-desc {
+.nf-item.nf-active .nf-item-title { color: var(--secondary); }
+.nf-item-title {
   display: block;
   font-size: 0.85rem;
-  color: var(--gray);
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.35;
 }
-#not-found-results .nf-empty {
-  padding: 0.5rem 0.25rem;
+.nf-empty {
+  padding: 0.75rem;
+  font-size: 0.85rem;
   color: var(--gray);
-  font-size: 0.9rem;
 }
-.not-found-hint {
+
+/* Right — preview */
+.nf-preview-pane {
+  flex: 1;
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+}
+.nf-preview-hint { color: var(--gray); font-size: 0.85rem; margin: 0; }
+.nf-preview-title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-decoration: none;
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.nf-preview-title:hover { text-decoration: underline; }
+.nf-preview-desc {
+  font-size: 0.875rem;
+  color: var(--dark);
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+.nf-preview-link {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.nf-preview-link:hover { text-decoration: underline; }
+
+.nf-home {
+  display: inline-block;
+  font-size: 0.875rem;
   color: var(--gray);
-  font-size: 0.95rem;
-  margin-bottom: 0.25rem;
 }
-        `
-      }} />
+
+/* Mobile: stack columns */
+@media (max-width: 600px) {
+  .nf-columns { flex-direction: column; min-height: unset; }
+  .nf-result-list { width: 100%; border-right: none; border-bottom: 1px solid var(--lightgray); max-height: 220px; }
+}
+      ` }} />
     </article>
   )
 }
