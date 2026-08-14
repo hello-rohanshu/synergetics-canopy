@@ -35,44 +35,116 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 (function () {
   var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
-  // ── Query extraction ─────────────────────────────────────────────────────
-  function extractQuery(href) {
+  // ── URL parsing & query selection (spec 2025-01-XX) ─────────────────────
+  function parseURL(href) {
     var hashIndex = href.indexOf("#");
     var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
     var pathname  = hashIndex > -1 ? href.slice(0, hashIndex) : href;
 
     var path = pathname.replace(/^https?:\\/\\/[^\\/]+/, "").replace(/\\/$/, "");
-
     var segments = path.split("/").filter(Boolean);
     var lastSeg  = segments[segments.length - 1] || "";
 
     try { lastSeg = decodeURIComponent(lastSeg); } catch(e) {}
 
-    if (hash) {
-      var hashDigits = hash.match(/^(\\d+)/);
-      if (!hashDigits) return slugText(lastSeg);
+    var result = {
+      slug: lastSeg,
+      hash: hash,
+      hasAnchor: hash.length > 0,
+      query: "",
+      mode: "page"   // "page" or "content"
+    };
 
-      var digits = hashDigits[1];
-      var segNum = lastSeg.match(/^(\\d+)\\./);
-      var dotPos = segNum ? segNum[1].length : 3;
+    // Clean the slug text (hyphens to spaces)
+    var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
 
-      var coord = digits.slice(0, dotPos) + "." + digits.slice(dotPos);
-      return coord;
+    if (!hash) {
+      // Case 1: No anchor → page-level search
+      result.query = cleanedSlug;
+      result.mode = "page";
+      return result;
     }
 
-    return slugText(lastSeg);
+    // Anchor exists. Determine anchor type.
+    var digits = hash.match(/^(\\d+)/);
+    var afterDigits = hash.slice(digits ? digits[0].length : 0).replace(/^-+/, "").trim();
+    var cleanedAnchorText = afterDigits.replace(/-+/g, " ").trim();
+
+    if (digits && cleanedAnchorText.length > 0) {
+      // Case 3: coordinate + anchor title
+      var digitsStr = digits[0];
+      var segNum = cleanedSlug.match(/^(\\d+)\\./);
+      var dotPos = segNum ? segNum[0].length : 3;
+      var coord = digitsStr.slice(0, dotPos) + "." + digitsStr.slice(dotPos);
+      result.query = coord + " " + cleanedAnchorText;
+      result.mode = "content";
+    } else if (digits && cleanedAnchorText.length === 0) {
+      // Case 2: coordinate only
+      var digitsStr2 = digits[0];
+      var segNum2 = cleanedSlug.match(/^(\\d+)\\./);
+      var dotPos2 = segNum2 ? segNum2[0].length : 3;
+      var coord2 = digitsStr2.slice(0, dotPos2) + "." + digitsStr2.slice(dotPos2);
+      result.query = coord2;
+      result.mode = "content";
+    } else if (!digits && hash.length > 0) {
+      // Case 4: anchor title only
+      result.query = cleanedAnchorText;
+      result.mode = "content";
+    }
+
+    return result;
   }
 
-  function slugText(seg) {
-    return seg.replace(/-+/g, " ").trim();
+  // ── Fuse.js instances ────────────────────────────────────────────────────
+  var pageFuse = null;
+  var contentFuse = null;
+
+  function createDocObjects(data) {
+    return Object.entries(data).map(function(entry) {
+      var slug = entry[0];
+      var meta = entry[1] || {};
+      return {
+        slug: slug,
+        title: meta.title || "",
+        tags: (meta.tags || []).join(" "),
+        description: meta.description || "",
+        content: meta.content || ""
+      };
+    });
   }
 
-  // ── Fuse.js scoring ──────────────────────────────────────────────────────
-  var fuse = null;
+  function buildPageFuse(docs) {
+    return new window.Fuse(docs, {
+      keys: [
+        { name: "title", weight: 0.6 },
+        { name: "slug", weight: 0.3 },
+        { name: "tags", weight: 0.1 }
+      ],
+      threshold: 0.45,
+      distance: 200,
+      includeScore: true,
+      ignoreFieldNorm: false,
+      minMatchCharLength: 2
+    });
+  }
 
-  function runSearch(query) {
+  function buildContentFuse(docs) {
+    return new window.Fuse(docs, {
+      keys: [
+        { name: "content", weight: 0.7 },
+        { name: "title", weight: 0.3 }
+      ],
+      threshold: 0.45,
+      distance: 200,
+      includeScore: true,
+      ignoreFieldNorm: false,
+      minMatchCharLength: 2
+    });
+  }
+
+  function searchWithFuse(fuse, query, limit) {
     if (!fuse) return [];
-    var raw = fuse.search(query, { limit: 10 });
+    var raw = fuse.search(query, { limit: limit || 10 });
     return raw.map(function(r) {
       return {
         slug: r.item.slug,
@@ -156,15 +228,18 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   // ── Boot ─────────────────────────────────────────────────────────────────
   var currentQuery = "";
+  var currentMode = "page"; // default
 
   function debounce(fn, ms) {
     var t;
     return function() { clearTimeout(t); var a = arguments; t = setTimeout(function(){ fn.apply(null,a); }, ms); };
   }
 
-  function go(query) {
-    currentQuery = query;
-    var results = runSearch(query);
+  function go(query, mode) {
+    currentQuery = query || "";
+    if (mode) currentMode = mode;
+    var fuse = (currentMode === "content") ? contentFuse : pageFuse;
+    var results = searchWithFuse(fuse, currentQuery, 10);
     renderList(results, null);
   }
 
@@ -172,63 +247,56 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     var urlEl = document.getElementById("nf-attempted-url");
     if (urlEl) urlEl.textContent = window.location.href;
 
-    var query = extractQuery(window.location.href);
+    var parsed = parseURL(window.location.href);
     var input = document.getElementById("not-found-input");
     if (input) {
-      input.value = query;
-      input.addEventListener("input", debounce(function(){ go(input.value); }, 150));
+      input.value = parsed.query;
+      input.addEventListener("input", debounce(function(){
+        // User typed: keep same mode for now, but if query looks like coordinate, switch to content mode
+        var val = input.value.trim();
+        if (/^\\d+(\\.\\d+)?$/.test(val)) {
+          currentMode = "content";
+        } else {
+          // keep current mode (from initial URL)
+        }
+        go(val, currentMode);
+      }, 150));
     }
-    currentQuery = query;
-    if (fuse) go(query);
+
+    currentQuery = parsed.query;
+    currentMode = parsed.mode;
+    if (pageFuse || contentFuse) {
+      go(currentQuery, currentMode);
+    }
   });
 
-  function buildFuseFromData(data) {
-    var docs = Object.entries(data).map(function(entry) {
-      var slug = entry[0];
-      var meta = entry[1] || {};
-      return {
-        slug: slug,
-        title: meta.title || "",
-        tags: (meta.tags || []).join(" "),
-        description: meta.description || "",
-        content: meta.content || ""
-      };
-    });
-
+  function buildFuseIndex(data) {
+    var docs = createDocObjects(data);
     if (window.Fuse) {
-      fuse = new window.Fuse(docs, {
-        keys: [
-          { name: "title", weight: 0.6 },
-          { name: "slug", weight: 0.3 },
-          { name: "tags", weight: 0.1 }
-        ],
-        threshold: 0.45,
-        distance: 200,
-        includeScore: true,
-        ignoreFieldNorm: false,
-        minMatchCharLength: 2
-      });
-      if (currentQuery) go(currentQuery);
+      pageFuse = buildPageFuse(docs);
+      contentFuse = buildContentFuse(docs);
+
+      // now that indexes are ready, run initial search
+      if (currentQuery) go(currentQuery, currentMode);
     } else {
       console.warn("Fuse CDN failed to load");
-      // optionally implement a simple fallback here
     }
   }
 
+  // Load Fuse and content index
   fetch(BASE + "/static/contentIndex.json")
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (window.Fuse) {
-        buildFuseFromData(data);
+        buildFuseIndex(data);
       } else {
         var script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js';
         script.onload = function() {
-          buildFuseFromData(data);
+          buildFuseIndex(data);
         };
         script.onerror = function() {
           console.warn("Fuse CDN failed to load");
-          // optional fallback
         };
         document.head.appendChild(script);
       }
