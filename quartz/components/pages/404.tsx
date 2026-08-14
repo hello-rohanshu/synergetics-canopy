@@ -35,7 +35,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 (function () {
   var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
-  // ── URL parsing & query selection (spec 2025-01-XX) ─────────────────────
+  // ── URL parsing & query selection (spec v1.1) ────────────────────────────
   function parseURL(href) {
     var hashIndex = href.indexOf("#");
     var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
@@ -47,16 +47,20 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
     try { lastSeg = decodeURIComponent(lastSeg); } catch(e) {}
 
+    var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
+
+    // v1.1: extract pagePrefix for parent-page boost
+    var pageNumMatch = cleanedSlug.match(/^(\\d+(?:\\.\\d+)?)/);
+    var pagePrefix = pageNumMatch ? pageNumMatch[1] : "";
+
     var result = {
       slug: lastSeg,
       hash: hash,
       hasAnchor: hash.length > 0,
       query: "",
-      mode: "page"   // "page" or "content"
+      mode: "page",   // "page" or "content"
+      pagePrefix: pagePrefix
     };
-
-    // Clean the slug text (hyphens to spaces)
-    var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
 
     if (!hash) {
       // Case 1: No anchor → page-level search
@@ -70,19 +74,26 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     var afterDigits = hash.slice(digits ? digits[0].length : 0).replace(/^-+/, "").trim();
     var cleanedAnchorText = afterDigits.replace(/-+/g, " ").trim();
 
+    // Helper to compute decimal position from slug's integer part length
+    function getDotPos() {
+      if (pageNumMatch) {
+        var integerPart = pageNumMatch[1].split(".")[0];
+        return integerPart.length;
+      }
+      return 3; // default
+    }
+
     if (digits && cleanedAnchorText.length > 0) {
       // Case 3: coordinate + anchor title
       var digitsStr = digits[0];
-      var segNum = cleanedSlug.match(/^(\\d+)\\./);
-      var dotPos = segNum ? segNum[1].length : 3;   // FIXED: use digits length, not match length
+      var dotPos = getDotPos();
       var coord = digitsStr.slice(0, dotPos) + "." + digitsStr.slice(dotPos);
       result.query = coord + " " + cleanedAnchorText;
       result.mode = "content";
     } else if (digits && cleanedAnchorText.length === 0) {
       // Case 2: coordinate only
       var digitsStr2 = digits[0];
-      var segNum2 = cleanedSlug.match(/^(\\d+)\\./);
-      var dotPos2 = segNum2 ? segNum2[1].length : 3;   // FIXED
+      var dotPos2 = getDotPos();
       var coord2 = digitsStr2.slice(0, dotPos2) + "." + digitsStr2.slice(dotPos2);
       result.query = coord2;
       result.mode = "content";
@@ -120,7 +131,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "slug", weight: 0.3 },
         { name: "tags", weight: 0.1 }
       ],
-      threshold: 0.45,
+      threshold: 0.5,               // slightly more permissive for more results
       distance: 200,
       includeScore: true,
       ignoreFieldNorm: false,
@@ -134,10 +145,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "content", weight: 0.7 },
         { name: "title", weight: 0.3 }
       ],
-      threshold: 0.45,
+      threshold: 0.6,               // more permissive to return multiple candidates
       distance: 200,
       includeScore: true,
-      ignoreFieldNorm: false,
+      ignoreFieldNorm: true,        // v1.1: don't penalise long pages
       minMatchCharLength: 2
     });
   }
@@ -154,6 +165,24 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         score: r.score
       };
     });
+  }
+
+  // ── Parent-page boost (v1.1) ─────────────────────────────────────────────
+  var currentPagePrefix = "";
+
+  function applyParentBoost(results) {
+    if (!currentPagePrefix) return results;
+
+    // Give a very low score (high priority) to results whose slug starts with pagePrefix
+    var boosted = results.map(function(r) {
+      if (r.slug.indexOf(currentPagePrefix) === 0) {
+        r.score = -Infinity;
+      }
+      return r;
+    });
+
+    boosted.sort(function(a, b) { return a.score - b.score; });
+    return boosted;
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
@@ -240,6 +269,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (mode) currentMode = mode;
     var fuse = (currentMode === "content") ? contentFuse : pageFuse;
     var results = searchWithFuse(fuse, currentQuery, 10);
+
+    // Apply parent-page boost only for automatic URL parsing
+    if (currentPagePrefix) {
+      results = applyParentBoost(results);
+    }
+
     renderList(results, null);
   }
 
@@ -248,11 +283,14 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (urlEl) urlEl.textContent = window.location.href;
 
     var parsed = parseURL(window.location.href);
+    currentPagePrefix = parsed.pagePrefix;  // set once, cleared on manual edit
+
     var input = document.getElementById("not-found-input");
     if (input) {
       input.value = parsed.query;
       input.addEventListener("input", debounce(function(){
-        // User typed: keep same mode, but if query looks like coordinate, switch to content mode
+        // User typed: clear parent-page boost
+        currentPagePrefix = "";
         var val = input.value.trim();
         if (/^\\d+(\\.\\d+)?$/.test(val)) {
           currentMode = "content";
@@ -342,13 +380,14 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 }
 #not-found-input:focus { border-color: var(--secondary); }
 
-/* Two-column layout */
+/* Two-column layout with fixed height and internal scrolling */
 .nf-columns {
   display: flex;
   gap: 0;
   border: 1px solid var(--lightgray);
   border-radius: 4px;
-  min-height: 280px;
+  height: 60vh;               /* limit overall height */
+  max-height: 60vh;
   overflow: hidden;
   margin-bottom: 1.25rem;
 }
@@ -361,7 +400,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   width: 38%;
   min-width: 180px;
   border-right: 1px solid var(--lightgray);
-  overflow-y: auto;
+  overflow-y: auto;           /* scroll if list is long */
   flex-shrink: 0;
 }
 .nf-item {
@@ -388,11 +427,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   color: var(--gray);
 }
 
-/* Right — preview */
+/* Right — preview pane, scrollable and height-limited */
 .nf-preview-pane {
   flex: 1;
   padding: 1rem 1.1rem;
-  overflow-y: auto;
+  overflow-y: auto;           /* make preview internally scrollable */
+  overflow-x: hidden;
 }
 .nf-preview-hint { color: var(--gray); font-size: 0.85rem; margin: 0; }
 .nf-preview-title {
@@ -419,7 +459,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 }
 .nf-preview-link:hover { text-decoration: underline; }
 
-/* New: preview body */
+/* Preview body */
 .nf-preview-body {
   font-size: 0.9rem;
   line-height: 1.6;
@@ -440,8 +480,22 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
 /* Mobile: stack columns */
 @media (max-width: 600px) {
-  .nf-columns { flex-direction: column; min-height: unset; }
-  .nf-result-list { width: 100%; border-right: none; border-bottom: 1px solid var(--lightgray); max-height: 220px; }
+  .nf-columns {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+  }
+  .nf-result-list {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--lightgray);
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .nf-preview-pane {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
 }
       ` }} />
     </article>
