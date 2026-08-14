@@ -35,7 +35,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 (function () {
   var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
-  // ── URL parsing & query selection (spec v1.1) ────────────────────────────
+  // ── URL parsing & query selection (spec v1.1 + coordinate fix) ───────────
   function parseURL(href) {
     var hashIndex = href.indexOf("#");
     var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
@@ -69,35 +69,36 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       return result;
     }
 
-    // Anchor exists. Determine anchor type.
-    var digits = hash.match(/^(\\d+)/);
-    var afterDigits = hash.slice(digits ? digits[0].length : 0).replace(/^-+/, "").trim();
-    var cleanedAnchorText = afterDigits.replace(/-+/g, " ").trim();
+    // ── Anchor parsing ──────────────────────────────────────────────────────
+    // Capture a full coordinate with optional decimal (e.g. 81300 or 541.31)
+    var coordMatch = hash.match(/^(\\d+(?:\\.\\d+)?)/);
+    var coordStr = coordMatch ? coordMatch[1] : "";
 
-    // Helper to compute decimal position from slug's integer part length
-    function getDotPos() {
-      if (pageNumMatch) {
-        var integerPart = pageNumMatch[1].split(".")[0];
-        return integerPart.length;
-      }
-      return 3; // default
-    }
+    // Remove coordinate from hash; what's left is anchor text (if any)
+    var afterCoord = coordMatch ? hash.slice(coordMatch[0].length).replace(/^[-]+/, "").trim() : hash;
 
-    if (digits && cleanedAnchorText.length > 0) {
+    // Clean anchor text (hyphens to spaces)
+    var cleanedAnchorText = afterCoord.replace(/-+/g, " ").trim();
+
+    if (coordStr && cleanedAnchorText.length > 0) {
       // Case 3: coordinate + anchor title
-      var digitsStr = digits[0];
-      var dotPos = getDotPos();
-      var coord = digitsStr.slice(0, dotPos) + "." + digitsStr.slice(dotPos);
-      result.query = coord + " " + cleanedAnchorText;
+      // If coordStr already contains a decimal, use as-is.
+      // If not, insert a decimal based on slug's integer length.
+      if (coordStr.indexOf(".") === -1) {
+        var integerLength = pageNumMatch ? pageNumMatch[1].split(".")[0].length : 3;
+        coordStr = coordStr.slice(0, integerLength) + "." + coordStr.slice(integerLength);
+      }
+      result.query = coordStr + " " + cleanedAnchorText;
       result.mode = "content";
-    } else if (digits && cleanedAnchorText.length === 0) {
+    } else if (coordStr && cleanedAnchorText.length === 0) {
       // Case 2: coordinate only
-      var digitsStr2 = digits[0];
-      var dotPos2 = getDotPos();
-      var coord2 = digitsStr2.slice(0, dotPos2) + "." + digitsStr2.slice(dotPos2);
-      result.query = coord2;
+      if (coordStr.indexOf(".") === -1) {
+        var integerLength2 = pageNumMatch ? pageNumMatch[1].split(".")[0].length : 3;
+        coordStr = coordStr.slice(0, integerLength2) + "." + coordStr.slice(integerLength2);
+      }
+      result.query = coordStr;
       result.mode = "content";
-    } else if (!digits && hash.length > 0) {
+    } else if (!coordStr && hash.length > 0) {
       // Case 4: anchor title only
       result.query = cleanedAnchorText;
       result.mode = "content";
@@ -109,6 +110,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   // ── Fuse.js instances ────────────────────────────────────────────────────
   var pageFuse = null;
   var contentFuse = null;
+  var allDocs = [];   // full array of documents, used for parent-page inclusion
 
   function createDocObjects(data) {
     return Object.entries(data).map(function(entry) {
@@ -131,7 +133,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "slug", weight: 0.3 },
         { name: "tags", weight: 0.1 }
       ],
-      threshold: 0.5,               // slightly more permissive for more results
+      threshold: 0.45,
       distance: 200,
       includeScore: true,
       ignoreFieldNorm: false,
@@ -145,10 +147,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "content", weight: 0.7 },
         { name: "title", weight: 0.3 }
       ],
-      threshold: 0.6,               // more permissive to return multiple candidates
+      threshold: 0.5,               // enough to get multiple results without too much noise
       distance: 200,
       includeScore: true,
-      ignoreFieldNorm: true,        // v1.1: don't penalise long pages
+      ignoreFieldNorm: true,        // long pages not penalised
       minMatchCharLength: 2
     });
   }
@@ -167,22 +169,56 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     });
   }
 
-  // ── Parent-page boost (v1.1) ─────────────────────────────────────────────
+  // ── Parent-page boost + inclusion (v1.1 fix) ─────────────────────────────
   var currentPagePrefix = "";
 
-  function applyParentBoost(results) {
-    if (!currentPagePrefix) return results;
+  // Find all documents whose slug starts with the given prefix.
+  function findDocsByPrefix(prefix) {
+    if (!prefix || !allDocs.length) return [];
+    return allDocs.filter(function(doc) {
+      return doc.slug.indexOf(prefix) === 0;
+    });
+  }
 
-    // Give a very low score (high priority) to results whose slug starts with pagePrefix
-    var boosted = results.map(function(r) {
-      if (r.slug.indexOf(currentPagePrefix) === 0) {
-        r.score = -Infinity;
+  // Force parent docs into results, then sort so they appear first.
+  function mergeParentDocs(results, prefix) {
+    if (!prefix) return results;
+
+    var parentDocs = findDocsByPrefix(prefix);
+    if (!parentDocs.length) return results;
+
+    var seen = {};
+    var out = [];
+
+    // Add parent docs first (each with score -Infinity for sorting)
+    parentDocs.forEach(function(p) {
+      var existing = results.find(function(r) { return r.slug === p.slug; });
+      if (existing) {
+        existing.score = -Infinity;
+        out.push(existing);
+      } else {
+        out.push({
+          slug: p.slug,
+          title: p.title,
+          description: p.description,
+          content: p.content,
+          score: -Infinity
+        });
       }
-      return r;
+      seen[p.slug] = true;
     });
 
-    boosted.sort(function(a, b) { return a.score - b.score; });
-    return boosted;
+    // Add remaining Fuse results that are not parent docs
+    results.forEach(function(r) {
+      if (!seen[r.slug]) {
+        out.push(r);
+        seen[r.slug] = true;
+      }
+    });
+
+    // Sort ascending by score (lower is better for Fuse scores; -Infinity first)
+    out.sort(function(a, b) { return a.score - b.score; });
+    return out.slice(0, 10);
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
@@ -257,7 +293,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   // ── Boot ─────────────────────────────────────────────────────────────────
   var currentQuery = "";
-  var currentMode = "page"; // default
+  var currentMode = "page";
 
   function debounce(fn, ms) {
     var t;
@@ -270,9 +306,9 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     var fuse = (currentMode === "content") ? contentFuse : pageFuse;
     var results = searchWithFuse(fuse, currentQuery, 10);
 
-    // Apply parent-page boost only for automatic URL parsing
+    // Apply parent-page inclusion + boost only for automatic URL parsing
     if (currentPagePrefix) {
-      results = applyParentBoost(results);
+      results = mergeParentDocs(results, currentPagePrefix);
     }
 
     renderList(results, null);
@@ -283,7 +319,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (urlEl) urlEl.textContent = window.location.href;
 
     var parsed = parseURL(window.location.href);
-    currentPagePrefix = parsed.pagePrefix;  // set once, cleared on manual edit
+    currentPagePrefix = parsed.pagePrefix;
 
     var input = document.getElementById("not-found-input");
     if (input) {
@@ -307,10 +343,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   });
 
   function buildFuseIndex(data) {
-    var docs = createDocObjects(data);
+    allDocs = createDocObjects(data);
     if (window.Fuse) {
-      pageFuse = buildPageFuse(docs);
-      contentFuse = buildContentFuse(docs);
+      pageFuse = buildPageFuse(allDocs);
+      contentFuse = buildContentFuse(allDocs);
 
       // now that indexes are ready, run initial search
       if (currentQuery) go(currentQuery, currentMode);
@@ -386,7 +422,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   gap: 0;
   border: 1px solid var(--lightgray);
   border-radius: 4px;
-  height: 60vh;               /* limit overall height */
+  height: 60vh;
   max-height: 60vh;
   overflow: hidden;
   margin-bottom: 1.25rem;
@@ -400,7 +436,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   width: 38%;
   min-width: 180px;
   border-right: 1px solid var(--lightgray);
-  overflow-y: auto;           /* scroll if list is long */
+  overflow-y: auto;
   flex-shrink: 0;
 }
 .nf-item {
@@ -427,11 +463,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   color: var(--gray);
 }
 
-/* Right — preview pane, scrollable and height-limited */
+/* Right — preview pane */
 .nf-preview-pane {
   flex: 1;
   padding: 1rem 1.1rem;
-  overflow-y: auto;           /* make preview internally scrollable */
+  overflow-y: auto;
   overflow-x: hidden;
 }
 .nf-preview-hint { color: var(--gray); font-size: 0.85rem; margin: 0; }
