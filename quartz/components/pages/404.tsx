@@ -37,75 +37,56 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   // ── Query extraction ─────────────────────────────────────────────────────
   function extractQuery(href) {
-    // href is window.location.href — includes hash
     var hashIndex = href.indexOf("#");
     var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
     var pathname  = hashIndex > -1 ? href.slice(0, hashIndex) : href;
 
-    // Remove origin
     var path = pathname.replace(/^https?:\\/\\/[^\\/]+/, "").replace(/\\/$/, "");
 
-    // Last non-empty path segment
     var segments = path.split("/").filter(Boolean);
     var lastSeg  = segments[segments.length - 1] || "";
 
     try { lastSeg = decodeURIComponent(lastSeg); } catch(e) {}
 
     if (hash) {
-      // Extract only leading digits from hash (ignore trailing slug text)
       var hashDigits = hash.match(/^(\\d+)/);
-      if (!hashDigits) return slugText(lastSeg); // no digits, fall back to slug
+      if (!hashDigits) return slugText(lastSeg);
 
       var digits = hashDigits[1];
-
-      // Determine dot position from the leading number in lastSeg
       var segNum = lastSeg.match(/^(\\d+)\\./);
-      var dotPos = segNum ? segNum[1].length : 3; // default 3 if we can't tell
+      var dotPos = segNum ? segNum[1].length : 3;
 
-      // Insert dot
       var coord = digits.slice(0, dotPos) + "." + digits.slice(dotPos);
       return coord;
     }
 
-    // No hash — use slug text
     return slugText(lastSeg);
   }
 
   function slugText(seg) {
-    // Collapse any run of hyphens to space, keep dots (section numbers)
     return seg.replace(/-+/g, " ").trim();
   }
 
-  // ── Scoring ──────────────────────────────────────────────────────────────
-  function score(query, slug, entry) {
-    var terms = query.toLowerCase().split(/\\s+/).filter(Boolean);
-    var t = (entry.title   || "").toLowerCase();
-    var c = (entry.content || "").toLowerCase();
-    var s = slug.toLowerCase();
-    var n = 0;
-    for (var i = 0; i < terms.length; i++) {
-      var q = terms[i];
-      if (t.includes(q)) n += 10;
-      if (s.includes(q)) n += 8;
-      if (c.includes(q)) n += 2;
-    }
-    return n;
-  }
+  // ── Fuse.js scoring ──────────────────────────────────────────────────────
+  var fuse = null;
 
-  function runSearch(index, query) {
-    if (!query || !index) return [];
-    var out = [];
-    var keys = Object.keys(index);
-    for (var i = 0; i < keys.length; i++) {
-      var k = keys[i];
-      var sc = score(query, k, index[k]);
-      if (sc > 0) out.push({ slug: k, entry: index[k], score: sc });
-    }
-    out.sort(function(a,b){ return b.score - a.score; });
-    return out.slice(0, 10);
+  function runSearch(query) {
+    if (!fuse) return [];
+    var raw = fuse.search(query, { limit: 10 });
+    return raw.map(function(r) {
+      return {
+        slug: r.item.slug,
+        title: r.item.title,
+        description: r.item.description,
+        content: r.item.content,
+        score: r.score
+      };
+    });
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
+  var fetchCounter = 0;
+
   function renderList(results, activeSlug) {
     var list = document.getElementById("nf-list");
     if (!list) return;
@@ -120,7 +101,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         li.className = "nf-item" + (r.slug === activeSlug ? " nf-active" : "");
         li.dataset.slug = r.slug;
         li.innerHTML =
-          '<span class="nf-item-title">' + (r.entry.title || r.slug) + '</span>';
+          '<span class="nf-item-title">' + (r.title || r.slug) + '</span>';
         li.addEventListener("click", function() {
           showPreview(r);
           document.querySelectorAll(".nf-item").forEach(function(el){ el.classList.remove("nf-active"); });
@@ -129,23 +110,51 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         list.appendChild(li);
       })(results[i]);
     }
-    // Auto-select first
     if (results.length) showPreview(results[0]);
   }
 
   function showPreview(r) {
     var pane = document.getElementById("nf-preview");
     if (!pane) return;
+
     var href = BASE + "/" + r.slug;
-    var desc = r.entry.description || (r.entry.content || "").slice(0, 300);
-    pane.innerHTML =
-      '<a class="nf-preview-title" href="' + href + '">' + (r.entry.title || r.slug) + '</a>' +
-      (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : '') +
-      '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+    var fetchId = ++fetchCounter;
+
+    pane.innerHTML = '<p class="nf-preview-hint">Loading…</p>';
+
+    fetch(href)
+      .then(function(res) {
+        if (!res.ok) throw new Error('Page not found');
+        return res.text();
+      })
+      .then(function(html) {
+        if (fetchId !== fetchCounter) return;
+
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var article = doc.querySelector('article') || doc.querySelector('main') || doc.body;
+        var contentHTML = article ? article.innerHTML : '';
+        var temp = document.createElement('div');
+        temp.innerHTML = contentHTML;
+        temp.querySelectorAll('script, style, link[rel="stylesheet"]').forEach(function(el) { el.remove(); });
+        temp.querySelectorAll('a').forEach(function(a) { a.style.pointerEvents = 'none'; });
+
+        pane.innerHTML =
+          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
+          '<div class="nf-preview-body">' + temp.innerHTML + '</div>' +
+          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+      })
+      .catch(function(e) {
+        if (fetchId !== fetchCounter) return;
+
+        var desc = r.description || (r.content || "").slice(0, 300);
+        pane.innerHTML =
+          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
+          (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : '') +
+          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+      });
   }
 
   // ── Boot ─────────────────────────────────────────────────────────────────
-  var contentIndex = null;
   var currentQuery = "";
 
   function debounce(fn, ms) {
@@ -155,11 +164,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   function go(query) {
     currentQuery = query;
-    var results = runSearch(contentIndex, query);
+    var results = runSearch(query);
     renderList(results, null);
   }
 
-  // Show attempted URL
   document.addEventListener("DOMContentLoaded", function() {
     var urlEl = document.getElementById("nf-attempted-url");
     if (urlEl) urlEl.textContent = window.location.href;
@@ -171,16 +179,61 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       input.addEventListener("input", debounce(function(){ go(input.value); }, 150));
     }
     currentQuery = query;
-    if (contentIndex) go(query);
+    if (fuse) go(query);
   });
+
+  function buildFuseFromData(data) {
+    var docs = Object.entries(data).map(function(entry) {
+      var slug = entry[0];
+      var meta = entry[1] || {};
+      return {
+        slug: slug,
+        title: meta.title || "",
+        tags: (meta.tags || []).join(" "),
+        description: meta.description || "",
+        content: meta.content || ""
+      };
+    });
+
+    if (window.Fuse) {
+      fuse = new window.Fuse(docs, {
+        keys: [
+          { name: "title", weight: 0.6 },
+          { name: "slug", weight: 0.3 },
+          { name: "tags", weight: 0.1 }
+        ],
+        threshold: 0.45,
+        distance: 200,
+        includeScore: true,
+        ignoreFieldNorm: false,
+        minMatchCharLength: 2
+      });
+      if (currentQuery) go(currentQuery);
+    } else {
+      console.warn("Fuse CDN failed to load");
+      // optionally implement a simple fallback here
+    }
+  }
 
   fetch(BASE + "/static/contentIndex.json")
     .then(function(r){ return r.json(); })
     .then(function(data){
-      contentIndex = data;
-      if (currentQuery) go(currentQuery);
+      if (window.Fuse) {
+        buildFuseFromData(data);
+      } else {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js';
+        script.onload = function() {
+          buildFuseFromData(data);
+        };
+        script.onerror = function() {
+          console.warn("Fuse CDN failed to load");
+          // optional fallback
+        };
+        document.head.appendChild(script);
+      }
     })
-    .catch(function(e){ console.warn("Canopy 404: contentIndex load failed", e); });
+    .catch(function(e){ console.warn("Canopy 404: contentIndex fetch failed", e); });
 
 })();
       ` }} />
@@ -299,6 +352,19 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   font-weight: 500;
 }
 .nf-preview-link:hover { text-decoration: underline; }
+
+/* New: preview body */
+.nf-preview-body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--dark);
+  margin-bottom: 1rem;
+}
+.nf-preview-body a {
+  pointer-events: none;
+  color: inherit;
+  text-decoration: none;
+}
 
 .nf-home {
   display: inline-block;
