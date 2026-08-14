@@ -74,7 +74,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       // Case 3: coordinate + anchor title
       var digitsStr = digits[0];
       var segNum = cleanedSlug.match(/^(\\d+)\\./);
-      var dotPos = segNum ? segNum[0].length : 3;
+      var dotPos = segNum ? segNum[1].length : 3;   // FIXED: use digits length, not match length
       var coord = digitsStr.slice(0, dotPos) + "." + digitsStr.slice(dotPos);
       result.query = coord + " " + cleanedAnchorText;
       result.mode = "content";
@@ -82,7 +82,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       // Case 2: coordinate only
       var digitsStr2 = digits[0];
       var segNum2 = cleanedSlug.match(/^(\\d+)\\./);
-      var dotPos2 = segNum2 ? segNum2[0].length : 3;
+      var dotPos2 = segNum2 ? segNum2[1].length : 3;   // FIXED
       var coord2 = digitsStr2.slice(0, dotPos2) + "." + digitsStr2.slice(dotPos2);
       result.query = coord2;
       result.mode = "content";
@@ -252,12 +252,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (input) {
       input.value = parsed.query;
       input.addEventListener("input", debounce(function(){
-        // User typed: keep same mode for now, but if query looks like coordinate, switch to content mode
+        // User typed: keep same mode, but if query looks like coordinate, switch to content mode
         var val = input.value.trim();
         if (/^\\d+(\\.\\d+)?$/.test(val)) {
           currentMode = "content";
-        } else {
-          // keep current mode (from initial URL)
         }
         go(val, currentMode);
       }, 150));
