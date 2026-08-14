@@ -57,6 +57,26 @@ async function mouseEnterHandler(
   })
 
   if (!response) return
+    // If the page doesn't exist, show the simple 404 in popover
+  if (response.status === 404) {
+    const popoverElement = document.createElement("div")
+    popoverElement.id = popoverId
+    popoverElement.classList.add("popover")
+    const popoverInner = document.createElement("div")
+    popoverInner.classList.add("popover-inner")
+    popoverInner.innerHTML = `
+      <article class="popover-hint">
+        <h1>404</h1>
+        <p>Either this page is private or doesn't exist.</p>
+        <a href="/">Return to Homepage</a>
+      </article>
+    `
+    popoverElement.appendChild(popoverInner)
+    document.body.appendChild(popoverElement)
+    if (activeAnchor !== this) return
+    showPopover(popoverElement)
+    return
+  }
   const [contentType] = response.headers.get("Content-Type")!.split(";")
   const [contentTypeCategory, typeInfo] = contentType.split("/")
 
