@@ -125,7 +125,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "slug",  weight: 0.3 },
         { name: "tags",  weight: 0.1 }
       ],
-      threshold:         0.45,
+      threshold:         0.5,
       distance:          200,
       includeScore:      true,
       ignoreFieldNorm:   false,
