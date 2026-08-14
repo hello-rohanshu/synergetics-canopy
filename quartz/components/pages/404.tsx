@@ -6,11 +6,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   const baseDir = url.pathname
 
   return (
-    <article class="popover-hint">
-      <h1>404</h1>
-      <p>{i18n(cfg.locale).pages.error.notFound}</p>
-      <p class="not-found-hint">The page may have moved. Try searching below:</p>
-      <div id="not-found-search">
+    <article class="popover-hint nf-article">
+      <div class="nf-header">
+        <p class="nf-label">Your link was imprecise</p>
+        <code id="nf-attempted-url" class="nf-url"></code>
+      </div>
+
+      <div class="nf-search-row">
         <input
           id="not-found-input"
           type="text"
@@ -18,145 +20,405 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           autocomplete="off"
           spellcheck={false}
         />
-        <ul id="not-found-results" />
       </div>
-      <a href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
+
+      <div class="nf-columns">
+        <ul id="nf-list" class="nf-result-list" />
+        <div id="nf-preview" class="nf-preview-pane">
+          <p class="nf-preview-hint">← Select a result</p>
+        </div>
+      </div>
+
+      <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+
+      <script dangerouslySetInnerHTML={{ __html: `
 (function () {
-  // ── 1. Extract a search query from the current URL path ──────────────────
-  function slugToQuery(pathname) {
-    // Strip leading slash and trailing slash
-    var clean = pathname.replace(/^\\//, "").replace(/\\/$/, "")
-    // Drop anchor (shouldn't be in pathname but just in case)
-    clean = clean.split("#")[0]
-    // Take the last path segment (most specific)
-    var segments = clean.split("/")
-    var last = segments[segments.length - 1] || segments[segments.length - 2] || ""
-    // Collapse runs of hyphens (handles "Definition---Tensegrity") into spaces
-    last = last.replace(/-+/g, " ")
-    // URL-decode percent-encoded characters
-    try { last = decodeURIComponent(last) } catch (e) {}
-    return last.trim()
-  }
+  var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
-  // ── 2. Minimal Flexsearch-free search against contentIndex.json ──────────
-  // Quartz's contentIndex.json shape:
-  //   { "slug": { title, content, tags, date, description }, … }
-  // We do a simple scored keyword match — no extra deps needed on the 404 page.
-  function scoreEntry(query, slug, entry) {
-    var terms = query.toLowerCase().split(/\\s+/).filter(Boolean)
-    var titleLower = (entry.title || "").toLowerCase()
-    var contentLower = (entry.content || "").toLowerCase()
-    var slugLower = slug.toLowerCase()
-    var score = 0
-    for (var i = 0; i < terms.length; i++) {
-      var t = terms[i]
-      if (titleLower.includes(t))   score += 10
-      if (slugLower.includes(t))    score += 8
-      if (contentLower.includes(t)) score += 2
+  // ── URL parsing (spec v1.1) ──────────────────────────────────────────────
+  function parseURL(href) {
+    var hashIndex = href.indexOf("#");
+    var hash      = hashIndex > -1 ? href.slice(hashIndex + 1) : "";
+    var pathname  = hashIndex > -1 ? href.slice(0, hashIndex) : href;
+
+    var path = pathname.replace(/^https?:\\/\\/[^\\/]+/, "").replace(/\\/$/, "");
+    var segments = path.split("/").filter(Boolean);
+    var lastSeg  = segments[segments.length - 1] || "";
+
+    try { lastSeg = decodeURIComponent(lastSeg); } catch(e) {}
+
+    var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
+
+    // Extract leading numeric prefix from slug for parent-page lookup.
+    // We store it as the raw match (e.g. "810.00" or "810") so we can
+    // do exact-boundary matching later.
+    var pageNumMatch = cleanedSlug.match(/^(\\d+(?:\\.\\d+)?)/);
+    var pagePrefix   = pageNumMatch ? pageNumMatch[1] : "";
+
+    var result = {
+      slug:       lastSeg,
+      hash:       hash,
+      hasAnchor:  hash.length > 0,
+      fuseQuery:  "",   // what goes into Fuse
+      coordQuery: "",   // coordinate portion only (may be empty)
+      titleQuery: "",   // anchor-title portion only (may be empty)
+      mode:       "page",   // "page" | "content"
+      pagePrefix: pagePrefix
+    };
+
+    if (!hash) {
+      // Case 1: no anchor — user wanted a page
+      result.fuseQuery = cleanedSlug;
+      result.mode = "page";
+      return result;
     }
-    return score
-  }
 
-  function search(index, query) {
-    if (!query) return []
-    var results = []
-    var slugs = Object.keys(index)
-    for (var i = 0; i < slugs.length; i++) {
-      var slug = slugs[i]
-      var entry = index[slug]
-      var score = scoreEntry(query, slug, entry)
-      if (score > 0) results.push({ slug: slug, entry: entry, score: score })
+    // ── Anchor parsing ──────────────────────────────────────────────────────
+    var coordMatch = hash.match(/^(\\d+(?:\\.\\d+)?)/);
+    var coordStr   = coordMatch ? coordMatch[1] : "";
+
+    // Text after the coordinate (strip leading hyphens)
+    var afterCoord     = coordMatch ? hash.slice(coordMatch[0].length).replace(/^-+/, "").trim() : hash;
+    var cleanAnchorTxt = afterCoord.replace(/-+/g, " ").trim();
+
+    // Insert decimal into raw coordinate if missing, using slug's integer width
+    if (coordStr && coordStr.indexOf(".") === -1) {
+      var intLen = pageNumMatch ? pageNumMatch[1].split(".")[0].length : 3;
+      coordStr   = coordStr.slice(0, intLen) + "." + coordStr.slice(intLen);
     }
-    results.sort(function (a, b) { return b.score - a.score })
-    return results.slice(0, 8)
+
+    result.mode       = "content";
+    result.coordQuery = coordStr;
+    result.titleQuery = cleanAnchorTxt;
+
+    // fuseQuery: for content Fuse we use only the anchor title (the coordinate
+    // is handled by deterministic parent lookup — see go()).  If there is no
+    // anchor title, fall back to the coordinate so Fuse has something.
+    result.fuseQuery = cleanAnchorTxt.length > 0 ? cleanAnchorTxt : coordStr;
+
+    return result;
   }
 
-  // ── 3. Render results into the list ──────────────────────────────────────
-  function render(results, baseDir) {
-    var list = document.getElementById("not-found-results")
-    if (!list) return
-    list.innerHTML = ""
-    if (results.length === 0) {
-      list.innerHTML = "<li class=\\"nf-empty\\">No results found.</li>"
-      return
+  // ── Fuse.js instances ────────────────────────────────────────────────────
+  var pageFuse    = null;
+  var contentFuse = null;
+  var allDocs     = [];
+
+  function createDocObjects(data) {
+    return Object.entries(data).map(function(entry) {
+      var slug = entry[0];
+      var meta = entry[1] || {};
+      return {
+        slug:        slug,
+        title:       meta.title       || "",
+        tags:        (meta.tags || []).join(" "),
+        description: meta.description || "",
+        content:     meta.content     || ""
+      };
+    });
+  }
+
+  function buildPageFuse(docs) {
+    return new window.Fuse(docs, {
+      keys: [
+        { name: "title", weight: 0.6 },
+        { name: "slug",  weight: 0.3 },
+        { name: "tags",  weight: 0.1 }
+      ],
+      threshold:         0.45,
+      distance:          200,
+      includeScore:      true,
+      ignoreFieldNorm:   false,
+      minMatchCharLength: 2
+    });
+  }
+
+  function buildContentFuse(docs) {
+    return new window.Fuse(docs, {
+      keys: [
+        { name: "content", weight: 0.7 },
+        { name: "title",   weight: 0.3 }
+      ],
+      threshold:         0.5,
+      distance:          200,
+      includeScore:      true,
+      ignoreFieldNorm:   true,   // don't penalise long parent pages
+      minMatchCharLength: 2
+    });
+  }
+
+  function searchWithFuse(fuse, query, limit) {
+    if (!fuse || !query) return [];
+    var raw = fuse.search(query, { limit: limit || 10 });
+    return raw.map(function(r) {
+      return {
+        slug:        r.item.slug,
+        title:       r.item.title,
+        description: r.item.description,
+        content:     r.item.content,
+        score:       r.score
+      };
+    });
+  }
+
+  // ── Parent-page direct lookup ────────────────────────────────────────────
+  // Given a pagePrefix like "810.00" or "810", find the one doc whose slug
+  // most precisely starts with that prefix at a word boundary (followed by
+  // ".", "-", or end-of-string).  Returns the doc object or null.
+  function findParentDoc(prefix) {
+    if (!prefix || !allDocs.length) return null;
+
+    // Build a pattern that matches the prefix at a boundary so "810" doesn't
+    // accidentally match "8100-..."
+    // We try the full prefix first (e.g. "810.00"), then the integer part only.
+    var candidates = [];
+    var variants = [prefix];
+    var dotIdx = prefix.indexOf(".");
+    if (dotIdx > -1) variants.push(prefix.slice(0, dotIdx));  // e.g. "810"
+
+    allDocs.forEach(function(doc) {
+      for (var i = 0; i < variants.length; i++) {
+        var v  = variants[i];
+        var ch = doc.slug[v.length] || "";   // char right after the prefix in slug
+        if (
+          doc.slug.indexOf(v) === 0 &&
+          (ch === "" || ch === "." || ch === "-")
+        ) {
+          // Prefer longer (more specific) variant match
+          candidates.push({ doc: doc, specificity: v.length });
+          break;
+        }
+      }
+    });
+
+    if (!candidates.length) return null;
+    // If multiple hits (shouldn't be), pick the one whose slug is shortest
+    // (most likely the section-level page rather than a sub-sub-page)
+    candidates.sort(function(a, b) {
+      if (b.specificity !== a.specificity) return b.specificity - a.specificity;
+      return a.doc.slug.length - b.doc.slug.length;
+    });
+    return candidates[0].doc;
+  }
+
+  // ── Render ───────────────────────────────────────────────────────────────
+  var fetchCounter = 0;
+
+  function renderList(results, activeSlug) {
+    var list = document.getElementById("nf-list");
+    if (!list) return;
+    list.innerHTML = "";
+    if (!results.length) {
+      list.innerHTML = '<li class="nf-empty">No results — try editing the query above</li>';
+      return;
     }
     for (var i = 0; i < results.length; i++) {
-      var r = results[i]
-      var href = (baseDir || "/").replace(/\\/$/, "") + "/" + r.slug
-      var li = document.createElement("li")
-      li.className = "nf-result"
-      var desc = r.entry.description || (r.entry.content || "").slice(0, 100)
-      li.innerHTML =
-        '<a href="' + href + '">' +
-          '<span class="nf-title">' + (r.entry.title || r.slug) + '</span>' +
-          (desc ? '<span class="nf-desc">' + desc + '</span>' : "") +
-        '</a>'
-      list.appendChild(li)
+      (function(r) {
+        var li = document.createElement("li");
+        li.className  = "nf-item" + (r.slug === activeSlug ? " nf-active" : "");
+        li.dataset.slug = r.slug;
+        li.innerHTML =
+          '<span class="nf-item-title">' + (r.title || r.slug) + '</span>';
+        li.addEventListener("click", function() {
+          showPreview(r);
+          document.querySelectorAll(".nf-item").forEach(function(el) { el.classList.remove("nf-active"); });
+          li.classList.add("nf-active");
+        });
+        list.appendChild(li);
+      })(results[i]);
     }
+    if (results.length) showPreview(results[0]);
   }
 
-  // ── 4. Boot ──────────────────────────────────────────────────────────────
-  var contentIndex = null
-  var baseDir = ${JSON.stringify(baseDir)}
+  function showPreview(r) {
+    var pane = document.getElementById("nf-preview");
+    if (!pane) return;
 
-  // Debounce helper
+    var href    = BASE + "/" + r.slug;
+    var fetchId = ++fetchCounter;
+
+    pane.innerHTML = '<p class="nf-preview-hint">Loading…</p>';
+
+    fetch(href)
+      .then(function(res) {
+        if (!res.ok) throw new Error("not found");
+        return res.text();
+      })
+      .then(function(html) {
+        if (fetchId !== fetchCounter) return;
+        var doc     = new DOMParser().parseFromString(html, "text/html");
+        var article = doc.querySelector("article") || doc.querySelector("main") || doc.body;
+        var temp    = document.createElement("div");
+        temp.innerHTML = article ? article.innerHTML : "";
+        temp.querySelectorAll("script, style, link[rel=stylesheet]").forEach(function(el) { el.remove(); });
+        temp.querySelectorAll("a").forEach(function(a) { a.style.pointerEvents = "none"; });
+        pane.innerHTML =
+          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
+          '<div class="nf-preview-body">' + temp.innerHTML + '</div>' +
+          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+      })
+      .catch(function() {
+        if (fetchId !== fetchCounter) return;
+        var desc = r.description || (r.content || "").slice(0, 300);
+        pane.innerHTML =
+          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
+          (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : "") +
+          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+      });
+  }
+
+  // ── Search orchestration ─────────────────────────────────────────────────
+  var state = {
+    fuseQuery:  "",
+    coordQuery: "",
+    pagePrefix: "",
+    mode:       "page",
+    fromURL:    true   // true = came from URL parse; false = user typed
+  };
+
+  function go() {
+    var results = [];
+
+    if (state.mode === "content") {
+      // Step 1: pin parent page deterministically (only when query came from URL)
+      var pinned = state.fromURL ? findParentDoc(state.pagePrefix) : null;
+
+      // Step 2: Fuse on anchor title (or coord as fallback) for remaining slots
+      var fuseResults = searchWithFuse(contentFuse, state.fuseQuery, pinned ? 9 : 10);
+
+      // Step 3: merge — pinned first, then Fuse results (deduped)
+      var seen = {};
+      if (pinned) {
+        results.push(pinned);
+        seen[pinned.slug] = true;
+      }
+      fuseResults.forEach(function(r) {
+        if (!seen[r.slug]) {
+          results.push(r);
+          seen[r.slug] = true;
+        }
+      });
+
+    } else {
+      // Page mode: straight Fuse on title/slug/tags
+      results = searchWithFuse(pageFuse, state.fuseQuery, 10);
+    }
+
+    renderList(results, null);
+  }
+
   function debounce(fn, ms) {
-    var t
-    return function () {
-      clearTimeout(t)
-      var args = arguments
-      t = setTimeout(function () { fn.apply(null, args) }, ms)
+    var t;
+    return function() {
+      clearTimeout(t);
+      var a = arguments;
+      t = setTimeout(function() { fn.apply(null, a); }, ms);
+    };
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", function() {
+    var urlEl = document.getElementById("nf-attempted-url");
+    if (urlEl) urlEl.textContent = window.location.href;
+
+    var parsed = parseURL(window.location.href);
+    state.fuseQuery  = parsed.fuseQuery;
+    state.coordQuery = parsed.coordQuery;
+    state.pagePrefix = parsed.pagePrefix;
+    state.mode       = parsed.mode;
+    state.fromURL    = true;
+
+    var input = document.getElementById("not-found-input");
+    if (input) {
+      // Show the full human-readable query in the input box
+      input.value = parsed.coordQuery
+        ? (parsed.coordQuery + (parsed.titleQuery ? " " + parsed.titleQuery : ""))
+        : parsed.fuseQuery;
+
+      input.addEventListener("input", debounce(function() {
+        var val = input.value.trim();
+
+        // User is now driving — disable URL-based parent boost
+        state.fromURL    = false;
+        state.pagePrefix = "";
+
+        // Detect if user typed a bare coordinate → content mode
+        if (/^\\d+(\\.\\d+)?$/.test(val)) {
+          state.mode      = "content";
+          state.fuseQuery = val;
+        } else if (val.length > 0) {
+          // Non-coordinate text: switch to page mode so title search dominates
+          state.mode      = "page";
+          state.fuseQuery = val;
+        } else {
+          state.fuseQuery = "";
+        }
+
+        if (pageFuse || contentFuse) go();
+      }, 150));
+    }
+
+    // Indexes not ready yet — go() will be called from buildFuseIndex
+    if (pageFuse || contentFuse) go();
+  });
+
+  function buildFuseIndex(data) {
+    allDocs = createDocObjects(data);
+    if (window.Fuse) {
+      pageFuse    = buildPageFuse(allDocs);
+      contentFuse = buildContentFuse(allDocs);
+      if (state.fuseQuery) go();
+    } else {
+      console.warn("Fuse CDN failed to load");
     }
   }
 
-  function runSearch(query) {
-    if (!contentIndex) return
-    render(search(contentIndex, query), baseDir)
-  }
-
-  // Fetch the content index once
-  fetch(baseDir.replace(/\\/$/, "") + "/static/contentIndex.json")
-    .then(function (r) { return r.json() })
-    .then(function (data) {
-      contentIndex = data
-      // Run initial search with the URL-derived query
-      var input = document.getElementById("not-found-input")
-      if (input && input.value) runSearch(input.value)
+  // ── Load Fuse + index ────────────────────────────────────────────────────
+  fetch(BASE + "/static/contentIndex.json")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (window.Fuse) {
+        buildFuseIndex(data);
+      } else {
+        var script    = document.createElement("script");
+        script.src    = "https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js";
+        script.onload = function() { buildFuseIndex(data); };
+        script.onerror = function() { console.warn("Fuse CDN failed to load"); };
+        document.head.appendChild(script);
+      }
     })
-    .catch(function (e) { console.warn("Canopy 404: could not load contentIndex", e) })
+    .catch(function(e) { console.warn("Canopy 404: contentIndex fetch failed", e); });
 
-  // Wire up the input
-  document.addEventListener("DOMContentLoaded", function () {
-    var input = document.getElementById("not-found-input")
-    if (!input) return
+})();
+      ` }} />
 
-    // Pre-fill from URL
-    var query = slugToQuery(window.location.pathname)
-    input.value = query
+      <style dangerouslySetInnerHTML={{ __html: `
+.nf-article { max-width: 100%; }
 
-    // If index already loaded (cached), search immediately
-    if (contentIndex && query) runSearch(query)
-
-    input.addEventListener("input", debounce(function () {
-      runSearch(input.value)
-    }, 120))
-  })
-})()
-          `,
-        }}
-      />
-      <style dangerouslySetInnerHTML={{
-        __html: `
-#not-found-search {
-  margin: 1.5rem 0 1.25rem;
-  max-width: 560px;
+.nf-header { margin-bottom: 1.25rem; }
+.nf-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  margin: 0 0 0.35rem;
 }
+.nf-url {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--secondary);
+  word-break: break-all;
+  background: var(--highlight);
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-family: var(--codeFont, monospace);
+}
+
+.nf-search-row { margin-bottom: 1rem; }
 #not-found-input {
   width: 100%;
-  padding: 0.55rem 0.85rem;
+  max-width: 480px;
+  padding: 0.5rem 0.75rem;
   font-size: 1rem;
   font-family: inherit;
   border: 1px solid var(--lightgray);
@@ -166,56 +428,124 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   outline: none;
   box-sizing: border-box;
 }
-#not-found-input:focus {
-  border-color: var(--secondary);
+#not-found-input:focus { border-color: var(--secondary); }
+
+/* Two-column layout */
+.nf-columns {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--lightgray);
+  border-radius: 4px;
+  height: 60vh;
+  max-height: 60vh;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
 }
-#not-found-results {
+
+/* Left — result list */
+.nf-result-list {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0;
+  width: 38%;
+  min-width: 180px;
+  border-right: 1px solid var(--lightgray);
+  overflow-y: auto;
+  flex-shrink: 0;
 }
-#not-found-results .nf-result {
+.nf-item {
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
   border-bottom: 1px solid var(--lightgray);
+  transition: background 0.1s;
 }
-#not-found-results .nf-result:last-child {
-  border-bottom: none;
-}
-#not-found-results .nf-result a {
-  display: block;
-  padding: 0.55rem 0.25rem;
-  text-decoration: none;
-  color: inherit;
-}
-#not-found-results .nf-result a:hover {
-  background: var(--highlight);
-  border-radius: 3px;
-}
-#not-found-results .nf-title {
-  display: block;
-  font-weight: 600;
-  color: var(--secondary);
-}
-#not-found-results .nf-desc {
+.nf-item:last-child { border-bottom: none; }
+.nf-item:hover, .nf-item.nf-active { background: var(--highlight); }
+.nf-item.nf-active .nf-item-title { color: var(--secondary); }
+.nf-item-title {
   display: block;
   font-size: 0.85rem;
-  color: var(--gray);
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.35;
 }
-#not-found-results .nf-empty {
-  padding: 0.5rem 0.25rem;
+.nf-empty {
+  padding: 0.75rem;
+  font-size: 0.85rem;
   color: var(--gray);
+}
+
+/* Right — preview pane */
+.nf-preview-pane {
+  flex: 1;
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.nf-preview-hint { color: var(--gray); font-size: 0.85rem; margin: 0; }
+.nf-preview-title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-decoration: none;
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.nf-preview-title:hover { text-decoration: underline; }
+.nf-preview-desc {
+  font-size: 0.875rem;
+  color: var(--dark);
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+.nf-preview-link {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.nf-preview-link:hover { text-decoration: underline; }
+
+/* Preview body */
+.nf-preview-body {
   font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--dark);
+  margin-bottom: 1rem;
 }
-.not-found-hint {
+.nf-preview-body a {
+  pointer-events: none;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nf-home {
+  display: inline-block;
+  font-size: 0.875rem;
   color: var(--gray);
-  font-size: 0.95rem;
-  margin-bottom: 0.25rem;
 }
-        `
-      }} />
+
+/* Mobile: stack columns */
+@media (max-width: 600px) {
+  .nf-columns {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+  }
+  .nf-result-list {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--lightgray);
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .nf-preview-pane {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+}
+      ` }} />
     </article>
   )
 }
