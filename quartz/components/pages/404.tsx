@@ -125,7 +125,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         { name: "slug",  weight: 0.3 },
         { name: "tags",  weight: 0.1 }
       ],
-      threshold:         0.45,
+      threshold:         0.5,
       distance:          200,
       includeScore:      true,
       ignoreFieldNorm:   false,
@@ -168,20 +168,24 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   function findParentDoc(prefix) {
     if (!prefix || !allDocs.length) return null;
 
-    // Build a pattern that matches the prefix at a boundary so "810" doesn't
-    // accidentally match "8100-..."
-    // We try the full prefix first (e.g. "810.00"), then the integer part only.
+    // Docs are keyed by full path, e.g.
+    //   "800.00-Operational-Mathematics/810.00-One-Spherical-Triangle-..."
+    // The URL only ever gives us the LAST segment, so we must compare the
+    // prefix against each doc's last segment too — not the full slug.
     var candidates = [];
     var variants = [prefix];
     var dotIdx = prefix.indexOf(".");
     if (dotIdx > -1) variants.push(prefix.slice(0, dotIdx));  // e.g. "810"
 
     allDocs.forEach(function(doc) {
+      var parts   = doc.slug.split("/");
+      var lastSeg = parts[parts.length - 1] || "";
+
       for (var i = 0; i < variants.length; i++) {
         var v  = variants[i];
-        var ch = doc.slug[v.length] || "";   // char right after the prefix in slug
+        var ch = lastSeg[v.length] || "";   // char right after the prefix in the segment
         if (
-          doc.slug.indexOf(v) === 0 &&
+          lastSeg.indexOf(v) === 0 &&
           (ch === "" || ch === "." || ch === "-")
         ) {
           // Prefer longer (more specific) variant match
@@ -192,11 +196,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     });
 
     if (!candidates.length) return null;
-    // If multiple hits (shouldn't be), pick the one whose slug is shortest
-    // (most likely the section-level page rather than a sub-sub-page)
+    // If multiple hits (shouldn't be), pick the one whose last segment is
+    // shortest (most likely the section-level page rather than a sub-page)
     candidates.sort(function(a, b) {
       if (b.specificity !== a.specificity) return b.specificity - a.specificity;
-      return a.doc.slug.length - b.doc.slug.length;
+      var aLast = a.doc.slug.split("/").pop();
+      var bLast = b.doc.slug.split("/").pop();
+      return aLast.length - bLast.length;
     });
     return candidates[0].doc;
   }
