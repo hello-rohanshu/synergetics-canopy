@@ -7,14 +7,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   return (
     <article class="popover-hint nf-article">
-      <h1 class="nf-404">404.</h1>
-
       <div class="nf-header">
-        <p class="nf-label">Your link was imprecise</p>
-        <code id="nf-attempted-url" class="nf-url"></code>
+        <h1 class="nf-404">404</h1>
+        <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
       </div>
 
-      <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+      <p class="nf-label">Page not found</p>
+      <code id="nf-attempted-url" class="nf-url"></code>
 
       <div class="nf-search-row">
         <input
@@ -26,12 +25,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         />
       </div>
 
-      <div class="nf-columns">
-        <ul id="nf-list" class="nf-result-list" />
-        <div id="nf-preview" class="nf-preview-pane">
-          <p class="nf-preview-hint">← Select a result</p>
-        </div>
-      </div>
+      <ul id="nf-list" class="nf-result-list" />
 
       <script dangerouslySetInnerHTML={{ __html: `
 (function () {
@@ -51,7 +45,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
     var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
 
-    // Extract leading numeric prefix from slug for parent-page lookup.
     var pageNumMatch = cleanedSlug.match(/^(\\d+(?:\\.\\d+)?)/);
     var pagePrefix   = pageNumMatch ? pageNumMatch[1] : "";
 
@@ -59,29 +52,25 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       slug:       lastSeg,
       hash:       hash,
       hasAnchor:  hash.length > 0,
-      fuseQuery:  "",   // what goes into Fuse
-      coordQuery: "",   // coordinate portion only (may be empty)
-      titleQuery: "",   // anchor-title portion only (may be empty)
-      mode:       "page",   // "page" | "content"
+      fuseQuery:  "",
+      coordQuery: "",
+      titleQuery: "",
+      mode:       "page",
       pagePrefix: pagePrefix
     };
 
     if (!hash) {
-      // Case 1: no anchor — user wanted a page
       result.fuseQuery = cleanedSlug;
       result.mode = "page";
       return result;
     }
 
-    // ── Anchor parsing ──────────────────────────────────────────────────────
     var coordMatch = hash.match(/^(\\d+(?:\\.\\d+)?)/);
     var coordStr   = coordMatch ? coordMatch[1] : "";
 
-    // Text after the coordinate (strip leading hyphens)
     var afterCoord     = coordMatch ? hash.slice(coordMatch[0].length).replace(/^-+/, "").trim() : hash;
     var cleanAnchorTxt = afterCoord.replace(/-+/g, " ").trim();
 
-    // Insert decimal into raw coordinate if missing, using slug's integer width
     if (coordStr && coordStr.indexOf(".") === -1) {
       var intLen = pageNumMatch ? pageNumMatch[1].split(".")[0].length : 3;
       coordStr   = coordStr.slice(0, intLen) + "." + coordStr.slice(intLen);
@@ -90,10 +79,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     result.mode       = "content";
     result.coordQuery = coordStr;
     result.titleQuery = cleanAnchorTxt;
-
-    // fuseQuery: for content Fuse we use only the anchor title (the coordinate
-    // is handled by deterministic parent lookup — see go()). If there is no
-    // anchor title, fall back to the coordinate so Fuse has something.
     result.fuseQuery = cleanAnchorTxt.length > 0 ? cleanAnchorTxt : coordStr;
 
     return result;
@@ -115,63 +100,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         description: meta.description || "",
         content:     meta.content     || ""
       };
-    });
-  }
-
-  // ── Highlighting helpers ─────────────────────────────────────────────────
-  function tokenizeTerm(term) {
-    if (!term) return [];
-    var tokens = term.split(/\\s+/).filter(function(t) { return t.trim() !== ""; });
-    var tokenLen = tokens.length;
-    if (tokenLen > 1) {
-      for (var i = 1; i < tokenLen; i++) {
-        tokens.push(tokens.slice(0, i + 1).join(" "));
-      }
-    }
-    return tokens.sort(function(a, b) { return b.length - a.length; });
-  }
-
-  function createHighlightSpan(text) {
-    var span = document.createElement("span");
-    span.className = "highlight";
-    span.textContent = text;
-    return span;
-  }
-
-  function highlightTextNodes(node, term) {
-    if (!node || !term) return;
-    if (node.nodeType === Node.TEXT_NODE) {
-      var nodeText = node.nodeValue || "";
-      // Escape regex metacharacters to avoid syntax errors from user input
-      var escaped = term.toLowerCase().replace(/[.*+?^$()|[\\]\\\\]/g, "\\\\$&");
-      var regex = new RegExp(escaped, "gi");
-      var matches = nodeText.match(regex);
-      if (!matches || matches.length === 0) return;
-
-      var spanContainer = document.createElement("span");
-      var lastIndex = 0;
-      for (var i = 0; i < matches.length; i++) {
-        var matchIndex = nodeText.indexOf(matches[i], lastIndex);
-        spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex, matchIndex)));
-        spanContainer.appendChild(createHighlightSpan(matches[i]));
-        lastIndex = matchIndex + matches[i].length;
-      }
-      spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex)));
-      node.parentNode.replaceChild(spanContainer, node);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.classList && node.classList.contains("highlight")) return;
-      Array.prototype.slice.call(node.childNodes).forEach(function(child) {
-        highlightTextNodes(child, term);
-      });
-    }
-  }
-
-  function highlightPreviewElement(container, term) {
-    if (!container || !term) return;
-    var terms = tokenizeTerm(term);
-    if (!terms.length) return;
-    terms.forEach(function(t) {
-      highlightTextNodes(container, t);
     });
   }
 
@@ -199,7 +127,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       threshold:         0.5,
       distance:          200,
       includeScore:      true,
-      ignoreFieldNorm:   true,   // don't penalise long parent pages
+      ignoreFieldNorm:   true,
       minMatchCharLength: 2
     });
   }
@@ -225,7 +153,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     var candidates = [];
     var variants = [prefix];
     var dotIdx = prefix.indexOf(".");
-    if (dotIdx > -1) variants.push(prefix.slice(0, dotIdx));  // e.g. "810"
+    if (dotIdx > -1) variants.push(prefix.slice(0, dotIdx));
 
     allDocs.forEach(function(doc) {
       var parts   = doc.slug.split("/");
@@ -233,12 +161,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
       for (var i = 0; i < variants.length; i++) {
         var v  = variants[i];
-        var ch = lastSeg[v.length] || "";   // char right after the prefix in the segment
+        var ch = lastSeg[v.length] || "";
         if (
           lastSeg.indexOf(v) === 0 &&
           (ch === "" || ch === "." || ch === "-")
         ) {
-          // Prefer longer (more specific) variant match
           candidates.push({ doc: doc, specificity: v.length });
           break;
         }
@@ -246,7 +173,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     });
 
     if (!candidates.length) return null;
-    // If multiple hits, pick the one whose last segment is shortest
     candidates.sort(function(a, b) {
       if (b.specificity !== a.specificity) return b.specificity - a.specificity;
       var aLast = a.doc.slug.split("/").pop();
@@ -257,102 +183,33 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
-  var fetchCounter = 0;
-
-  function renderList(results, activeSlug) {
+  function renderList(results) {
     var list = document.getElementById("nf-list");
     if (!list) return;
     list.innerHTML = "";
+
     if (!results.length) {
-      list.innerHTML = '<li class="nf-empty">No results — try editing the query above</li>';
+      list.innerHTML = '<li class="nf-empty">No results — try a different search</li>';
       return;
     }
+
     for (var i = 0; i < results.length; i++) {
       (function(r) {
         var li = document.createElement("li");
-        li.className  = "nf-item" + (r.slug === activeSlug ? " nf-active" : "");
-        li.dataset.slug = r.slug;
+        li.className = "nf-item";
+
+        var desc = r.description || (r.content || "").slice(0, 120);
+        if (desc.length === 120) desc += "…";
+
         li.innerHTML =
-          '<span class="nf-item-title">' + (r.title || r.slug) + '</span>';
-
-        // Hover shows preview and highlights the item
-        li.addEventListener("mouseenter", function() {
-          showPreview(r);
-          document.querySelectorAll(".nf-item").forEach(function(el) { el.classList.remove("nf-active"); });
-          li.classList.add("nf-active");
-        });
-
-        // Click navigates to the page
-        li.addEventListener("click", function() {
-          window.location.href = BASE + "/" + r.slug;
-        });
+          '<a class="nf-item-link" href="' + BASE + "/" + r.slug + '">' +
+            '<span class="nf-item-title">' + (r.title || r.slug) + '</span>' +
+            (desc ? '<span class="nf-item-desc">' + desc + '</span>' : '') +
+          '</a>';
 
         list.appendChild(li);
       })(results[i]);
     }
-    if (results.length) showPreview(results[0]);
-  }
-
-  // New helper: scroll preview pane to the first highlighted element
-  function scrollPreviewToFirstHighlight() {
-    var pane = document.getElementById("nf-preview");
-    if (!pane) return;
-
-    var first = pane.querySelector(".nf-preview-body .highlight");
-    if (!first) return;
-
-    var paneRect  = pane.getBoundingClientRect();
-    var firstRect = first.getBoundingClientRect();
-
-    // Center the highlight vertically in the preview pane
-    var targetTop = pane.scrollTop + (firstRect.top - paneRect.top) - (pane.clientHeight / 2);
-
-    if (pane.scrollTo) {
-      pane.scrollTo({ top: targetTop, behavior: "smooth" });
-    } else {
-      pane.scrollTop = targetTop;
-    }
-  }
-
-  function showPreview(r) {
-    var pane = document.getElementById("nf-preview");
-    if (!pane) return;
-
-    var href    = BASE + "/" + r.slug;
-    var fetchId = ++fetchCounter;
-
-    pane.innerHTML = '<p class="nf-preview-hint">Loading…</p>';
-
-    fetch(href)
-      .then(function(res) {
-        if (!res.ok) throw new Error("not found");
-        return res.text();
-      })
-      .then(function(html) {
-        if (fetchId !== fetchCounter) return;
-        var doc     = new DOMParser().parseFromString(html, "text/html");
-        var article = doc.querySelector("article") || doc.querySelector("main") || doc.body;
-        var temp    = document.createElement("div");
-        temp.innerHTML = article ? article.innerHTML : "";
-        temp.querySelectorAll("script, style, link[rel=stylesheet]").forEach(function(el) { el.remove(); });
-        temp.querySelectorAll("a").forEach(function(a) { a.style.pointerEvents = "none"; });
-        highlightPreviewElement(temp, state.fuseQuery);
-        pane.innerHTML =
-          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
-          '<div class="nf-preview-body">' + temp.innerHTML + '</div>';
-
-        // After the preview is inserted, scroll to the first highlighted match
-        requestAnimationFrame(function() {
-          scrollPreviewToFirstHighlight();
-        });
-      })
-      .catch(function() {
-        if (fetchId !== fetchCounter) return;
-        var desc = r.description || (r.content || "").slice(0, 300);
-        pane.innerHTML =
-          '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
-          (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : "");
-      });
   }
 
   // ── Search orchestration ─────────────────────────────────────────────────
@@ -361,20 +218,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     coordQuery: "",
     pagePrefix: "",
     mode:       "page",
-    fromURL:    true   // true = came from URL parse; false = user typed
+    fromURL:    true
   };
 
   function go() {
     var results = [];
 
     if (state.mode === "content") {
-      // Step 1: pin parent page deterministically (only when query came from URL)
       var pinned = state.fromURL ? findParentDoc(state.pagePrefix) : null;
-
-      // Step 2: Fuse on anchor title (or coord as fallback) for remaining slots
       var fuseResults = searchWithFuse(contentFuse, state.fuseQuery, pinned ? 9 : 10);
 
-      // Step 3: merge — pinned first, then Fuse results (deduped)
       var seen = {};
       if (pinned) {
         results.push(pinned);
@@ -388,11 +241,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       });
 
     } else {
-      // Page mode: straight Fuse on title/slug/tags
       results = searchWithFuse(pageFuse, state.fuseQuery, 10);
     }
 
-    renderList(results, null);
+    renderList(results);
   }
 
   function debounce(fn, ms) {
@@ -418,7 +270,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
     var input = document.getElementById("not-found-input");
     if (input) {
-      // Show the full human-readable query in the input box
       input.value = parsed.coordQuery
         ? (parsed.coordQuery + (parsed.titleQuery ? " " + parsed.titleQuery : ""))
         : parsed.fuseQuery;
@@ -426,16 +277,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       input.addEventListener("input", debounce(function() {
         var val = input.value.trim();
 
-        // User is now driving — disable URL-based parent boost
         state.fromURL    = false;
         state.pagePrefix = "";
 
-        // Detect if user typed a bare coordinate → content mode
         if (/^\\d+(\\.\\d+)?$/.test(val)) {
           state.mode      = "content";
           state.fuseQuery = val;
         } else if (val.length > 0) {
-          // Non-coordinate text: switch to page mode so title search dominates
           state.mode      = "page";
           state.fuseQuery = val;
         } else {
@@ -446,7 +294,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       }, 150));
     }
 
-    // Indexes not ready yet — go() will be called from buildFuseIndex
     if (pageFuse || contentFuse) go();
   });
 
@@ -481,164 +328,140 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       ` }} />
 
       <style dangerouslySetInnerHTML={{ __html: `
+/* ── Header row: 404 + home link ─────────────────────────────── */
+.nf-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
 .nf-404 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
-  margin: 0 0 0.5rem;
+  letter-spacing: -0.03em;
   color: var(--dark);
-}
-
-.nf-article { max-width: 100%; }
-
-.nf-header { margin-bottom: 1.25rem; }
-.nf-label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--gray);
-  margin: 0 0 0.35rem;
-}
-.nf-url {
-  display: block;
-  font-size: 0.82rem;
-  color: var(--secondary);
-  word-break: break-all;
-  background: var(--highlight);
-  padding: 0.3rem 0.5rem;
-  border-radius: 3px;
-  font-family: var(--codeFont, monospace);
+  margin: 0;
+  line-height: 1;
 }
 
 .nf-home {
-  display: inline-block;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--gray);
-  margin-bottom: 1rem;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--lightgray);
+  padding-bottom: 1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.nf-home:hover {
+  color: var(--secondary);
+  border-color: var(--secondary);
 }
 
-.nf-search-row { margin-bottom: 1rem; }
+/* ── URL strip ───────────────────────────────────────────────── */
+.nf-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--gray);
+  margin: 0 0 0.4rem;
+}
+
+.nf-url {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--gray);
+  word-break: break-all;
+  font-family: var(--codeFont, monospace);
+  margin-bottom: 1.5rem;
+  opacity: 0.75;
+}
+
+/* ── Search input ────────────────────────────────────────────── */
+.nf-search-row {
+  margin-bottom: 1.25rem;
+}
+
 #not-found-input {
   width: 100%;
-  max-width: 480px;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.95rem;
   font-family: inherit;
   border: 1px solid var(--lightgray);
-  border-radius: 4px;
+  border-radius: 5px;
   background: var(--light);
   color: var(--dark);
   outline: none;
   box-sizing: border-box;
+  transition: border-color 0.15s;
 }
-#not-found-input:focus { border-color: var(--secondary); }
-
-/* Two-column layout */
-.nf-columns {
-  display: flex;
-  gap: 0;
-  border: 1px solid var(--lightgray);
-  border-radius: 4px;
-  height: 60vh;
-  max-height: 60vh;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
+#not-found-input:focus {
+  border-color: var(--secondary);
 }
 
-/* Left — result list */
+/* ── Result cards ────────────────────────────────────────────── */
 .nf-result-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 38%;
-  min-width: 180px;
-  border-right: 1px solid var(--lightgray);
-  overflow-y: auto;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
+
 .nf-item {
-  padding: 0.6rem 0.75rem;
-  cursor: pointer;
-  border-bottom: 1px solid var(--lightgray);
-  transition: background 0.1s;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  transition: border-color 0.15s, background 0.15s;
 }
-.nf-item:last-child { border-bottom: none; }
-.nf-item:hover, .nf-item.nf-active { background: var(--highlight); }
-.nf-item.nf-active .nf-item-title { color: var(--secondary); }
+.nf-item:hover {
+  border-color: var(--secondary);
+  background: var(--highlight);
+}
+
+.nf-item-link {
+  display: block;
+  padding: 0.7rem 0.9rem;
+  text-decoration: none;
+  color: inherit;
+}
+
 .nf-item-title {
   display: block;
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--dark);
-  line-height: 1.35;
+  line-height: 1.3;
+  margin-bottom: 0.2rem;
 }
+.nf-item:hover .nf-item-title {
+  color: var(--secondary);
+}
+
+.nf-item-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
 .nf-empty {
-  padding: 0.75rem;
   font-size: 0.85rem;
   color: var(--gray);
+  padding: 0.5rem 0;
 }
 
-/* Right — preview pane */
-.nf-preview-pane {
-  flex: 1;
-  padding: 1rem 1.1rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.nf-preview-hint { color: var(--gray); font-size: 0.85rem; margin: 0; }
-.nf-preview-title {
-  display: block;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--secondary);
-  text-decoration: none;
-  margin-bottom: 0.6rem;
-  line-height: 1.3;
-}
-.nf-preview-title:hover { text-decoration: underline; }
-.nf-preview-desc {
-  font-size: 0.875rem;
-  color: var(--dark);
-  line-height: 1.6;
-  margin: 0 0 1rem;
+/* ── Article container ───────────────────────────────────────── */
+.nf-article {
+  max-width: 100%;
 }
 
-/* Preview body */
-.nf-preview-body {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--dark);
-  margin-bottom: 1rem;
-}
-.nf-preview-body a {
-  pointer-events: none;
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Highlight style for search matches in preview */
-.nf-preview-body .highlight {
-  background: color-mix(in srgb, var(--tertiary) 60%, rgba(255, 255, 255, 0));
-  border-radius: 5px;
-  scroll-margin-top: 2rem;
-}
-
-/* Mobile: stack columns */
+/* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .nf-columns {
-    flex-direction: column;
-    height: auto;
-    max-height: none;
-  }
-  .nf-result-list {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--lightgray);
-    max-height: 220px;
-    overflow-y: auto;
-  }
-  .nf-preview-pane {
-    max-height: 50vh;
-    overflow-y: auto;
+  .nf-404 {
+    font-size: 2rem;
   }
 }
       ` }} />
