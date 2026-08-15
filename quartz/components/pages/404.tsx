@@ -1,4 +1,3 @@
-import { i18n } from "../../i18n"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 
 const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
@@ -7,27 +6,45 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   return (
     <article class="popover-hint nf-article">
+
+      {/* Header bar: 404 left, Home link right */}
       <div class="nf-header">
-        <h1 class="nf-404">404</h1>
-        <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+        <span class="nf-badge">404</span>
+        <a class="nf-home" href={baseDir}>
+          Return to Homepage
+        </a>
       </div>
 
-      <p class="nf-label">Page not found</p>
+      {/* Attempted URL */}
       <code id="nf-attempted-url" class="nf-url"></code>
 
-      <div class="nf-search-row">
-        <input
-          id="not-found-input"
-          type="text"
-          placeholder="Search Synergetics…"
-          autocomplete="off"
-          spellcheck={false}
-        />
+      {/* Spacious status message */}
+      <div class="nf-status">
+        <p class="nf-message">Find the page you're looking for below</p>
       </div>
 
+      {/* Search row */}
+      <div class="nf-search-row">
+        <div class="nf-search-wrap">
+          <svg class="nf-search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5" />
+            <path d="M10 10L13.5 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <input
+            id="not-found-input"
+            type="text"
+            placeholder="Search Synergetics…"
+            autocomplete="off"
+            spellcheck={false}
+          />
+        </div>
+      </div>
+
+      {/* Result list */}
       <ul id="nf-list" class="nf-result-list" />
 
-      <script dangerouslySetInnerHTML={{ __html: `
+      <script dangerouslySetInnerHTML={{
+        __html: `
 (function () {
   var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
@@ -95,7 +112,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       var meta = entry[1] || {};
       return {
         slug:        slug,
-        title:       meta.title       || "",
+        title:       meta.title        || "",
         tags:        (meta.tags || []).join(" "),
         description: meta.description || "",
         content:     meta.content     || ""
@@ -199,7 +216,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         li.className = "nf-item";
 
         var desc = r.description || (r.content || "").slice(0, 120);
-        if (desc.length === 120) desc += "…";
+        if (desc && desc.length >= 120) desc += "\\u2026";
 
         li.innerHTML =
           '<a class="nf-item-link" href="' + BASE + "/" + r.slug + '">' +
@@ -256,8 +273,8 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     };
   }
 
-  // ── Boot ─────────────────────────────────────────────────────────────────
-  document.addEventListener("DOMContentLoaded", function() {
+  // ── Init: parse URL and wire up input ────────────────────────────────────
+  function init() {
     var urlEl = document.getElementById("nf-attempted-url");
     if (urlEl) urlEl.textContent = window.location.href;
 
@@ -273,7 +290,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       input.value = parsed.coordQuery
         ? (parsed.coordQuery + (parsed.titleQuery ? " " + parsed.titleQuery : ""))
         : parsed.fuseQuery;
+    }
 
+    if (pageFuse || contentFuse) go();
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", function() {
+    var input = document.getElementById("not-found-input");
+    if (input && !input.dataset.wired) {
+      input.dataset.wired = "1";
       input.addEventListener("input", debounce(function() {
         var val = input.value.trim();
 
@@ -294,7 +320,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       }, 150));
     }
 
-    if (pageFuse || contentFuse) go();
+    init();
+  });
+
+  window.addEventListener("popstate", function() {
+    init();
   });
 
   function buildFuseIndex(data) {
@@ -327,67 +357,98 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 })();
       ` }} />
 
-      <style dangerouslySetInnerHTML={{ __html: `
-/* ── Header row: 404 + home link ─────────────────────────────── */
-.nf-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.25rem;
+      <style dangerouslySetInnerHTML={{
+        __html: `
+/* ── Article Shell ───────────────────────────────────────────── */
+.nf-article {
+  max-width: 100%;
 }
 
-.nf-404 {
-  font-size: 2.75rem;
+/* ── Top Header Navigation Bar ───────────────────────────────── */
+.nf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
+}
+
+.nf-badge {
+  font-size: 1.6rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--dark);
-  margin: 0;
   line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--secondary);
+  font-family: var(--headerFont, inherit);
 }
 
 .nf-home {
-  font-size: 0.8rem;
-  color: var(--gray);
-  text-decoration: none;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--lightgray);
-  padding-bottom: 1px;
-  transition: color 0.15s, border-color 0.15s;
-}
-.nf-home:hover {
-  color: var(--secondary);
-  border-color: var(--secondary);
-}
-
-/* ── URL strip ───────────────────────────────────────────────── */
-.nf-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--gray);
-  margin: 0 0 0.4rem;
-}
-
-.nf-url {
   display: block;
-  font-size: 0.78rem;
-  color: var(--gray);
-  word-break: break-all;
-  font-family: var(--codeFont, monospace);
-  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-decoration: underline;
+  line-height: 1;
+  color: var(--secondary);
+  transition: opacity 0.15s ease;
+
+}
+
+.nf-home:hover {
   opacity: 0.75;
 }
 
-/* ── Search input ────────────────────────────────────────────── */
+/* ── Attempted URL (High Contrast Code Block) ─────────────────── */
+.nf-url {
+  display: inline-block;
+  max-width: 100%;
+  font-size: 0.8rem;
+  color: var(--darkgray);
+  background: color-mix(in srgb, var(--lightgray) 45%, transparent);
+  border: 1px solid var(--lightgray);
+  border-radius: 4px;
+  padding: 0.4rem 0.65rem;
+  word-break: break-all;
+  font-family: var(--codeFont, monospace);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Spacious Status Header ──────────────────────────────────── */
+.nf-status {
+  margin-bottom: 1.75rem;
+}
+
+.nf-message {
+  font-size: 1.05rem;
+  color: var(--darkgray);
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ── Search Input ────────────────────────────────────────────── */
 .nf-search-row {
   margin-bottom: 1.25rem;
 }
 
+.nf-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nf-search-icon {
+  position: absolute;
+  left: 0.8rem;
+  width: 15px;
+  height: 15px;
+  color: var(--gray);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
 #not-found-input {
   width: 100%;
-  padding: 0.55rem 0.8rem;
-  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem 0.6rem 2.4rem;
+  font-size: 0.9rem;
   font-family: inherit;
   border: 1px solid var(--lightgray);
   border-radius: 5px;
@@ -395,20 +456,24 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   color: var(--dark);
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 #not-found-input:focus {
   border-color: var(--secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent);
+}
+#not-found-input::placeholder {
+  color: var(--gray);
 }
 
-/* ── Result cards ────────────────────────────────────────────── */
+/* ── Result Cards ────────────────────────────────────────────── */
 .nf-result-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .nf-item {
@@ -417,51 +482,47 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   transition: border-color 0.15s, background 0.15s;
 }
 .nf-item:hover {
-  border-color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 50%, transparent);
   background: var(--highlight);
 }
 
 .nf-item-link {
   display: block;
-  padding: 0.7rem 0.9rem;
+  padding: 0.65rem 0.9rem;
   text-decoration: none;
   color: inherit;
 }
 
 .nf-item-title {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--dark);
-  line-height: 1.3;
-  margin-bottom: 0.2rem;
-}
-.nf-item:hover .nf-item-title {
   color: var(--secondary);
+  line-height: 1.3;
+  margin-bottom: 0.18rem;
 }
 
 .nf-item-desc {
   display: block;
-  font-size: 0.8rem;
-  color: var(--gray);
+  font-size: 0.78rem;
+  color: var(--darkgray);
   line-height: 1.5;
+  opacity: 0.85;
 }
 
 .nf-empty {
   font-size: 0.85rem;
   color: var(--gray);
-  padding: 0.5rem 0;
-}
-
-/* ── Article container ───────────────────────────────────────── */
-.nf-article {
-  max-width: 100%;
+  padding: 0.4rem 0;
 }
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .nf-404 {
-    font-size: 2rem;
+  .nf-badge {
+    font-size: 1.4rem;
+  }
+  .nf-message {
+    font-size: 0.95rem;
   }
 }
       ` }} />
