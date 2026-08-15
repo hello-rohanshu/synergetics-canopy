@@ -200,7 +200,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
-  function renderList(results) {
+  function renderList(results, anchorHint) {
     var list = document.getElementById("nf-list");
     if (!list) return;
     list.innerHTML = "";
@@ -211,21 +211,28 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     }
 
     for (var i = 0; i < results.length; i++) {
-      (function(r) {
+      (function(r, idx) {
         var li = document.createElement("li");
         li.className = "nf-item";
 
-        var desc = r.description || (r.content || "").slice(0, 120);
-        if (desc && desc.length >= 120) desc += "\\u2026";
+        var href = BASE + "/" + r.slug;
+        if (idx === 0 && anchorHint) {
+          href += "#" + anchorHint;
+        }
+
+        var subline = "";
+        if (idx === 0 && anchorHint) {
+          subline = '<span class="nf-item-anchor"><svg class="nf-anchor-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 1 L2 7 L9 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5 L9 7 L7 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> section ' + state.coordQuery + '</span>';
+        }
 
         li.innerHTML =
-          '<a class="nf-item-link" href="' + BASE + "/" + r.slug + '">' +
+          '<a class="nf-item-link" href="' + href + '">' +
             '<span class="nf-item-title">' + (r.title || r.slug) + '</span>' +
-            (desc ? '<span class="nf-item-desc">' + desc + '</span>' : '') +
+            subline +
           '</a>';
 
         list.appendChild(li);
-      })(results[i]);
+      })(results[i], i);
     }
   }
 
@@ -240,6 +247,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   function go() {
     var results = [];
+    var anchorHint = (state.fromURL && state.coordQuery) ? state.coordQuery : null;
 
     if (state.mode === "content") {
       var pinned = state.fromURL ? findParentDoc(state.pagePrefix) : null;
@@ -261,7 +269,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       results = searchWithFuse(pageFuse, state.fuseQuery, 10);
     }
 
-    renderList(results);
+    renderList(results, anchorHint);
   }
 
   function debounce(fn, ms) {
@@ -383,17 +391,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
 .nf-home {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 400;
-  text-decoration: underline;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
   line-height: 1;
-  color: var(--secondary);
-  transition: opacity 0.15s ease;
-
+  color: var(--darkgray);
+  transition: color 0.15s ease;
 }
 
 .nf-home:hover {
-  opacity: 0.75;
+  color: var(--secondary);
 }
 
 /* ── Attempted URL (High Contrast Code Block) ─────────────────── */
@@ -402,7 +409,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   max-width: 100%;
   font-size: 0.8rem;
   color: var(--darkgray);
-  background: color-mix(in srgb, var(--lightgray) 45%, transparent);
+  background: var(--lightgray);
   border: 1px solid var(--lightgray);
   border-radius: 4px;
   padding: 0.4rem 0.65rem;
@@ -499,15 +506,25 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   font-weight: 600;
   color: var(--secondary);
   line-height: 1.3;
-  margin-bottom: 0.18rem;
 }
 
-.nf-item-desc {
-  display: block;
-  font-size: 0.78rem;
-  color: var(--darkgray);
-  line-height: 1.5;
-  opacity: 0.85;
+.nf-item-anchor {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--gray);
+  line-height: 1.4;
+  margin-top: 0.22rem;
+  font-family: var(--codeFont, monospace);
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+}
+
+.nf-anchor-icon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
 }
 
 .nf-empty {
