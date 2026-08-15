@@ -96,7 +96,17 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     result.mode       = "content";
     result.coordQuery = coordStr;
     result.titleQuery = cleanAnchorTxt;
-    result.fuseQuery = cleanAnchorTxt.length > 0 ? cleanAnchorTxt : coordStr;
+
+    // Build the richest possible fuse query:
+    // anchor+title when title exists, anchor+slug-text when not
+    var slugText = cleanedSlug.replace(/^\\d+(\\.\\d+)?\\s*/, "").trim();
+    if (cleanAnchorTxt.length > 0) {
+      result.fuseQuery = coordStr + " " + cleanAnchorTxt;
+    } else if (slugText.length > 0) {
+      result.fuseQuery = coordStr + " " + slugText;
+    } else {
+      result.fuseQuery = coordStr;
+    }
 
     return result;
   }
@@ -245,28 +255,30 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     fromURL:    true
   };
 
+  function coordIntPrefix(str) {
+    var m = str.match(/^(\d+)/);
+    return m ? m[1] : "";
+  }
+
   function go() {
     var results = [];
-    var anchorHint = (state.fromURL && state.coordQuery) ? state.coordQuery : null;
 
     if (state.mode === "content") {
-      var pinned = state.fromURL ? findParentDoc(state.pagePrefix) : null;
-      var fuseResults = searchWithFuse(contentFuse, state.fuseQuery, pinned ? 9 : 10);
-
-      var seen = {};
-      if (pinned) {
-        results.push(pinned);
-        seen[pinned.slug] = true;
-      }
-      fuseResults.forEach(function(r) {
-        if (!seen[r.slug]) {
-          results.push(r);
-          seen[r.slug] = true;
-        }
-      });
-
+      results = searchWithFuse(contentFuse, state.fuseQuery, 10);
     } else {
       results = searchWithFuse(pageFuse, state.fuseQuery, 10);
+    }
+
+    // Anchor hint: only when the URL had a coordinate AND the top result's
+    // slug integer prefix agrees with coordQuery's integer prefix
+    var anchorHint = null;
+    if (state.fromURL && state.coordQuery && results.length > 0) {
+      var topSlug      = results[0].slug.split("/").pop() || "";
+      var topInt       = coordIntPrefix(topSlug);
+      var coordInt     = coordIntPrefix(state.coordQuery);
+      if (topInt && coordInt && topInt === coordInt) {
+        anchorHint = state.coordQuery;
+      }
     }
 
     renderList(results, anchorHint);
