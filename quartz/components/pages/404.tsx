@@ -7,10 +7,14 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   return (
     <article class="popover-hint nf-article">
+      <h1 class="nf-404">404.</h1>
+
       <div class="nf-header">
         <p class="nf-label">Your link was imprecise</p>
         <code id="nf-attempted-url" class="nf-url"></code>
       </div>
+
+      <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
 
       <div class="nf-search-row">
         <input
@@ -28,8 +32,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           <p class="nf-preview-hint">← Select a result</p>
         </div>
       </div>
-
-      <a class="nf-home" href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
 
       <script dangerouslySetInnerHTML={{ __html: `
 (function () {
@@ -50,8 +52,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     var cleanedSlug = lastSeg.replace(/-+/g, " ").trim();
 
     // Extract leading numeric prefix from slug for parent-page lookup.
-    // We store it as the raw match (e.g. "810.00" or "810") so we can
-    // do exact-boundary matching later.
     var pageNumMatch = cleanedSlug.match(/^(\\d+(?:\\.\\d+)?)/);
     var pagePrefix   = pageNumMatch ? pageNumMatch[1] : "";
 
@@ -92,7 +92,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     result.titleQuery = cleanAnchorTxt;
 
     // fuseQuery: for content Fuse we use only the anchor title (the coordinate
-    // is handled by deterministic parent lookup — see go()).  If there is no
+    // is handled by deterministic parent lookup — see go()). If there is no
     // anchor title, fall back to the coordinate so Fuse has something.
     result.fuseQuery = cleanAnchorTxt.length > 0 ? cleanAnchorTxt : coordStr;
 
@@ -115,6 +115,63 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         description: meta.description || "",
         content:     meta.content     || ""
       };
+    });
+  }
+
+  // ── Highlighting helpers ─────────────────────────────────────────────────
+  function tokenizeTerm(term) {
+    if (!term) return [];
+    var tokens = term.split(/\\s+/).filter(function(t) { return t.trim() !== ""; });
+    var tokenLen = tokens.length;
+    if (tokenLen > 1) {
+      for (var i = 1; i < tokenLen; i++) {
+        tokens.push(tokens.slice(0, i + 1).join(" "));
+      }
+    }
+    return tokens.sort(function(a, b) { return b.length - a.length; });
+  }
+
+  function createHighlightSpan(text) {
+    var span = document.createElement("span");
+    span.className = "highlight";
+    span.textContent = text;
+    return span;
+  }
+
+  function highlightTextNodes(node, term) {
+    if (!node || !term) return;
+    if (node.nodeType === Node.TEXT_NODE) {
+      var nodeText = node.nodeValue || "";
+      // Escape regex metacharacters to avoid syntax errors from user input
+      var escaped = term.toLowerCase().replace(/[.*+?^$()|[\\]\\\\]/g, "\\\\$&");
+      var regex = new RegExp(escaped, "gi");
+      var matches = nodeText.match(regex);
+      if (!matches || matches.length === 0) return;
+
+      var spanContainer = document.createElement("span");
+      var lastIndex = 0;
+      for (var i = 0; i < matches.length; i++) {
+        var matchIndex = nodeText.indexOf(matches[i], lastIndex);
+        spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex, matchIndex)));
+        spanContainer.appendChild(createHighlightSpan(matches[i]));
+        lastIndex = matchIndex + matches[i].length;
+      }
+      spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex)));
+      node.parentNode.replaceChild(spanContainer, node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.classList && node.classList.contains("highlight")) return;
+      Array.prototype.slice.call(node.childNodes).forEach(function(child) {
+        highlightTextNodes(child, term);
+      });
+    }
+  }
+
+  function highlightPreviewElement(container, term) {
+    if (!container || !term) return;
+    var terms = tokenizeTerm(term);
+    if (!terms.length) return;
+    terms.forEach(function(t) {
+      highlightTextNodes(container, t);
     });
   }
 
@@ -162,16 +219,9 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   // ── Parent-page direct lookup ────────────────────────────────────────────
-  // Given a pagePrefix like "810.00" or "810", find the one doc whose slug
-  // most precisely starts with that prefix at a word boundary (followed by
-  // ".", "-", or end-of-string).  Returns the doc object or null.
   function findParentDoc(prefix) {
     if (!prefix || !allDocs.length) return null;
 
-    // Docs are keyed by full path, e.g.
-    //   "800.00-Operational-Mathematics/810.00-One-Spherical-Triangle-..."
-    // The URL only ever gives us the LAST segment, so we must compare the
-    // prefix against each doc's last segment too — not the full slug.
     var candidates = [];
     var variants = [prefix];
     var dotIdx = prefix.indexOf(".");
@@ -196,8 +246,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     });
 
     if (!candidates.length) return null;
-    // If multiple hits (shouldn't be), pick the one whose last segment is
-    // shortest (most likely the section-level page rather than a sub-page)
+    // If multiple hits, pick the one whose last segment is shortest
     candidates.sort(function(a, b) {
       if (b.specificity !== a.specificity) return b.specificity - a.specificity;
       var aLast = a.doc.slug.split("/").pop();
@@ -225,15 +274,44 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         li.dataset.slug = r.slug;
         li.innerHTML =
           '<span class="nf-item-title">' + (r.title || r.slug) + '</span>';
-        li.addEventListener("click", function() {
+
+        // Hover shows preview and highlights the item
+        li.addEventListener("mouseenter", function() {
           showPreview(r);
           document.querySelectorAll(".nf-item").forEach(function(el) { el.classList.remove("nf-active"); });
           li.classList.add("nf-active");
         });
+
+        // Click navigates to the page
+        li.addEventListener("click", function() {
+          window.location.href = BASE + "/" + r.slug;
+        });
+
         list.appendChild(li);
       })(results[i]);
     }
     if (results.length) showPreview(results[0]);
+  }
+
+  // New helper: scroll preview pane to the first highlighted element
+  function scrollPreviewToFirstHighlight() {
+    var pane = document.getElementById("nf-preview");
+    if (!pane) return;
+
+    var first = pane.querySelector(".nf-preview-body .highlight");
+    if (!first) return;
+
+    var paneRect  = pane.getBoundingClientRect();
+    var firstRect = first.getBoundingClientRect();
+
+    // Center the highlight vertically in the preview pane
+    var targetTop = pane.scrollTop + (firstRect.top - paneRect.top) - (pane.clientHeight / 2);
+
+    if (pane.scrollTo) {
+      pane.scrollTo({ top: targetTop, behavior: "smooth" });
+    } else {
+      pane.scrollTop = targetTop;
+    }
   }
 
   function showPreview(r) {
@@ -258,18 +336,22 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         temp.innerHTML = article ? article.innerHTML : "";
         temp.querySelectorAll("script, style, link[rel=stylesheet]").forEach(function(el) { el.remove(); });
         temp.querySelectorAll("a").forEach(function(a) { a.style.pointerEvents = "none"; });
+        highlightPreviewElement(temp, state.fuseQuery);
         pane.innerHTML =
           '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
-          '<div class="nf-preview-body">' + temp.innerHTML + '</div>' +
-          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+          '<div class="nf-preview-body">' + temp.innerHTML + '</div>';
+
+        // After the preview is inserted, scroll to the first highlighted match
+        requestAnimationFrame(function() {
+          scrollPreviewToFirstHighlight();
+        });
       })
       .catch(function() {
         if (fetchId !== fetchCounter) return;
         var desc = r.description || (r.content || "").slice(0, 300);
         pane.innerHTML =
           '<a class="nf-preview-title" href="' + href + '">' + (r.title || r.slug) + '</a>' +
-          (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : "") +
-          '<a class="nf-preview-link" href="' + href + '">Go to page →</a>';
+          (desc ? '<p class="nf-preview-desc">' + desc + '</p>' : "");
       });
   }
 
@@ -399,6 +481,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       ` }} />
 
       <style dangerouslySetInnerHTML={{ __html: `
+.nf-404 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--dark);
+}
+
 .nf-article { max-width: 100%; }
 
 .nf-header { margin-bottom: 1.25rem; }
@@ -418,6 +507,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   padding: 0.3rem 0.5rem;
   border-radius: 3px;
   font-family: var(--codeFont, monospace);
+}
+
+.nf-home {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: var(--gray);
+  margin-bottom: 1rem;
 }
 
 .nf-search-row { margin-bottom: 1rem; }
@@ -505,13 +601,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   line-height: 1.6;
   margin: 0 0 1rem;
 }
-.nf-preview-link {
-  font-size: 0.85rem;
-  color: var(--secondary);
-  text-decoration: none;
-  font-weight: 500;
-}
-.nf-preview-link:hover { text-decoration: underline; }
 
 /* Preview body */
 .nf-preview-body {
@@ -526,10 +615,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   text-decoration: none;
 }
 
-.nf-home {
-  display: inline-block;
-  font-size: 0.875rem;
-  color: var(--gray);
+/* Highlight style for search matches in preview */
+.nf-preview-body .highlight {
+  background: color-mix(in srgb, var(--tertiary) 60%, rgba(255, 255, 255, 0));
+  border-radius: 5px;
+  scroll-margin-top: 2rem;
 }
 
 /* Mobile: stack columns */
