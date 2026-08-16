@@ -265,6 +265,23 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
     if (state.mode === "content") {
       results = searchWithFuse(contentFuse, state.fuseQuery, 10);
+
+      if (state.fromURL && state.pagePrefix) {
+        var pinned = findParentDoc(state.pagePrefix);
+        if (pinned) {
+          var seen = {};
+          seen[pinned.slug] = true;
+          var merged = [pinned];
+          results.forEach(function(r) {
+            if (!seen[r.slug]) {
+              merged.push(r);
+              seen[r.slug] = true;
+            }
+          });
+          results = merged;
+        }
+      }
+
     } else {
       results = searchWithFuse(pageFuse, state.fuseQuery, 10);
     }
