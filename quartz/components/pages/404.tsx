@@ -7,20 +7,24 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   return (
     <article class="popover-hint nf-article">
 
-      {/* Header bar: 404 left, Home link right */}
+      {/* Top Bar: Minimal Home Button */}
       <div class="nf-header">
-        <span class="nf-badge">404</span>
-        <a class="nf-home" href={baseDir}>
-          Return to Homepage
+        <a class="nf-home-btn" href={baseDir}>
+          <svg class="nf-home-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Return Home
         </a>
       </div>
 
-      {/* Attempted URL */}
-      <code id="nf-attempted-url" class="nf-url"></code>
-
-      {/* Spacious status message */}
-      <div class="nf-status">
-        <p class="nf-message">Find the page you're looking for below</p>
+      {/* Hero 404 & Copy Block */}
+      <div class="nf-hero">
+        <h1 class="nf-badge">404</h1>
+        <p class="nf-message">
+          The page you were after may have run away.<br />
+          See if you can find it below.
+        </p>
+        <code id="nf-attempted-url" class="nf-url"></code>
       </div>
 
       {/* Search row */}
@@ -97,8 +101,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     result.coordQuery = coordStr;
     result.titleQuery = cleanAnchorTxt;
 
-    // Build the richest possible fuse query:
-    // anchor+title when title exists, anchor+slug-text when not
     var slugText = cleanedSlug.replace(/^\\d+(\\.\\d+)?\\s*/, "").trim();
     if (cleanAnchorTxt.length > 0) {
       result.fuseQuery = coordStr + " " + cleanAnchorTxt;
@@ -256,7 +258,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   };
 
   function coordIntPrefix(str) {
-    var m = str.match(/^(\d+)/);
+    var m = str.match(/^(\\d+)/);
     return m ? m[1] : "";
   }
 
@@ -286,8 +288,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       results = searchWithFuse(pageFuse, state.fuseQuery, 10);
     }
 
-    // Anchor hint: only when the URL had a coordinate AND the top result's
-    // slug integer prefix agrees with coordQuery's integer prefix
     var anchorHint = null;
     if (state.fromURL && state.coordQuery && results.length > 0) {
       var topSlug      = results[0].slug.split("/").pop() || "";
@@ -404,60 +404,70 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 /* ── Top Header Navigation Bar ───────────────────────────────── */
 .nf-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 1.25rem;
-}
-
-.nf-badge {
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--secondary);
-  font-family: var(--headerFont, inherit);
-}
-
-.nf-home {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  line-height: 1;
-  color: var(--darkgray);
-  transition: color 0.15s ease;
-}
-
-.nf-home:hover {
-  color: var(--secondary);
-}
-
-/* ── Attempted URL (High Contrast Code Block) ─────────────────── */
-.nf-url {
-  display: inline-block;
-  max-width: 100%;
-  font-size: 0.8rem;
-  color: var(--darkgray);
-  background: var(--lightgray);
-  border: 1px solid var(--lightgray);
-  border-radius: 4px;
-  padding: 0.4rem 0.65rem;
-  word-break: break-all;
-  font-family: var(--codeFont, monospace);
+  justify-content: flex-end;
   margin-bottom: 1.5rem;
 }
 
-/* ── Spacious Status Header ──────────────────────────────────── */
-.nf-status {
-  margin-bottom: 1.75rem;
+.nf-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--darkgray);
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  padding: 0.3rem 0.65rem;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+
+.nf-home-btn:hover {
+  color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+  background: var(--highlight);
+}
+
+.nf-home-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Hero Section ────────────────────────────────────────────── */
+.nf-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nf-badge {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--secondary);
+  font-family: var(--headerFont, inherit);
+  margin: 0 0 0.75rem 0;
 }
 
 .nf-message {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--darkgray);
-  margin: 0;
-  line-height: 1.4;
-  text-align: center;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.5;
+}
+
+/* ── Attempted URL Block ──────────────────────────────────────── */
+.nf-url {
+  display: inline-block;
+  max-width: 100%;
+  font-size: 0.75rem;
+  color: var(--gray);
+  background: var(--lightgray);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  word-break: break-all;
+  font-family: var(--codeFont, monospace);
 }
 
 /* ── Search Input ────────────────────────────────────────────── */
@@ -560,15 +570,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   font-size: 0.85rem;
   color: var(--gray);
   padding: 0.4rem 0;
+  text-align: center;
 }
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .nf-badge {
-    font-size: 1.4rem;
+    font-size: 2.75rem;
   }
   .nf-message {
-    font-size: 0.95rem;
+    font-size: 0.925rem;
   }
 }
       ` }} />
