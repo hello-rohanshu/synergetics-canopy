@@ -327,7 +327,6 @@ SystemsManifest.css = `
   border: 1px solid var(--lightgray); border-left: 3px solid #22c55e; border-radius: 5px; 
   overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.si-panel:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.06); transform: translateY(-1px); }
 
 .si-panel-header { 
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
