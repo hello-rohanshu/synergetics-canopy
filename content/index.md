@@ -102,6 +102,7 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 - Search — find anything across the full text
 - Ask — the AI assistant is grounded on the whole book
 - Share — copy a direct link to any paragraph and send it to someone
+- Fiddle — fiddle with interactive versions of Bucky's original diagrams [[Interactive figures|here]] 
 - Report — the feedback button on this page takes anonymous input, no login needed. You can also open an issue directly on [GitHub](https://github.com/hello-rohanshu/synergetics-canopy/issues)
 
 
@@ -162,15 +163,5 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 
 &nbsp;
 
-# Cool Stuff 
-
-This example here shows the original printed diagram, paired with its web redesigned interactive version. While it is the only diagram I did this to, it does a good job of showing where the horizon might be. 
-
-![[Fig. 100.103]]
-
-![[Fig. 100.103 (New)]]
-
-
-&nbsp;
 
 

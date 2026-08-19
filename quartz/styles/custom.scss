@@ -566,4 +566,19 @@ a[href*="/tags/"] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// Hide graph on synergetics-ai page only on mobile/tablet
 // ═══════════════════════════════════════════════════════════════════════════
+
+@media all and not ($desktop) {
+    [data-slug="synergetics-ai"] div.graph {
+        display: none !important;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Hide content-meta on synergetics-ai page (all devices) — keeps layout
+// ═══════════════════════════════════════════════════════════════════════════
+
+[data-slug="synergetics-ai"] p.content-meta {
+    visibility: hidden !important;
+}

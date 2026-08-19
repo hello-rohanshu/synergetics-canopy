@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "synergetics-canopy-ai",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-10",
+  "observability": {
+    "enabled": true
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "triggers": {
+    "crons": ["* * * * *", "0 */2 * * *"]
+  }
+}
