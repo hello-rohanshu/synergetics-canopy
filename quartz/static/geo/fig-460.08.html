@@ -154,7 +154,8 @@
         <div class="controls">
             <div class="slider-track-wrap">
                 <div id="phase-labels"></div>
-                <input type="range" id="slider" min="-1000" max="1000" value="0" step="1" aria-label="Jitterbug phase slider">
+                <input type="range" id="slider" min="-1000" max="1000" value="0" step="1"
+                    aria-label="Jitterbug phase slider">
             </div>
         </div>
     </div>
@@ -237,9 +238,9 @@
             const s = R / Math.sqrt(2);
             const GAMMA_MAX = Math.atan(3);
 
-            const DIST_CENTER_TO_VERT = s * Math.sqrt(2 / 3); 
-            const CORNER_INSET_3D = 5; 
-            const VERT_SCALE = 1; 
+            const DIST_CENTER_TO_VERT = s * Math.sqrt(2 / 3);
+            const CORNER_INSET_3D = 5;
+            const VERT_SCALE = 1;
 
             function qOf(gamma) { return Math.atan(Math.tan(gamma) / Math.sqrt(3)); }
             function Vradial(gamma) { return R * Math.cos(qOf(gamma)) * Math.sqrt(2 / 3) + CORNER_INSET_3D; }
@@ -283,10 +284,10 @@
             // Calculates vertices with stationary poles by applying a global counter-rotation
             function getFaceVerts(t) {
                 const gamma = t * GAMMA_MAX;
-                
+
                 // Track the rotation of the top pole [1, 1, 1] so we can mathematically cancel it out
                 const topQ = qOf(gamma);
-                const globalAxis = norm3([1, 1, 1]); 
+                const globalAxis = norm3([1, 1, 1]);
 
                 return faces.map(f => {
                     const g = f.sign * gamma;
@@ -295,15 +296,15 @@
                     return f.verts.map(v => {
                         const local = sub3(v, f.centerVE);
                         const insetLocal = scale3(local, VERT_SCALE);
-                        
+
                         // Local rotation in space
                         const rotatedLocal = rotAboutAxis(insetLocal, f.ax, q);
                         let pos = add3(newCenter, rotatedLocal);
-                        
+
                         // Counter-rotate the entire system backwards around the [1, 1, 1] axis
                         // This pins the top and bottom faces so they don't rotate at all!
                         pos = rotAboutAxis(pos, globalAxis, -topQ);
-                        
+
                         return pos;
                     });
                 });
@@ -594,7 +595,7 @@
                 }
 
                 // BACK FACES (Fill & Tubes)
-                ctx.globalAlpha = 0.0;
+                ctx.globalAlpha = 0.0; // was 0.07
                 for (let item of facesWithZ) {
                     if (item.z >= 0) continue;
                     const pts = item.pts;
@@ -607,6 +608,7 @@
                     ctx.fill();
                 }
 
+                ctx.globalAlpha = 1.0;
                 for (let item of facesWithZ) {
                     if (item.z >= 0) continue;
                     const pts = item.pts;
@@ -620,7 +622,7 @@
                 }
 
                 // FRONT FACES (Fill & Tubes)
-                ctx.globalAlpha = 0.0;
+                ctx.globalAlpha = 0.0; // was 0.32 
                 for (let item of facesWithZ) {
                     if (item.z < 0) continue;
                     const pts = item.pts;
@@ -633,6 +635,7 @@
                     ctx.fill();
                 }
 
+                ctx.globalAlpha = 1.0;
                 for (let item of facesWithZ) {
                     if (item.z < 0) continue;
                     const pts = item.pts;

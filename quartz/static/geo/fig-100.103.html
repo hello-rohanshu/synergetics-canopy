@@ -328,7 +328,7 @@
                 }).sort((a,b) => a.z - b.z);
                 
                 // 1) BACK FACES
-                ctx.globalAlpha = 0.12;
+                ctx.globalAlpha = 0.0;
                 for (let item of facesWithZ) if (item.z < 0) {
                     const f = item.face;
                     ctx.beginPath();
@@ -357,17 +357,17 @@
                 
                 // 3) CUTTING PLANE FILL
                 if (rotatedPoly.length >= 3) {
-                    ctx.globalAlpha = 0.48;
+                    ctx.globalAlpha = 0.32;
                     ctx.beginPath();
                     ctx.moveTo(rotatedPoly[0][0], rotatedPoly[0][1]);
                     for (let i=1; i<rotatedPoly.length; i++) ctx.lineTo(rotatedPoly[i][0], rotatedPoly[i][1]);
                     ctx.closePath();
-                    ctx.fillStyle = tertiaryPlane;
+                    ctx.fillStyle = secondaryFill;
                     ctx.fill();
                 }
                 
                 // 4) FRONT FACES
-                ctx.globalAlpha = 0.32;
+                ctx.globalAlpha = 0.0;
                 for (let item of facesWithZ) if (item.z >= 0) {
                     const f = item.face;
                     ctx.beginPath();
