@@ -26,7 +26,7 @@ export interface Env {
   GROQ_API_KEY: string;
   GOOGLE_API_KEY: string;
   MISTRAL_API_KEY: string;
-  OLLAMA_API_KEY: string;
+  OLLAMA_API_KEY: string; // only has paid models apparently, removed for now
   // Add a new line here matching the keyEnv of any provider you add below.
 }
 
@@ -60,19 +60,6 @@ export interface ProviderDefinition {
 // THE PROVIDER LIST — add / remove / edit blocks freely
 // ============================================================
 export const PROVIDERS: ProviderDefinition[] = [
-  {
-    key: "ollama",
-    name: "Ollama",
-    url: "https://ollama.com/v1/chat/completions",
-    keyEnv: "OLLAMA_API_KEY",
-    model: "kimi-k2.6:cloud",
-    contextChunks: 7,
-    params: {
-      max_tokens: 2048,
-      temperature: 0.7,
-      reasoning_effort: "none",
-    },
-  },
   {
     key: "google",
     name: "Google AI Studio",
@@ -129,7 +116,6 @@ export const PROVIDERS: ProviderDefinition[] = [
 // To disable a provider without deleting it, just remove it from here.
 // ============================================================
 export const PROVIDER_ORDER: string[] = [
-  "ollama",
   "google",
   "cerebras",
   "groq",
