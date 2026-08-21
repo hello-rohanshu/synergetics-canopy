@@ -8,4 +8,5 @@ children:
 critical: false
 tags:
   - hide-from-nav
+retired: true
 ---

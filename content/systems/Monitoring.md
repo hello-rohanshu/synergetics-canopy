@@ -1,10 +1,13 @@
 ---
-status: active
 attestation: 2026-08-21
+status:
 ping_url:
 url:
 children:
-  - "[[Obsidian]]"
+  - "[[Uptime Robot]]"
+alternatives:
+critical:
+retired:
 tags:
   - hide-from-nav
 ---

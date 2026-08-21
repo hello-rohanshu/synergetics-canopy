@@ -1,6 +1,6 @@
 ---
 status:
-attestation: 2026-07-05
+attestation: 2026-08-21
 ping_url:
 url:
 children:
@@ -8,4 +8,3 @@ children:
 tags:
   - hide-from-nav
 ---
-asdf

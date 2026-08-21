@@ -1,12 +1,12 @@
 ---
 status: active
-attestation: 2026-07-05
+attestation: 2026-08-21
 ping_url:
 url:
 children:
-  - "[[R. W. Gray's Synergetics Online]]"
+  - "[[Robert Gray's Synergetics Online]]"
   - "[[Custom Interactive Diagrams]]"
-  - "[[Buckyverse]]"
+  - "[[Buckyverse.org]]"
 tags:
   - hide-from-nav
 ---
