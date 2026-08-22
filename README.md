@@ -15,21 +15,21 @@
 
 ## Background
 
-Buckminster Fuller published *Synergetics* in the 1970s. In 1997, R. W. Gray scanned the text and made it freely available online. His site, Synergetics Online, has been the primary digital reference since.
+Buckminster Fuller published his magnum opus *Synergetics* in the 1970s. In 1997, Robert Gray, working alongside E.J. Applewhite, scanned the entire text and made it freely available on the web. It has been the primary digital reference since.
 
-Synergetics Canopy carries that lineage forward into 2026. The complete text was brought over page by page from Gray's digitization, with additional editorial help from [Buckyverse.org](https://buckyverse.org). The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8), chosen for its fervour for bidirectional linking, among many other things. See the [Systems Manifest](/systems-manifest) for the full tool stack.
+Synergetics Canopy carries that lineage forward — rebuilt with today's web-tech. It brings the complete text over page by page from the [original digitization](https://rwgrayprojects.com/synergetics/synergetics.html), with supplementary editorial help from [Buckyverse.org](https://buckyverse.org). The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v4.0.8), chosen for its fervour for bidirectional linking, among many other things. See the [Systems Manifest](https://synergetics.pages.dev/systems-manifest) for the full tool stack.
 
 The live site is at **[synergetics.pages.dev](https://synergetics.pages.dev)**.
 
 ## Features
 
-- The text of Bucky's *Synergetics* in markdown
-- AI trained on the text
+- Buckminster Fuller's *Synergetics* in markdown
+- AI chat grounded on the full text
 - Paragraph-level anchors
 - Anonymous feedback
-- Quartz 4: instant search, bidirectional linking, and more.
+- Instant search, bidirectional linking, and more from Quartz.
 
-See the [Changelog](/changelog) for a full list.
+See the [Changelog](https://github.com/hello-rohanshu/synergetics-canopy/blob/main/CHANGELOG.md) for the full list.
 
 ## Install
 
@@ -48,7 +48,7 @@ To edit the content, open the `content/` folder in [Obsidian](https://obsidian.m
 
 ## Contributing
 
-Report issues or suggest improvements via the feedback button on the site, or [open an issue on GitHub](https://github.com/hello-rohanshu/synergetics-canopy/issues). Pull requests welcome.
+Report issues or suggest improvements via the feedback button on the site, or [open an issue on GitHub](https://github.com/hello-rohanshu/synergetics-canopy/issues). Pull requests are welcome.
 
 ## License
 
@@ -57,6 +57,6 @@ Report issues or suggest improvements via the feedback button on the site, or [o
 
 ## Acknowledgments
 
-- [R. W. Gray](https://rwgrayprojects.com/synergetics/synergetics.html) for the original 1997 digitization
+- [Robert W. Gray](https://rwgrayprojects.com/synergetics/synergetics.html) and team for the original 1997 digitization
 - [Buckyverse.org](https://buckyverse.org) for editorial and image assistance
 - [Quartz](https://quartz.jzhao.xyz/) static site builder
