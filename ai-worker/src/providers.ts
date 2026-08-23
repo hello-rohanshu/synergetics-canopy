@@ -116,9 +116,9 @@ export const PROVIDERS: ProviderDefinition[] = [
 // To disable a provider without deleting it, just remove it from here.
 // ============================================================
 export const PROVIDER_ORDER: string[] = [
-  "google",
   "cerebras",
   "groq",
+  "google",
   "mistral",
 ];
 
