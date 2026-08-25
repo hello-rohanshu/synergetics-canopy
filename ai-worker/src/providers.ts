@@ -80,7 +80,7 @@ export const PROVIDERS: ProviderDefinition[] = [
     model: "gpt-oss-120b",
     contextChunks: 7,
     params: {
-      max_tokens: 1024,
+      max_tokens: 2048,
       temperature: 0.7,
     },
   },
@@ -92,7 +92,7 @@ export const PROVIDERS: ProviderDefinition[] = [
     model: "qwen/qwen3.6-27b",
     contextChunks: 7,
     params: {
-      max_tokens: 1024,
+      max_tokens: 2048,
       temperature: 0.7,
       reasoning_effort: "none",
     },
@@ -105,7 +105,7 @@ export const PROVIDERS: ProviderDefinition[] = [
     model: "open-mixtral-8x7b",
     contextChunks: 7,
     params: {
-      max_tokens: 1024,
+      max_tokens: 2048,
       temperature: 0.7,
     },
   },
@@ -116,8 +116,8 @@ export const PROVIDERS: ProviderDefinition[] = [
 // To disable a provider without deleting it, just remove it from here.
 // ============================================================
 export const PROVIDER_ORDER: string[] = [
-  "cerebras",
   "groq",
+  "cerebras",
   "google",
   "mistral",
 ];
