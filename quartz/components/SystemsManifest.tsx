@@ -154,7 +154,7 @@ const SystemsManifest: QuartzComponent = () => {
                   <span class="si-panel-name">{root.name}</span>
                   {root.children.length === 0 && <PingDot slug={root.slug} pingUrl={root.pingUrl} />}
                 </div>
-                <span class={`si-attest si-attest-${cat}`}>{relativeDate(root.attestation)}</span>
+                <span class={`si-attest si-attest-${cat}`} data-attestation={root.attestation}>{relativeDate(root.attestation)}</span>
               </div>
             </div>
             {root.children.length > 0 && (
@@ -240,9 +240,29 @@ SystemsManifest.afterDOMLoaded = `
     });
   }
 
+function updateRelativeDates() {
+    document.querySelectorAll('.si-attest[data-attestation]').forEach(function(el) {
+      var dateStr = el.getAttribute('data-attestation');
+      if (!dateStr) return;
+      var parts = dateStr.split('-').map(Number);
+      var days = Math.floor((Date.now() - new Date(parts[0], parts[1] - 1, parts[2]).getTime()) / 86400000);
+      
+      var text = "Never reviewed";
+      if (days === 0) text = "Reviewed today";
+      else if (days === 1) text = "Reviewed yesterday";
+      else if (days < 7) text = "Reviewed " + days + "d ago";
+      else if (days < 60) text = "Reviewed " + Math.floor(days / 7) + "w ago";
+      else if (days < 365) text = "Reviewed " + Math.floor(days / 30) + "mo ago";
+      else text = "Reviewed " + Math.floor(days / 365) + "y ago";
+      
+      el.textContent = text;
+    });
+  }
+
   function initPings() {
     if (!document.querySelector('.si-root')) return;
 
+    updateRelativeDates();
     handleBrokenFavicons();
 
     var cache = loadCache();
