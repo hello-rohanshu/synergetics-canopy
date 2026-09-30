@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- ## [Unreleased] -->
 
-## [1.1.0] — 2026-08-24
+## [1.1.0] - 2026-08-24
 
 ### Added
 
@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interactive fig. 100.103 reworked to better resemble Fuller's original figure
 
 
-## [1.0.0] — 2026-07-11
+## [1.0.0] - 2026-07-11
 
 ### Added
 
