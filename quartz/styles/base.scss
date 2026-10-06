@@ -4,6 +4,13 @@
 @use "./syntax.scss";
 @use "./callouts.scss";
 
+// Declare the animated CSS custom property for tooltip delay state
+@property --tooltip-delay {
+  syntax: "<time>";
+  inherits: true;
+  initial-value: 1s;
+}
+
 // =============================================================================
 // φ — THE SEED
 // 1rem = base. Every size, spacing, and rhythm derives from this sequence.
@@ -493,7 +500,8 @@ thead {
   font-weight: revert;
   margin-bottom: 0;
 
-  article>&>a[role="anchor"] {
+  article>&>a[role="anchor"],
+  article>&>button.para-copy-button {
     color: var(--dark);
     background-color: transparent;
   }
@@ -505,20 +513,98 @@ h3,
 h4,
 h5,
 h6 {
-  &[id]>a[href^="#"] {
-    margin: 0 var(--sp-sm);
-    opacity: 0;
-    transition: opacity var(--transition-base);
-    transform: translateY(-0.1rem);
-    font-family: var(--codeFont);
-    user-select: none;
+
+  // Heading container manages the "warm tooltip" state
+  &[id] {
+    --tooltip-delay: 0.618s;
+    transition: --tooltip-delay 0s 0s; // Resets delay to 1s instantly on mouse leave
+
+    &:hover {
+      --tooltip-delay: 0s;
+      transition: --tooltip-delay 0s 1.618s; // Warms up group: sets delay to 0s after 1s hover
+    }
   }
 
-  &[id]:hover>a {
+  // Shared positioning, alignment, and tooltip styling for anchor link & section copy button
+  &[id]>a[href^="#"],
+  &[id]>button.para-copy-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: baseline;
+    position: relative;
+    margin: 0 var(--sp-2xs);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    font-family: var(--codeFont);
+    user-select: none;
+    color: var(--dark);
+    line-height: 1;
+
+    svg {
+      display: block;
+      stroke: currentColor;
+    }
+
+    // Pure CSS Tooltip via aria-label
+    &[aria-label] {
+      &::after {
+        content: attr(aria-label);
+        position: absolute;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%) translateY(4px);
+        background-color: var(--dark);
+        color: var(--light);
+        padding: 0.1rem 0.4rem 0.22rem 0.4rem;
+        font-size: 0.7rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--transition-base), transform var(--transition-base);
+        transition-delay: 0s;
+        font-family: var(--bodyFont);
+        font-weight: normal;
+        z-index: 10;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      &:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        transition-delay: var(--tooltip-delay); // Uses dynamic delay
+      }
+
+      &:focus-visible::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        transition-delay: 0s; // Instant on keyboard focus
+      }
+    }
+  }
+
+  // Reset button-specific browser styles
+  &[id]>button.para-copy-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  // Reveal both icons on heading hover or button focus
+  &[id]:hover>a[href^="#"],
+  &[id]:hover>button.para-copy-button,
+  &[id]>button.para-copy-button:focus-visible {
     opacity: 1;
   }
 
-  &:not([id])>a[role="anchor"] {
+  &:not([id])>a[role="anchor"],
+  &:not([id])>button.para-copy-button {
     display: none;
   }
 }

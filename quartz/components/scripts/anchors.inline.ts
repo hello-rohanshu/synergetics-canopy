@@ -17,6 +17,9 @@ export function attachAnchorListeners(container: HTMLElement | Document, pageSlu
     const originalStroke = svg.getAttribute("stroke") || "currentColor"
     let timeoutId: ReturnType<typeof setTimeout> | null = null
 
+    // Tooltip text — picked up by base.scss [aria-label]::after
+    anchor.setAttribute("aria-label", "Copy link")
+
     const onClick = (e: Event) => {
       const href = anchor.getAttribute("href")
       if (!href || !href.startsWith("#")) return
@@ -71,7 +74,7 @@ function scrollToHash() {
   if (!window.location.hash || isScrolling) return
   const id = decodeURIComponent(window.location.hash.slice(1))
   const el = document.getElementById(id)
-  
+
   if (!el) {
     // Retry once for hydration lag (Quartz 4 SPA timing)
     requestAnimationFrame(() => {
@@ -89,19 +92,19 @@ function executeScroll(el: HTMLElement) {
   let finished = false
   let started = false
   let rafId: number | null = null
-  
+
   // Suppress visual jump during settlement
   document.documentElement.style.visibility = "hidden"
 
   const finalize = () => {
     if (finished) return
     finished = true
-    
+
     // Total Cleanup
     observer.disconnect()
     if (rafId) cancelAnimationFrame(rafId)
     clearTimeout(hardTimeout)
-    
+
     // Final Scroll
     el.scrollIntoView()
     document.documentElement.style.visibility = ""
@@ -112,11 +115,11 @@ function executeScroll(el: HTMLElement) {
   // This is strictly more correct than tracking scrollHeight.
   let lastTop = el.getBoundingClientRect().top + window.scrollY
   let stableFrames = 0
-  const REQUIRED_STABLE_FRAMES = 3 
+  const REQUIRED_STABLE_FRAMES = 3
 
   const checkStability = () => {
     const currentTop = el.getBoundingClientRect().top + window.scrollY
-    
+
     // Use a small tolerance (0.5px) for sub-pixel layout jitter
     if (Math.abs(currentTop - lastTop) < 0.5) {
       stableFrames++
@@ -158,7 +161,7 @@ function executeScroll(el: HTMLElement) {
 
 // Quartz SPA navigation
 document.addEventListener("nav", () => {
-  isScrolling = false 
+  isScrolling = false
   scrollToHash()
   attachAnchorListeners(document)
 })
