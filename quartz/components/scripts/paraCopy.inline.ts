@@ -212,8 +212,8 @@ export function attachParaCopyButtons(container: HTMLElement | Document, pageSlu
       const bodyHtml = nodes.map((n) => elementToHtml(n)).join("")
 
       // Attribution — all bold, no link
-      const attribution = `**— RBF, Synergetics**`
-      const attributionHtml = `<p><strong>— RBF, Synergetics</strong></p>`
+      const attribution = `**— RBF • Synergetics**`
+      const attributionHtml = `<p><strong>— RBF • Synergetics</strong></p>`
 
       // Plain text: no URLs. HTML: heading link carries the section URL.
       const plainPayload = [headingLine, bodyPlain, attribution].filter(Boolean).join("\n\n\n")
