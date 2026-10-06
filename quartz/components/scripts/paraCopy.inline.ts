@@ -141,7 +141,7 @@ async function writeToClipboard(plainPayload: string, htmlPayload: string): Prom
 }
 
 export function attachParaCopyButtons(container: HTMLElement | Document, pageSlug?: string) {
-  const headings = container.querySelectorAll<HTMLHeadingElement>("h5")
+  const headings = container.querySelectorAll<HTMLHeadingElement>("h5, h6")
 
   headings.forEach((heading) => {
     const anchor = heading.querySelector<HTMLAnchorElement>('a[role="anchor"]')

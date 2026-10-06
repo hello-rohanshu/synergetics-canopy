@@ -4,19 +4,20 @@ draft: "true"
 
 # Superscript table
 
-| Number | Subscript | Superscript |
-| ------ | --------- | ----------- |
-| Zero   | ₀         | ⁰           |
-| One    | ₁         | ¹           |
-| Two    | ₂         | ²           |
-| Three  | ₃         | ³           |
-| Four   | ₄         | ⁴           |
-| Five   | ₅         | ⁵           |
-| Six    | ₆         | ⁶           |
-| Seven  | ₇         | ⁷           |
-| Eight  | ₈         | ⁸           |
-| Nine   | ₉         | ⁹           |
-| n      | ₙ         | ⁿ           |
+| Number    | Subscript | Superscript |
+| --------- | --------- | ----------- |
+| Zero      | ₀         | ⁰           |
+| One       | ₁         | ¹           |
+| Two       | ₂         | ²           |
+| Three     | ₃         | ³           |
+| Four      | ₄         | ⁴           |
+| Five      | ₅         | ⁵           |
+| Six       | ₆         | ⁶           |
+| Seven     | ₇         | ⁷           |
+| Eight     | ₈         | ⁸           |
+| Nine      | ₉         | ⁹           |
+| n         | ₙ         | ⁿ           |
+| - (minus) |           | ⁻           |
 
 # Symbols
 
@@ -183,11 +184,13 @@ draft: "true"
 - "Section xyz" should be linked in whole and not just the number 'xyz'. But any suffixing description should be avoided
 - special: (as we have seen in Sections [[640.00 Tension and Compression#644.00 Limitless Ratios of Tension|644 through 646.03]]).
 - special: (see Sec. [[920.00 Functions of A and B Modules|920]] through 940).
+- [[1224.30]]-34 should only have its first item linked. I decided this in 06-10-2026 when 50%+ links are resolved. im in chapter 1220.00 most might already use this. I couldn't find a rule written prior to this.
 
 Specifics
 - 1010.00: Should "drawings sections" be a link?
 - "displaystyle" in latex is rendered with no difference in Obsidian but is bigger in Quartz than without it. Unsure if to use it or not. Given it is distinct, it should be searchable across the repo if change is needed later. DeepSeek said use it as it's the ideal display size.
 - (See [[pp. 46-47]].) in 220.00 is what?
+- 1238.80 has a link to itself?
 
 
 # More
