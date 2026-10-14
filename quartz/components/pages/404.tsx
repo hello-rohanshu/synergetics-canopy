@@ -238,7 +238,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     list.innerHTML = "";
 
     if (hasError) {
-      list.innerHTML = '<li class="nf-empty">Failed to load search index</li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.location.reload()" title="Refresh page"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
       return;
     }
 
@@ -248,7 +248,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     }
 
     if (!results.length) {
-      list.innerHTML = '<li class="nf-empty">No results — try a different search</li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.location.reload()" title="Refresh page"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
       return;
     }
 
@@ -358,6 +358,49 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     go();
   }
 
+  function loadIndex() {
+    if (isLoaded) {
+      init();
+      return;
+    }
+    fetch(BASE + "/static/contentIndex.json")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (window.Fuse) {
+          buildFuseIndex(data);
+        } else {
+          var script    = document.createElement("script");
+          script.src    = "https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js";
+          script.onload = function() { buildFuseIndex(data); };
+          script.onerror = function() {
+            hasError = true;
+            go();
+            console.warn("Fuse CDN failed to load");
+          };
+          document.head.appendChild(script);
+        }
+      })
+      .catch(function(e) {
+        hasError = true;
+        go();
+        console.warn("Canopy 404: contentIndex fetch failed", e);
+      });
+  }
+
+  function buildFuseIndex(data) {
+    allDocs = createDocObjects(data);
+    if (window.Fuse) {
+      pageFuse    = buildPageFuse(allDocs);
+      contentFuse = buildContentFuse(allDocs);
+      isLoaded    = true;
+      go();
+    } else {
+      hasError = true;
+      go();
+      console.warn("Fuse CDN failed to load");
+    }
+  }
+
   // ── Boot & Navigation Listeners ──────────────────────────────────────────
   document.addEventListener("DOMContentLoaded", function() {
     var input = document.getElementById("not-found-input");
@@ -383,54 +426,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       }, 150));
     }
 
-    init();
+    loadIndex();
   });
 
   window.addEventListener("popstate", function() {
-    init();
+    loadIndex();
   });
 
   window.addEventListener("pageshow", function() {
-    init();
+    loadIndex();
   });
-
-  function buildFuseIndex(data) {
-    allDocs = createDocObjects(data);
-    if (window.Fuse) {
-      pageFuse    = buildPageFuse(allDocs);
-      contentFuse = buildContentFuse(allDocs);
-      isLoaded    = true;
-      go();
-    } else {
-      hasError = true;
-      go();
-      console.warn("Fuse CDN failed to load");
-    }
-  }
-
-  // ── Load Fuse + index ────────────────────────────────────────────────────
-  fetch(BASE + "/static/contentIndex.json")
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (window.Fuse) {
-        buildFuseIndex(data);
-      } else {
-        var script    = document.createElement("script");
-        script.src    = "https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js";
-        script.onload = function() { buildFuseIndex(data); };
-        script.onerror = function() {
-          hasError = true;
-          go();
-          console.warn("Fuse CDN failed to load");
-        };
-        document.head.appendChild(script);
-      }
-    })
-    .catch(function(e) {
-      hasError = true;
-      go();
-      console.warn("Canopy 404: contentIndex fetch failed", e);
-    });
 
 })();
       ` }} />
@@ -498,7 +503,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   line-height: 1.5;
 }
 
-/* ── Attempted URL Block ──────────────────────────────────────── */
+/* ── Attempted URL Block ────────────────────────────────-------- */
 .nf-url {
   display: inline-block;
   max-width: 100%;
@@ -610,11 +615,46 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 }
 
 .nf-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   font-size: 0.85rem;
   color: var(--gray);
-  padding: 0.4rem 0;
+  padding: 0.75rem 0.9rem;
   text-align: center;
   font-family: inherit;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  background: var(--light);
+}
+
+.nf-empty-text {
+  display: inline-block;
+}
+
+.nf-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--lightgray);
+  border-radius: 4px;
+  padding: 0.25rem 0.4rem;
+  cursor: pointer;
+  color: var(--darkgray);
+  transition: all 0.15s ease;
+}
+
+.nf-refresh-btn:hover {
+  color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+  background: var(--highlight);
+}
+
+.nf-refresh-icon {
+  width: 12px;
+  height: 12px;
 }
 
 /* ── Mobile ────────────────────────────────────────────────    */
