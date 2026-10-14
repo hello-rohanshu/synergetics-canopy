@@ -238,7 +238,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     list.innerHTML = "";
 
     if (hasError) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.location.reload()" title="Refresh page"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
       return;
     }
 
@@ -248,7 +248,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     }
 
     if (!results.length) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.location.reload()" title="Refresh page"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
       return;
     }
 
@@ -359,6 +359,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   function loadIndex() {
+    hasError = false;
     if (isLoaded) {
       init();
       return;
@@ -386,6 +387,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         console.warn("Canopy 404: contentIndex fetch failed", e);
       });
   }
+
+  window.retryLoad = function() {
+    loadIndex();
+  };
 
   function buildFuseIndex(data) {
     allDocs = createDocObjects(data);
@@ -430,11 +435,15 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   });
 
   window.addEventListener("popstate", function() {
-    loadIndex();
+    setTimeout(function() {
+      init();
+    }, 0);
   });
 
   window.addEventListener("pageshow", function() {
-    loadIndex();
+    setTimeout(function() {
+      init();
+    }, 0);
   });
 
 })();
@@ -503,7 +512,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   line-height: 1.5;
 }
 
-/* ── Attempted URL Block ────────────────────────────────-------- */
+/* ── Attempted URL Block ──────────────────────────────────────── */
 .nf-url {
   display: inline-block;
   max-width: 100%;
@@ -616,12 +625,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
 .nf-empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   font-size: 0.85rem;
   color: var(--gray);
-  padding: 0.75rem 0.9rem;
+  padding: 1.25rem 0.9rem;
   text-align: center;
   font-family: inherit;
   border: 1px solid var(--lightgray);
@@ -630,20 +640,23 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 }
 
 .nf-empty-text {
-  display: inline-block;
+  display: block;
 }
 
 .nf-refresh-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   background: transparent;
   border: 1px solid var(--lightgray);
   border-radius: 4px;
-  padding: 0.25rem 0.4rem;
+  padding: 0.35rem 0.75rem;
   cursor: pointer;
   color: var(--darkgray);
   transition: all 0.15s ease;
+  font-family: inherit;
 }
 
 .nf-refresh-btn:hover {
@@ -653,8 +666,9 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 }
 
 .nf-refresh-icon {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
 }
 
 /* ── Mobile ────────────────────────────────────────────────    */
