@@ -113,10 +113,19 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     return result;
   }
 
-  // ── Fuse.js instances ────────────────────────────────────────────────────
+  // ── Fuse.js instances & State ────────────────────────────────────────────
   var pageFuse    = null;
   var contentFuse = null;
   var allDocs     = [];
+  var isLoaded    = false;
+
+  var state = {
+    fuseQuery:  "",
+    coordQuery: "",
+    pagePrefix: "",
+    mode:       "page",
+    fromURL:    true
+  };
 
   function createDocObjects(data) {
     return Object.entries(data).map(function(entry) {
@@ -217,6 +226,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (!list) return;
     list.innerHTML = "";
 
+    if (!isLoaded) {
+      list.innerHTML = '<li class="nf-empty">Loading search index…</li>';
+      return;
+    }
+
     if (!results.length) {
       list.innerHTML = '<li class="nf-empty">No results — try a different search</li>';
       return;
@@ -247,15 +261,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       })(results[i], i);
     }
   }
-
-  // ── Search orchestration ─────────────────────────────────────────────────
-  var state = {
-    fuseQuery:  "",
-    coordQuery: "",
-    pagePrefix: "",
-    mode:       "page",
-    fromURL:    true
-  };
 
   function coordIntPrefix(str) {
     var m = str.match(/^(\\d+)/);
@@ -329,10 +334,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         : parsed.fuseQuery;
     }
 
-    if (pageFuse || contentFuse) go();
+    renderList([], null);
+    if (isLoaded && (pageFuse || contentFuse)) {
+      go();
+    }
   }
 
-  // ── Boot ─────────────────────────────────────────────────────────────────
+  // ── Boot & Navigation Listeners ──────────────────────────────────────────
   document.addEventListener("DOMContentLoaded", function() {
     var input = document.getElementById("not-found-input");
     if (input && !input.dataset.wired) {
@@ -353,7 +361,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           state.fuseQuery = "";
         }
 
-        if (pageFuse || contentFuse) go();
+        if (isLoaded && (pageFuse || contentFuse)) go();
       }, 150));
     }
 
@@ -362,6 +370,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   window.addEventListener("popstate", function() {
     init();
+    if (isLoaded) go();
+  });
+
+  window.addEventListener("pageshow", function(event) {
+    init();
+    if (isLoaded) go();
   });
 
   function buildFuseIndex(data) {
@@ -369,6 +383,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (window.Fuse) {
       pageFuse    = buildPageFuse(allDocs);
       contentFuse = buildContentFuse(allDocs);
+      isLoaded    = true;
       if (state.fuseQuery) go();
     } else {
       console.warn("Fuse CDN failed to load");
@@ -573,7 +588,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   text-align: center;
 }
 
-/* ── Mobile ──────────────────────────────────────────────────── */
+/* ── Mobile ────────────────────────────────────────────────    */
 @media (max-width: 600px) {
   .nf-badge {
     font-size: 2.75rem;
