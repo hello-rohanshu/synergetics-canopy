@@ -232,10 +232,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     list.innerHTML = "";
 
     if (stateStore.hasError) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg> Refresh</button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
       return;
     }
 
@@ -245,10 +242,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     }
 
     if (!results.length) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg> Refresh</button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
       return;
     }
 
