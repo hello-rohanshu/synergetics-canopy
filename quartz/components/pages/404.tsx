@@ -52,6 +52,18 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 (function () {
   var BASE = ${JSON.stringify(baseDir)}.replace(/\\/$/, "");
 
+  // ── Global State Cache (survives SPA & history navigation) ────────────────
+  if (!window.__nfState) {
+    window.__nfState = {
+      pageFuse:    null,
+      contentFuse: null,
+      allDocs:     [],
+      isLoaded:    false,
+      hasError:    false
+    };
+  }
+  var stateStore = window.__nfState;
+
   // ── URL parsing (spec v1.1) ──────────────────────────────────────────────
   function parseURL(href) {
     var hashIndex = href.indexOf("#");
@@ -113,31 +125,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     return result;
   }
 
-  // ── State & Flags ────────────────────────────────────────────────────────
-  var pageFuse    = null;
-  var contentFuse = null;
-  var allDocs     = [];
-  var isLoaded    = false;
-  var hasError    = false;
-  var fontsReady  = false;
-
-  var state = {
+  var currentState = {
     fuseQuery:  "",
     coordQuery: "",
     pagePrefix: "",
     mode:       "page",
     fromURL:    true
   };
-
-  // Wait for fonts to be ready to avoid FOUT/layout jumps
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function() {
-      fontsReady = true;
-      if (isLoaded || hasError) go();
-    });
-  } else {
-    fontsReady = true;
-  }
 
   function createDocObjects(data) {
     return Object.entries(data).map(function(entry) {
@@ -197,14 +191,14 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   function findParentDoc(prefix) {
-    if (!prefix || !allDocs.length) return null;
+    if (!prefix || !stateStore.allDocs.length) return null;
 
     var candidates = [];
     var variants = [prefix];
     var dotIdx = prefix.indexOf(".");
     if (dotIdx > -1) variants.push(prefix.slice(0, dotIdx));
 
-    allDocs.forEach(function(doc) {
+    stateStore.allDocs.forEach(function(doc) {
       var parts   = doc.slug.split("/");
       var lastSeg = parts[parts.length - 1] || "";
 
@@ -237,12 +231,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (!list) return;
     list.innerHTML = "";
 
-    if (hasError) {
+    if (stateStore.hasError) {
       list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
       return;
     }
 
-    if (!isLoaded || !fontsReady) {
+    if (!stateStore.isLoaded) {
       list.innerHTML = '<li class="nf-empty">Loading search index…</li>';
       return;
     }
@@ -264,7 +258,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
         var subline = "";
         if (idx === 0 && anchorHint) {
-          subline = '<span class="nf-item-anchor"><svg class="nf-anchor-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 1 L2 7 L9 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5 L9 7 L7 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> section ' + state.coordQuery + '</span>';
+          subline = '<span class="nf-item-anchor"><svg class="nf-anchor-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 1 L2 7 L9 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5 L9 7 L7 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> section ' + currentState.coordQuery + '</span>';
         }
 
         li.innerHTML =
@@ -284,18 +278,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   function go() {
-    if (!isLoaded || !fontsReady) {
-      renderList([], null);
-      return;
-    }
-
     var results = [];
 
-    if (state.mode === "content") {
-      results = searchWithFuse(contentFuse, state.fuseQuery, 10);
+    if (currentState.mode === "content") {
+      results = searchWithFuse(stateStore.contentFuse, currentState.fuseQuery, 10);
 
-      if (state.fromURL && state.pagePrefix) {
-        var pinned = findParentDoc(state.pagePrefix);
+      if (currentState.fromURL && currentState.pagePrefix) {
+        var pinned = findParentDoc(currentState.pagePrefix);
         if (pinned) {
           var seen = {};
           seen[pinned.slug] = true;
@@ -311,16 +300,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       }
 
     } else {
-      results = searchWithFuse(pageFuse, state.fuseQuery, 10);
+      results = searchWithFuse(stateStore.pageFuse, currentState.fuseQuery, 10);
     }
 
     var anchorHint = null;
-    if (state.fromURL && state.coordQuery && results.length > 0) {
+    if (currentState.fromURL && currentState.coordQuery && results.length > 0) {
       var topSlug      = results[0].slug.split("/").pop() || "";
       var topInt       = coordIntPrefix(topSlug);
-      var coordInt     = coordIntPrefix(state.coordQuery);
+      var coordInt     = coordIntPrefix(currentState.coordQuery);
       if (topInt && coordInt && topInt === coordInt) {
-        anchorHint = state.coordQuery;
+        anchorHint = currentState.coordQuery;
       }
     }
 
@@ -336,17 +325,17 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     };
   }
 
-  // ── Init: parse URL and wire up input ────────────────────────────────────
+  // ── Init: parse URL and update state ──────────────────────────────────────
   function init() {
     var urlEl = document.getElementById("nf-attempted-url");
     if (urlEl) urlEl.textContent = window.location.href;
 
     var parsed = parseURL(window.location.href);
-    state.fuseQuery  = parsed.fuseQuery;
-    state.coordQuery = parsed.coordQuery;
-    state.pagePrefix = parsed.pagePrefix;
-    state.mode       = parsed.mode;
-    state.fromURL    = true;
+    currentState.fuseQuery  = parsed.fuseQuery;
+    currentState.coordQuery = parsed.coordQuery;
+    currentState.pagePrefix = parsed.pagePrefix;
+    currentState.mode       = parsed.mode;
+    currentState.fromURL    = true;
 
     var input = document.getElementById("not-found-input");
     if (input) {
@@ -359,8 +348,8 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   function loadIndex() {
-    hasError = false;
-    if (isLoaded) {
+    stateStore.hasError = false;
+    if (stateStore.isLoaded) {
       init();
       return;
     }
@@ -374,7 +363,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           script.src    = "https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js";
           script.onload = function() { buildFuseIndex(data); };
           script.onerror = function() {
-            hasError = true;
+            stateStore.hasError = true;
             go();
             console.warn("Fuse CDN failed to load");
           };
@@ -382,7 +371,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         }
       })
       .catch(function(e) {
-        hasError = true;
+        stateStore.hasError = true;
         go();
         console.warn("Canopy 404: contentIndex fetch failed", e);
       });
@@ -393,46 +382,45 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   };
 
   function buildFuseIndex(data) {
-    allDocs = createDocObjects(data);
+    stateStore.allDocs = createDocObjects(data);
     if (window.Fuse) {
-      pageFuse    = buildPageFuse(allDocs);
-      contentFuse = buildContentFuse(allDocs);
-      isLoaded    = true;
+      stateStore.pageFuse    = buildPageFuse(stateStore.allDocs);
+      stateStore.contentFuse = buildContentFuse(stateStore.allDocs);
+      stateStore.isLoaded    = true;
       go();
     } else {
-      hasError = true;
+      stateStore.hasError = true;
       go();
       console.warn("Fuse CDN failed to load");
     }
   }
 
   // ── Boot & Navigation Listeners ──────────────────────────────────────────
-  document.addEventListener("DOMContentLoaded", function() {
-    var input = document.getElementById("not-found-input");
-    if (input && !input.dataset.wired) {
-      input.dataset.wired = "1";
-      input.addEventListener("input", debounce(function() {
-        var val = input.value.trim();
+  init();
+  loadIndex();
 
-        state.fromURL    = false;
-        state.pagePrefix = "";
+  var input = document.getElementById("not-found-input");
+  if (input && !input.dataset.wired) {
+    input.dataset.wired = "1";
+    input.addEventListener("input", debounce(function() {
+      var val = input.value.trim();
 
-        if (/^\\d+(\\.\\d+)?$/.test(val)) {
-          state.mode      = "content";
-          state.fuseQuery = val;
-        } else if (val.length > 0) {
-          state.mode      = "page";
-          state.fuseQuery = val;
-        } else {
-          state.fuseQuery = "";
-        }
+      currentState.fromURL    = false;
+      currentState.pagePrefix = "";
 
-        go();
-      }, 150));
-    }
+      if (/^\\d+(\\.\\d+)?$/.test(val)) {
+        currentState.mode      = "content";
+        currentState.fuseQuery = val;
+      } else if (val.length > 0) {
+        currentState.mode      = "page";
+        currentState.fuseQuery = val;
+      } else {
+        currentState.fuseQuery = "";
+      }
 
-    loadIndex();
-  });
+      go();
+    }, 150));
+  }
 
   window.addEventListener("popstate", function() {
     setTimeout(function() {
@@ -512,7 +500,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   line-height: 1.5;
 }
 
-/* ── Attempted URL Block ──────────────────────────────────────── */
+/* ── Attempted URL Block ────────────────────────────────-------- */
 .nf-url {
   display: inline-block;
   max-width: 100%;
