@@ -7,7 +7,7 @@ p-images: true
 p-links: true
 p-equations: true
 p-structure: true
-p-links-2: false
+p-links-2: true
 e-issues:
 ---
 
