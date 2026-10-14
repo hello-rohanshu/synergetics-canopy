@@ -11,7 +11,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       <div class="nf-header">
         <a class="nf-home-btn" href={baseDir}>
           <svg class="nf-home-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           Return Home
         </a>
@@ -232,7 +232,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     list.innerHTML = "";
 
     if (stateStore.hasError) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">Failed to load search index</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> Refresh</button></li>';
       return;
     }
 
@@ -242,7 +245,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     }
 
     if (!results.length) {
-      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C5.55642 13.5 3.48777 11.8845 2.82353 9.6M2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C10.4436 2.5 12.5122 4.11553 13.1765 6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.5 3.5L13.5 6.5L10.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh</button></li>';
+      list.innerHTML = '<li class="nf-empty"><span class="nf-empty-text">No pages located</span><button class="nf-refresh-btn" type="button" onclick="window.retryLoad()"><svg class="nf-refresh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> Refresh</button></li>';
       return;
     }
 
