@@ -113,11 +113,13 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     return result;
   }
 
-  // ── Fuse.js instances & State ────────────────────────────────────────────
+  // ── State & Flags ────────────────────────────────────────────────────────
   var pageFuse    = null;
   var contentFuse = null;
   var allDocs     = [];
   var isLoaded    = false;
+  var hasError    = false;
+  var fontsReady  = false;
 
   var state = {
     fuseQuery:  "",
@@ -126,6 +128,16 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     mode:       "page",
     fromURL:    true
   };
+
+  // Wait for fonts to be ready to avoid FOUT/layout jumps
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function() {
+      fontsReady = true;
+      if (isLoaded || hasError) go();
+    });
+  } else {
+    fontsReady = true;
+  }
 
   function createDocObjects(data) {
     return Object.entries(data).map(function(entry) {
@@ -184,7 +196,6 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     });
   }
 
-  // ── Parent-page direct lookup ────────────────────────────────────────────
   function findParentDoc(prefix) {
     if (!prefix || !allDocs.length) return null;
 
@@ -226,7 +237,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
     if (!list) return;
     list.innerHTML = "";
 
-    if (!isLoaded) {
+    if (hasError) {
+      list.innerHTML = '<li class="nf-empty">Failed to load search index</li>';
+      return;
+    }
+
+    if (!isLoaded || !fontsReady) {
       list.innerHTML = '<li class="nf-empty">Loading search index…</li>';
       return;
     }
@@ -268,6 +284,11 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   }
 
   function go() {
+    if (!isLoaded || !fontsReady) {
+      renderList([], null);
+      return;
+    }
+
     var results = [];
 
     if (state.mode === "content") {
@@ -334,10 +355,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         : parsed.fuseQuery;
     }
 
-    renderList([], null);
-    if (isLoaded && (pageFuse || contentFuse)) {
-      go();
-    }
+    go();
   }
 
   // ── Boot & Navigation Listeners ──────────────────────────────────────────
@@ -361,7 +379,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
           state.fuseQuery = "";
         }
 
-        if (isLoaded && (pageFuse || contentFuse)) go();
+        go();
       }, 150));
     }
 
@@ -370,12 +388,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 
   window.addEventListener("popstate", function() {
     init();
-    if (isLoaded) go();
   });
 
-  window.addEventListener("pageshow", function(event) {
+  window.addEventListener("pageshow", function() {
     init();
-    if (isLoaded) go();
   });
 
   function buildFuseIndex(data) {
@@ -384,8 +400,10 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       pageFuse    = buildPageFuse(allDocs);
       contentFuse = buildContentFuse(allDocs);
       isLoaded    = true;
-      if (state.fuseQuery) go();
+      go();
     } else {
+      hasError = true;
+      go();
       console.warn("Fuse CDN failed to load");
     }
   }
@@ -400,11 +418,19 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
         var script    = document.createElement("script");
         script.src    = "https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js";
         script.onload = function() { buildFuseIndex(data); };
-        script.onerror = function() { console.warn("Fuse CDN failed to load"); };
+        script.onerror = function() {
+          hasError = true;
+          go();
+          console.warn("Fuse CDN failed to load");
+        };
         document.head.appendChild(script);
       }
     })
-    .catch(function(e) { console.warn("Canopy 404: contentIndex fetch failed", e); });
+    .catch(function(e) {
+      hasError = true;
+      go();
+      console.warn("Canopy 404: contentIndex fetch failed", e);
+    });
 
 })();
       ` }} />
@@ -552,6 +578,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   padding: 0.65rem 0.9rem;
   text-decoration: none;
   color: inherit;
+  font-family: inherit;
 }
 
 .nf-item-title {
@@ -560,6 +587,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   font-weight: 600;
   color: var(--secondary);
   line-height: 1.3;
+  font-family: inherit;
 }
 
 .nf-item-anchor {
@@ -586,6 +614,7 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
   color: var(--gray);
   padding: 0.4rem 0;
   text-align: center;
+  font-family: inherit;
 }
 
 /* ── Mobile ────────────────────────────────────────────────    */
