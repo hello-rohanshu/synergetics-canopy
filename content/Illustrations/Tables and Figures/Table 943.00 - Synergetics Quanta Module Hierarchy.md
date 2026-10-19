@@ -1,6 +1,6 @@
 ---
 aliases:
-  - 943.00 Table - Synergetics Quanta Module Hierarchy
+  - Illustrations/Tables and Figures/943.00 Table - Synergetics Quanta Module Hierarchy
 ---
 
 
