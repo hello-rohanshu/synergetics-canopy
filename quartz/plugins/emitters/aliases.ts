@@ -12,8 +12,13 @@ async function* processFile(ctx: BuildCtx, file: VFile) {
     const aliasTargetSlug = (
       isRelativeURL(aliasTarget)
         ? path.normalize(path.join(ogSlug, "..", aliasTarget))
-        : aliasTarget
+        : aliasTarget.includes("/")
+          ? aliasTarget
+          : path.posix.dirname(ogSlug) === "."
+            ? aliasTarget // root-level note: keep bare alias as-is
+            : path.posix.join(path.posix.dirname(ogSlug), aliasTarget) // bare filename: resolve against note's folder
     ) as FullSlug
+    // TODO: relative branch above uses path.* (OS-dependent); consider path.posix for slug safety on Windows
 
     const redirUrl = resolveRelative(aliasTargetSlug, ogSlug)
     yield write({
