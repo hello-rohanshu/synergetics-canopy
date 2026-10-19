@@ -1,3 +1,9 @@
+---
+aliases:
+  - 943.00 Table - Synergetics Quanta Module Hierarchy
+---
+
+
 Recheck #management/note 
 
 |             |                    |        |           |               |               |              |              |         |              |
