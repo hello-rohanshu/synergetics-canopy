@@ -1,6 +1,6 @@
 ---
 aliases:
-  - 1033.192-Table---Prime-Number-Consequences-of-Spin-halving-of-Tetrahedrons-Volumetric-Domain-Unity
+  - Illustrations/Tables-and-Figures/1033.192 Table - Prime Number Consequences of Spin-halving of Tetrahedrons Volumetric Domain Unity
 ---
 
 Needs checking #management/note 
