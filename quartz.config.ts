@@ -82,6 +82,7 @@ const config: QuartzConfig = {
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
+      // AliasRedirects must stay before ContentPage. Alias pages are written first and real pages then overwrite any alias sharing the same path, so notes that alias their own filename are safe. Reordering these two would let the redirect win over the real page and break such notes.
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
       Plugin.ContentPage(),
