@@ -20,6 +20,11 @@ async function* processFile(ctx: BuildCtx, file: VFile) {
     ) as FullSlug
     // TODO: relative branch above uses path.* (OS-dependent); consider path.posix for slug safety on Windows
 
+    // Skip self-alias: writing a redirect to the note's own URL would
+    // overwrite the real page. Keep the alias in frontmatter (so future
+    // renames still resolve), but don't emit a redirect for it.
+    if (simplifySlug(aliasTargetSlug) === ogSlug) continue
+
     const redirUrl = resolveRelative(aliasTargetSlug, ogSlug)
     yield write({
       ctx,
