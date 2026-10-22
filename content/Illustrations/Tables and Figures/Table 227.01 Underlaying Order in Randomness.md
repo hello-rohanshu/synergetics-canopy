@@ -1,0 +1,1 @@
+![[Table 227.01 Underlaying Order in Randomness.png]]

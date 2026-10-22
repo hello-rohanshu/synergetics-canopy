@@ -1,0 +1,1 @@
+![[Fig. 100.1041 Three-way Bisecting of a Triangle.png]]
