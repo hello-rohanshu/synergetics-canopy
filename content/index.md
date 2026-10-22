@@ -117,7 +117,7 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 
 **What you can do:**
 
-- Navigate — use the explorer in the sidebar, or head to the [Table of Contents](/table-of-contents)
+- Navigate — use the explorer in the sidebar, or head to the [[Table of Contents]]
 - Search — find anything across the full text
 - Ask — the AI assistant is grounded on the whole book
 - Share — copy a direct link to any paragraph and send it to someone
