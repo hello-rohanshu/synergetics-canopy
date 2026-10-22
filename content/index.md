@@ -5,10 +5,10 @@ aliases:
   - index
 ---
 
-<img src="bucky-classroom.jpg" 
+<img src="Solo. Bucky in Classroom.jpg" 
      alt="Bucky in the classroom" 
      width="300" 
-     style="border-radius: 16px; display: block; margin: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" />
+     style="border-radius: 8px; display: block; margin: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" />
 
 <style>
 .image-gallery {
