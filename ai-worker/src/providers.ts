@@ -89,7 +89,7 @@ export const PROVIDERS: ProviderDefinition[] = [
     name: "Groq",
     url: "https://api.groq.com/openai/v1/chat/completions",
     keyEnv: "GROQ_API_KEY",
-    model: "qwen/qwen3.6-27b",
+    model: "qwen/qwen3.8-27b",
     contextChunks: 7,
     params: {
       max_tokens: 2048,
@@ -102,7 +102,7 @@ export const PROVIDERS: ProviderDefinition[] = [
     name: "Mistral",
     url: "https://api.mistral.ai/v1/chat/completions",
     keyEnv: "MISTRAL_API_KEY",
-    model: "open-mixtral-8x7b",
+    model: "mistral-8b-latest",
     contextChunks: 7,
     params: {
       max_tokens: 2048,
