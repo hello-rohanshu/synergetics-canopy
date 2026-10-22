@@ -30,18 +30,18 @@
 // REQUIRES: gray-matter — already a Quartz dependency, no extra install needed.
 
 import { readFileSync, writeFileSync, readdirSync } from 'fs'
-import { join, relative, resolve, dirname } from 'path'
+import { join, relative, resolve, dirname, sep } from 'path'
 import { fileURLToPath } from 'url'
 import { createInterface } from 'readline'
 import matter from 'gray-matter'
 
-const __dirname    = dirname(fileURLToPath(import.meta.url))
-const REPO_ROOT    = join(__dirname, '..')
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const REPO_ROOT = join(__dirname, '..')
 const CONTENT_ROOT = join(REPO_ROOT, 'content')
-const isPiped      = !process.stdin.isTTY
+const isPiped = !process.stdin.isTTY
 
 // ── skip rules ────────────────────────────────────────────────────────────────
-const SKIP_DIRS  = new Set(['_site', '.obsidian'])
+const SKIP_DIRS = new Set(['_site', '.obsidian'])
 const shouldSkip = name => name.startsWith('.') || SKIP_DIRS.has(name)
 
 // ── walk all .md files under a directory ─────────────────────────────────────
@@ -63,9 +63,9 @@ async function stagedFiles() {
     const trimmed = line.trim()
     if (!trimmed.endsWith('.md')) continue
     const full = resolve(REPO_ROOT, trimmed)
-    if (!full.startsWith(CONTENT_ROOT + '/') && full !== CONTENT_ROOT) continue
+    if (!full.startsWith(CONTENT_ROOT + sep) && full !== CONTENT_ROOT) continue
     const rel = relative(CONTENT_ROOT, full)
-    if (rel.split('/').some(shouldSkip)) continue
+    if (rel.split(sep).some(shouldSkip)) continue
     files.push(full)
   }
   return files
@@ -93,7 +93,7 @@ function withAlias(raw, alias, existing) {
   const closeIdx = raw.indexOf('\n---', 3)
   if (closeIdx === -1) return null  // malformed; caller will warn
 
-  const fm   = raw.slice(0, closeIdx)
+  const fm = raw.slice(0, closeIdx)
   const rest = raw.slice(closeIdx)
 
   // ── no aliases key, or key present but null / empty array ──
@@ -120,7 +120,7 @@ function withAlias(raw, alias, existing) {
   if (!keyMatch) return null
 
   const blockStart = keyMatch.index + keyMatch[0].length
-  const blockLen   = (fm.slice(blockStart).match(/^(?:[ \t]+-[^\n]*\n)*/)?.[0] ?? '').length
+  const blockLen = (fm.slice(blockStart).match(/^(?:[ \t]+-[^\n]*\n)*/)?.[0] ?? '').length
 
   return (
     fm.slice(0, blockStart + blockLen) +
@@ -137,7 +137,7 @@ function processFile(filePath, onWarn, onPatch) {
   let raw, parsed
   try {
     // Normalise line endings on read; avoids regex issues on Windows-edited files.
-    raw    = readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n')
+    raw = readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n')
     parsed = matter(raw)
   } catch {
     onWarn(`⚠  could not read or parse — skipping: ${alias}`)
@@ -155,9 +155,9 @@ function processFile(filePath, onWarn, onPatch) {
     return false
   }
 
-  const list = !existing              ? []
-             : Array.isArray(existing) ? existing
-             :                          [existing]
+  const list = !existing ? []
+    : Array.isArray(existing) ? existing
+      : [existing]
 
   if (list.includes(alias)) return false  // already present — nothing to do
 
@@ -175,7 +175,7 @@ function processFile(filePath, onWarn, onPatch) {
 // ── main ──────────────────────────────────────────────────────────────────────
 async function main() {
   let patched = 0
-  let warned  = 0
+  let warned = 0
 
   const files = isPiped ? await stagedFiles() : [...walkMd(CONTENT_ROOT)]
 
@@ -185,7 +185,7 @@ async function main() {
       msg => { console.error(msg); warned++ },          // warnings always → stderr
       (fp, alias) => {
         if (isPiped) console.log(fp)                    // absolute path → stdout for git add
-        else         console.log(`+ ${alias}`)          // human-readable
+        else console.log(`+ ${alias}`)          // human-readable
       }
     )
     if (ok) patched++
@@ -193,7 +193,7 @@ async function main() {
 
   const summary = `${patched} file(s) patched, ${warned} skipped with warnings.`
   if (isPiped) console.error(`\n${summary}`)            // don't pollute stdout in hook mode
-  else         console.log(`\n${summary}`)
+  else console.log(`\n${summary}`)
 }
 
 main()
