@@ -7,5 +7,7 @@ children:
   - "[[gemini-3.6-flash]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Google AI Studio (Generation)
 ---
 	

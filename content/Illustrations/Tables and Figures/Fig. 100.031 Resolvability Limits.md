@@ -1,5 +1,6 @@
 ---
 aliases:
+  - Illustrations/Tables and Figures/Fig. 100.031 Resolvability Limits
   - Illustrations/Tables and Figures/Fig. 100.031
 ---
 

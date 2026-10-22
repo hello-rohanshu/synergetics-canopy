@@ -9,4 +9,6 @@ children:
   - "[[qwen3.6-27b]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Groq
 ---

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres
+---
+
 ![[Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres.png]]
 
 A. Two pairs of seven-ball, triangular sets of closest packed spheres precess in 60 degree twist to associate as the cube. This 14-sphere cube is the minimum structural cube which may be produced by closest-packed spheres. Eight spheres will not close-pack as a cube and are utterly unstable.

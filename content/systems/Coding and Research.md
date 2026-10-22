@@ -11,4 +11,6 @@ children:
   - "[[Gemini]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Coding and Research
 ---

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 461.08 Jitterbug System Collapses into Tetrahedron
+---
+
 ![[Fig. 461.08.png]]
 
 

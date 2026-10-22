@@ -2,6 +2,8 @@
 title: "Synergetics: Corpus"
 tags:
   - hide-from-nav
+aliases:
+  - corpus
 ---
 
 # Frontmatter

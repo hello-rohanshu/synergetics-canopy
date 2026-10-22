@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 923.10 Constant Volume of A and B Quanta Modules
+---
+
 ![[Fig. 923.10.png]]
 
 Fig. 923.10 Constant Volume of A and B Quanta Modules:

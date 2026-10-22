@@ -8,4 +8,6 @@ children:
 critical: false
 tags:
   - hide-from-nav
+aliases:
+  - systems/Robert Gray's Synergetics Online
 ---

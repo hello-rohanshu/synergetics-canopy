@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.312 Rhombic Dodecahedron
+---
+
 ![[Fig. 987.312.png]]
 
 Fig. 987.312 Rhombic Dodecahedron:

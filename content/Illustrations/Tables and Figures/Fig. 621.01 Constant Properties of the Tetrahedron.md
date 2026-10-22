@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 621.01 Constant Properties of the Tetrahedron
+---
+
 ![[Fig. 621.01.png]]
 
 

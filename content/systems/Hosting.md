@@ -7,4 +7,6 @@ children:
   - "[[Cloudflare Hosting]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Hosting
 ---

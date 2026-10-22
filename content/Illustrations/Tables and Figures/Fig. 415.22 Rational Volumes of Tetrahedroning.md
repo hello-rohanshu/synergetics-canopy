@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 415.22 Rational Volumes of Tetrahedroning
+---
+
 ![[Fig. 415.22 Rational Volumes of Tetrahedroning.png]]
 
 A. The cube may be formed by placing four 1/8-octahedra with their equilateral faces on the faces of a tetrahedron. Since tetrahedron volume equals one, and 1/8-octahedron equals 1/2, the volume of the cube will be: 1 + 4(1/2) =3.

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 770.11 System Turbining in Tensegrity Structures
+---
+
 ![[Fig. 770.11.png]]
 
 Fig. 770.11 System Turbining in Tensegrity Structures:

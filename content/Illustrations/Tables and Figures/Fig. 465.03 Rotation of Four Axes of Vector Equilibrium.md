@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 465.03 Rotation of Four Axes of Vector Equilibrium
+---
+
 ![[Fig. 465.03.png]]
 
 

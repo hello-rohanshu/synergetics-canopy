@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 640.41A Stabilization of tension
+---
+
 ![[Fig. 640.41A.png]]
 
 Fig. 640.41A Stabilization of tension: Minimum of 12 Spokes:

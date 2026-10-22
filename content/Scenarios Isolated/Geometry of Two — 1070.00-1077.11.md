@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Geometry of Two — 1070.00-1077.11
 ---
 
 

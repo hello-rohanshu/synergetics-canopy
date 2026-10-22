@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 470.02A Role of Tetrahedra and Octahedra in Vector Equilibrium
+---
+
 ![[Fig. 470.02A.png]]\
 
 

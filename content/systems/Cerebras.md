@@ -8,4 +8,6 @@ children:
 retired: false
 tags:
   - hide-from-nav
+aliases:
+  - systems/Cerebras
 ---

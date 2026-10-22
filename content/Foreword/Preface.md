@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Foreword/Preface
 ---
 **by Arthur L. Loeb**
 

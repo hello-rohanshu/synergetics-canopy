@@ -9,4 +9,6 @@ critical: false
 retired: true
 tags:
   - hide-from-nav
+aliases:
+  - systems/Cloudflare AI Search
 ---

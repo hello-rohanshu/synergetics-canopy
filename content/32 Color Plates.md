@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - 32 Color Plates
 ---
 ### Color Plate 1
 ![[Color Plate - 1.png|200]]

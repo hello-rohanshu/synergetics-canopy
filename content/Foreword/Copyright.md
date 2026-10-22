@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Foreword/Copyright
 ---
 *Synergetics*, Volumes 1 and 2, © 1975, 1979 R. Buckminster Fuller. All rights reserved. 
 Administered by the Estate of R. Buckminster Fuller, Sebastopol, CA 95472.

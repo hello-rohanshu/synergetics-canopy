@@ -7,4 +7,6 @@ url: https://uptimerobot.com
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Uptime Robot
 ---

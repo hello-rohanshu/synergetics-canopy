@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 966.05 Tetrahedral Modelability of 2nd, 3rd, 4th, and 5th Power Relationships
+---
+
 ![[Fig. 966.05.png]]
 
 Fig. 966.05 Tetrahedral Modelability of 2nd, 3rd, 4th, and 5th Power Relationships:

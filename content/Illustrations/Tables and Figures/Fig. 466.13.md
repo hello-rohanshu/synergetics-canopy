@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 466.13
+---
+
 ![[Fig. 466.13.png]]
 
 A. Twelve Closest-packed Spheres around One: Symmetrical nuclear vector equilibrium.

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 936.12 Octahedron as Conservation and Annihilation Model
+---
+
 
 ![[Fig. 936.12.png]]
 

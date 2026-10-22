@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 1032.12 Convex and Concave Sphere Packing Voids
+---
+
 ![[Fig. 1032.12.png]]
 
 Fig. 1032.12 Convex and Concave Sphere Packing Voids:

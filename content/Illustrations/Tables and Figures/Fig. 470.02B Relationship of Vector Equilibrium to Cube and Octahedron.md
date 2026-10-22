@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 470.02B Relationship of Vector Equilibrium to Cube and Octahedron
+---
+
 ![[Fig. 470.02B.png]]
 
 

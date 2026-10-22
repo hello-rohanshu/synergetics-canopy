@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Geometry of Nine — 1013.00-1013.64
 ---
 
 

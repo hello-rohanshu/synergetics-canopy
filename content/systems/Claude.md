@@ -6,4 +6,6 @@ url: https://claude.ai
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Claude
 ---

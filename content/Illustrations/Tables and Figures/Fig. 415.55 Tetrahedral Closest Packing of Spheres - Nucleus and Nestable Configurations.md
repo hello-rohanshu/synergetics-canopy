@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 415.55 Tetrahedral Closest Packing of Spheres - Nucleus and Nestable Configurations
+---
+
 ![[Fig. 415.55 Fig. 415.55 Tetrahedral Closest Packing of Spheres - Nucleus and Nestable Configurations.png]]
 
 Fig. 415.55 Tetrahedral Closest Packing of Spheres: Nucleus and Nestable Configurations:

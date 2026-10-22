@@ -9,4 +9,6 @@ children:
   - "[[Buckyverse.org]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Synergetics
 ---

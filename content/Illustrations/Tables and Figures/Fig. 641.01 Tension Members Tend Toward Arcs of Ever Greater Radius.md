@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 641.01 Tension Members Tend Toward Arcs of Ever Greater Radius
+---
+
 ![[Fig. 641.01.png]]
 
 Fig. 641.01 Tension Members Tend Toward Arcs of Ever Greater Radius:

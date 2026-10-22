@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Scenarios
 ---
 
 Each scenario is a narrative sequence of geometrical exposition written-and intended to be read-as a separate continuity.

@@ -1,5 +1,6 @@
 ---
 aliases:
+  - Illustrations/Tables and Figures/Fig. 100.120 Image of Icosa and Tetra
   - Illustrations/Tables and Figures/Fig. 100.120
 ---
 

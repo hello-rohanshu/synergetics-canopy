@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 445.13
+---
+
 
 ![[Fig. 445.13.png]]
 

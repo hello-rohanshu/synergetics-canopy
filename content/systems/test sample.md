@@ -7,4 +7,6 @@ retired: true
 critical:
 tags:
   - hide-from-nav
+aliases:
+  - systems/test sample
 ---

@@ -9,4 +9,6 @@ critical:
 retired:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Gemini
 ---

@@ -7,4 +7,6 @@ url:
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems-manifest
 ---

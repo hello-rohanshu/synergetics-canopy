@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Space — 526.10-526.35
 ---
 
 

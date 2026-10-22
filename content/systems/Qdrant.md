@@ -7,4 +7,6 @@ url: https://qdrant.tech
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Qdrant
 ---

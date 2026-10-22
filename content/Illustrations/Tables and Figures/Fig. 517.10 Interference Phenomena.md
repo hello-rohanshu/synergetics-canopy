@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 517.10 Interference Phenomena
+---
+
 ![[Fig. 517.10.png]]
 
 Fig. 517.10 Interference Phenomena: Lines Cannot Go Through the same Point at the Same Time: Interference phenomena: No two actions can go through the same point at the same time. The consequences of this can be pictured as follows:

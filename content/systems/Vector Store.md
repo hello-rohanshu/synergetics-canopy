@@ -7,4 +7,6 @@ children:
   - "[[Qdrant]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Vector Store
 ---

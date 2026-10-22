@@ -10,4 +10,6 @@ critical:
 retired:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Mistral
 ---

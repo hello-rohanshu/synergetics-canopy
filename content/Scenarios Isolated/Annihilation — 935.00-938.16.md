@@ -1,5 +1,7 @@
 ---
 tags: hide-from-nav
+aliases:
+  - Scenarios Isolated/Annihilation — 935.00-938.16
 ---
 
 

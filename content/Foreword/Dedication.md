@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Foreword/Dedication
 ---
 <div style="text-align: center; margin: 10vh auto; max-width: 38em;">
 THIS WORK IS DEDICATED TO<br>

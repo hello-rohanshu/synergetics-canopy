@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Afterpiece
 ---
  *The phenomenon lag is simply due to the limited mechanism of the brain.*
  

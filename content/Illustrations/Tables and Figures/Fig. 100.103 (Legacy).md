@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 100.103 (Legacy)
+---
+
 ![[Fig. 100.103.png]]
 
 _Parallel and Perpendicular Halving of Tetrahedron:_  

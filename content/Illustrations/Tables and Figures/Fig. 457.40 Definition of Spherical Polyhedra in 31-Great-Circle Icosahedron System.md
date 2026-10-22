@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 457.40 Definition of Spherical Polyhedra in 31-Great-Circle Icosahedron System
+---
+
 ![[Fig. 457.40.png]]
 
 

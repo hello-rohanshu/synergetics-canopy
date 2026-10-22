@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 411.05 Four Spheres Lock as Tetrahedron
+---
+
 ![[Fig. 411.05 Four Spheres Lock as Tetrahedron.png]]
 - A. A single sphere is free to rotate in any direction.
 - B. Two tangent spheres although free to rotate in any direction must do so cooperatively.

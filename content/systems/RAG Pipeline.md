@@ -10,4 +10,6 @@ children:
   - "[[Worker]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/RAG Pipeline
 ---

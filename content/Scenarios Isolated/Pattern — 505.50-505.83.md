@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Pattern — 505.50-505.83
 ---
 
 

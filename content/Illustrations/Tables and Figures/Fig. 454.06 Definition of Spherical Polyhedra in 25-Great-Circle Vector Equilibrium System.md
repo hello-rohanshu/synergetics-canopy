@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 454.06 Definition of Spherical Polyhedra in 25-Great-Circle Vector Equilibrium System
+---
+
 ![[Fig. 454.06.png]]
 
 Fig. 454.06 Definition of Spherical Polyhedra in 25-Great-Circle Vector Equilibrium System: The 25 great circles of the spherical vector equilibrium provide all the spherical edges for four spherical polyhedra in addition to the vector equilibrium whose edges are shown here as heavy lines. The shading indicates a typical face of each as follows:

@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Foreword/Moral of the Work
 ---
 Dare to be naive. 
 

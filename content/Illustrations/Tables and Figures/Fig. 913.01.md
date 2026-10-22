@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 913.01
+---
+
 ![[Fig. 913.01.png]]
 
 

@@ -1,6 +1,8 @@
 ---
 title: Home
 description: "Buckminster Fuller's Synergetics — Explorations in the Geometry of Thinking, on the modern web."
+aliases:
+  - index
 ---
 
 <img src="bucky-classroom.jpg" 

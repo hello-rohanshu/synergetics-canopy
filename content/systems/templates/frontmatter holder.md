@@ -7,4 +7,6 @@ status:
 ping_url:
 url:
 children:
+aliases:
+  - systems/templates/frontmatter holder
 ---

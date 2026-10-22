@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.210 Subdivision of Tetrahedral Unity
+---
+
 ![[Fig. 987.210.png]]
 
 Fig. 987.210 Subdivision of Tetrahedral Unity: Symmetry #1:

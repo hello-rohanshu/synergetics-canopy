@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Table 943.00 Synergetics Quanta Module Hierarchy
+---
+
 
 Table 943.00 Synergetics Quanta Module Hierarchy
 

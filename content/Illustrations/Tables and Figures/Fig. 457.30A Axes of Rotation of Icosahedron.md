@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 457.30A Axes of Rotation of Icosahedron
+---
+
 ![[Fig. 457.30A.png]]
 
 Fig. 457.30A Axes of Rotation of Icosahedron:

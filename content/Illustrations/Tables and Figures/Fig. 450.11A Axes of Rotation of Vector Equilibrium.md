@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 450.11A Axes of Rotation of Vector Equilibrium
+---
+
 ![[Fig. 450.11A.png]]
 
 Fig. 450.11A Axes of Rotation of Vector Equilibrium:

@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Growth and Decay — 1053.80-1053.85
 ---
 
 

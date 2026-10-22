@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 457.30B Projection of 31 Great-Circle Planes in Icosahedron System
+---
+
 
 ![[Fig. 457.30B.png]]
 

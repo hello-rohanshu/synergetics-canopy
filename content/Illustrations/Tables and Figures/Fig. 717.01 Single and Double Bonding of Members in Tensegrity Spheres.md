@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres
+---
+
 ![[Fig. 717.01.png]]
 
 Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres:

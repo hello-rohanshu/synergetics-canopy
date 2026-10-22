@@ -6,4 +6,6 @@ url: https://github.com
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/GitHub
 ---

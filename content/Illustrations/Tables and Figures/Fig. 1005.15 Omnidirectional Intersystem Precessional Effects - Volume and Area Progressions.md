@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 1005.15 Omnidirectional Intersystem Precessional Effects - Volume and Area Progressions
+---
+
 ![[Fig. 1005.15 A and B.png]]
 
 ![[Fig. 1005.15 C and D.png]]

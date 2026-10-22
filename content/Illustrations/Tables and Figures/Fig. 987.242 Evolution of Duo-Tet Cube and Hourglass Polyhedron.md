@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.242 Evolution of Duo-Tet Cube and Hourglass Polyhedron
+---
+
 ![[Fig. 987.242.png]]
 
 Fig. 987.242 Evolution of Duo-Tet Cube and Hourglass Polyhedron:

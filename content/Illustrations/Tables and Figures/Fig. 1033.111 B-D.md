@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 1033.111 B-D
+---
+
 ![[Fig. 1033.111 B-D.png]]
 
 Fig. 1033.111 B-D:

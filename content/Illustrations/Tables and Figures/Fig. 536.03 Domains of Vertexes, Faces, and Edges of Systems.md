@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 536.03 Domains of Vertexes, Faces, and Edges of Systems
+---
+
 ![[Fig. 536.03.png]]
 
 Fig. 536.03 Domains of Vertexes, Faces, and Edges of Systems:

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra
+---
+
 ![[Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra.png]]
 
 Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra:

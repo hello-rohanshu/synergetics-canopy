@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 465.10 The vector equilibrium with wheels
+---
+
 ![[Fig. 465.10.png]]
 
 

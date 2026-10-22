@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Interactive/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium
+---
+
 
 <iframe src="/static/geo/fig-460.08.html" width="340" frameborder="0" style="border:none; max-width: 100%;"></iframe>
 

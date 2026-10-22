@@ -13,4 +13,6 @@ children:
 critical: false
 tags:
   - hide-from-nav
+aliases:
+  - systems/Generation Service
 ---

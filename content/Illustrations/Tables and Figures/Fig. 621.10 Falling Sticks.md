@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 621.10 Falling Sticks
+---
+
 ![[Fig. 621.10.png]]
 
 Fig. 621.10 Falling Sticks: Six Vectors Provide Minimum Stability:

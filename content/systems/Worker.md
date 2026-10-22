@@ -7,4 +7,6 @@ children:
   - "[[Cloudflare Worker]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Worker
 ---

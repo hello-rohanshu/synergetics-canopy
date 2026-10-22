@@ -7,4 +7,6 @@ children:
   - "[[GitHub]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Version Control
 ---

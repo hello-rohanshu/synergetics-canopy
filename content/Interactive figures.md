@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Interactive figures
 ---
 This page shall contain the interactive versions of Bucky's diagrams.
 

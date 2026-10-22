@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 901.03 The Basic Disequilibrium 120 LCD Triangle
+---
+
 ![[Fig. 901.03-b.png]]
 
 Fig. 901.03 The Basic Disequilibrium 120 LCD Triangle:

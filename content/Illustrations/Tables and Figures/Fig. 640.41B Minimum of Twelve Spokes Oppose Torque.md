@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 640.41B Minimum of Twelve Spokes Oppose Torque
+---
+
 ![[Fig. 640.41B.png]]
 
 Fig. 640.41B Minimum of Twelve Spokes Oppose Torque: Universal Joint:

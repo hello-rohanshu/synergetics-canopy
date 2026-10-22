@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 1053.37
+---
+
 ![[Fig. 1053.37.png]]
 
 Fig. 1053.37 Spherical Great Circles Are Commensurable with Spherical Triangles of Three Prime Structural Systems: Tetra Octa and Icosa:

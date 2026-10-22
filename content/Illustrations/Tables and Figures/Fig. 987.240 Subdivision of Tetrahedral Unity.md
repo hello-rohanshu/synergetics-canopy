@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.240 Subdivision of Tetrahedral Unity
+---
+
 ![[Fig. 987.240-a.png]]
 ![[Fig. 987.240-b.png]]
 

@@ -7,4 +7,6 @@ url: https://obsidian.md
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Obsidian
 ---

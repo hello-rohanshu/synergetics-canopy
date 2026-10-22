@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Physical Periodicities — 1052.50-1052.71
 ---
 
 

@@ -8,4 +8,6 @@ critical: false
 retired: false
 tags:
   - hide-from-nav
+aliases:
+  - systems/gpt-oss-120b
 ---

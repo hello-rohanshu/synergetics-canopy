@@ -7,5 +7,7 @@ children:
   - "[[Quartz v4]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Site Builder
 ---
 

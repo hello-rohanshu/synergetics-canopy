@@ -1,6 +1,8 @@
 ---
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/Spherical Gravity — 646.10-646.22
 ---
 
 

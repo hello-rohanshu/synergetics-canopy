@@ -7,4 +7,6 @@ children:
   - "[[Obsidian]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Local Markdown Editor
 ---

@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Foreword/Explicit - A note to the reader
 ---
 Synergetics 1 and Synergetics 2 are separate volumes only because of their bulk and the chronology of their composition. They in fact comprise a single integral work. Each chapter in the first volume has been expanded in the second, and the sequence of paragraphs has been numbered to dovetail and provide a shared context. 
 

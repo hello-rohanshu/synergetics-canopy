@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 982.58
+---
+
 ![[Fig. 982.58.png]]
 
 

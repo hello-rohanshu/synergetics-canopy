@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 841.30 Trisection by Inherent Axial Spin
+---
+
 
 ![[Fig. 841.30 Trisection by Inherent Axial Spin.png]]
 

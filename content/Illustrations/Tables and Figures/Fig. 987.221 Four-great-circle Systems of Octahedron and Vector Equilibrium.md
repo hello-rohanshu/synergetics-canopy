@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.221 Four-great-circle Systems of Octahedron and Vector Equilibrium
+---
+
 ![[Fig. 987.221.png]]
 
 Fig. 987.221 Four-great-circle Systems of Octahedron and Vector Equilibrium: Symmetry #2:

@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 420.02
+---
+
 ![[Fig. 420.02.png]]
 
 

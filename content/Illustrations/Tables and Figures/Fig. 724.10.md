@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 724.10
+---
+
 ![[Fig. 724.10.png]]
 
 Fig. 724.10:

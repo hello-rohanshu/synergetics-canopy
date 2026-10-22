@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 913.01 Division of the Quarter-Tetrahedron into Six Parts
+---
+
 ![[Fig. 913.01-1.png]]
 
 

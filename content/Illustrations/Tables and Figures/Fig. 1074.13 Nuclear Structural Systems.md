@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 1074.13 Nuclear Structural Systems
+---
+
 ![[Fig. 1074.13.png]]
 
 

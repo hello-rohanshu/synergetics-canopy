@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.412
+---
+
 ![[Fig. 987.412.png]]
 
 Fig. 987.412 Rational Fraction Edge Increments of 60-degree Great-circle Subdividings of Vector Equilibrium: When these secondary VE great-circle sets are projected upon the planar VE they reveal the following rational fraction edge increments:

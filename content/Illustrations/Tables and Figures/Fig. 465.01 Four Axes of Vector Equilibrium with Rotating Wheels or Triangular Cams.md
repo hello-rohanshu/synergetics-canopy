@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 465.01 Four Axes of Vector Equilibrium with Rotating Wheels or Triangular Cams
+---
+
 ![[Fig. 465.01.png]]
 
 

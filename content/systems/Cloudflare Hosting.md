@@ -6,4 +6,6 @@ url: https://cloudflare.com
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/Cloudflare Hosting
 ---

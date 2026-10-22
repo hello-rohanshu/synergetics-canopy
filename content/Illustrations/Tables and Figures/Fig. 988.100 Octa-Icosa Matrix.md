@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 988.100 Octa-Icosa Matrix
+---
+
 ![[Fig. 988.100.png]]
 
 Fig. 988.100 Octa-Icosa Matrix: Emergence of S Quanta Module:

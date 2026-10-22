@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 453.02 Inside-Outing of Triangle
+---
+
 ![[Fig. 453.02.png]]
 
 ![[Fig. 453.02-2.png]]

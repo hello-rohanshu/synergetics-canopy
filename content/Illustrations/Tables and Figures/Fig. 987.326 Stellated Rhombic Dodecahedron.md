@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 987.326 Stellated Rhombic Dodecahedron
+---
+
 
 
 ![[Fig. 987.326.png]]

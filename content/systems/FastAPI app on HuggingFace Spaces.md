@@ -6,4 +6,6 @@ url: https://huggingface.co
 children:
 tags:
   - hide-from-nav
+aliases:
+  - systems/FastAPI app on HuggingFace Spaces
 ---

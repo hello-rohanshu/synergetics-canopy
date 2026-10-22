@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 916.01 Division of Eighth-Octahedron into Six Parts
+---
+
 ![[Fig. 916.01.png]]
 
 

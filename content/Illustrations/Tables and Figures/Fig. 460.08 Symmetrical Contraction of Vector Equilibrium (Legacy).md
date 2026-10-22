@@ -1,3 +1,8 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)
+---
+
 ![[Fig. 460.08.png]]
 
 

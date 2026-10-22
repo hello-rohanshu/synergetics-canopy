@@ -2,6 +2,8 @@
 title: Scenarios Isolated
 tags:
   - hide-from-nav
+aliases:
+  - Scenarios Isolated/index
 ---
 
 Each scenario is a narrative sequence of geometrical exposition written-and intended to be read-as a separate continuity.

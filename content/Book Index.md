@@ -10,6 +10,8 @@ p-equations: false
 p-structure: false
 p-links-2: false
 e-issues:
+aliases:
+  - Book Index
 ---
 
 Unsure if the search and AI functionality replaces this page from the original book.

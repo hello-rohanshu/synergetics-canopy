@@ -7,4 +7,6 @@ children:
   - "[[FastAPI app on HuggingFace Spaces]]"
 tags:
   - hide-from-nav
+aliases:
+  - systems/Embedding
 ---

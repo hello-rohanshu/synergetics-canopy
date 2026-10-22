@@ -9,6 +9,8 @@ p-equations: true
 p-structure: true
 p-links-2: true
 e-issues:
+aliases:
+  - Evolution of Synergetics
 ---
 *A portfolio of six drawings made by the author in 1948*
 
