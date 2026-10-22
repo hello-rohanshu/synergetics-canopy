@@ -13,7 +13,7 @@ This page shall contain the interactive versions of Bucky's diagrams.
 ---
 ![[Fig. 100.103.png]]
 
-![[Fig. 100.103]]
+![[Fig. 100.103 Parallel and Perpendicular Halving of Tetrahedron]]
 
 
 
