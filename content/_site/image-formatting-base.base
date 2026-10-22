@@ -1,0 +1,17 @@
+views:
+  - type: table
+    name: View
+    filters:
+      and:
+        - file.folder == "Illustrations/Tables and Figures"
+    order:
+      - file.name
+      - file.embeds
+  - type: table
+    name: View 2
+    filters:
+      and:
+        - file.folder == "Illustrations/Attachments"
+    order:
+      - file.name
+      - file.backlinks
