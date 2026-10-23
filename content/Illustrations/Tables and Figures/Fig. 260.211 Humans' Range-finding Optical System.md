@@ -3,6 +3,6 @@ aliases:
   - Illustrations/Tables and Figures/Fig. 260.211 Humans' Range-finding Optical System
 ---
 
-![[Fig. 260.211 Humans' Range-finding Optical System.png]]
+![[Fig. 260.211.png]]
 
 Fig. 260.211 _Humans' Range-finding Optical System:_ Our two eyes form the baseline of an isosceles triangle and seek to discern the convergent angle at the opposite object apex: for instance, tracks A or B, with the distance between A and B constant. Farther away they become shorter chords of ever larger circles and finally appear to be congruent.

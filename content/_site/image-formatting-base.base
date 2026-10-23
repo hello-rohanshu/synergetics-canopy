@@ -1,5 +1,15 @@
 views:
   - type: table
+    name: View 2
+    filters:
+      and:
+        - file.folder == "Illustrations/Attachments"
+        - file.backlinks.filter(!value.asFile().inFolder("Illustrations/Tables and Figures"))
+    order:
+      - file.name
+      - file.backlinks
+    sort: []
+  - type: table
     name: View
     filters:
       and:
@@ -7,11 +17,3 @@ views:
     order:
       - file.name
       - file.embeds
-  - type: table
-    name: View 2
-    filters:
-      and:
-        - file.folder == "Illustrations/Attachments"
-    order:
-      - file.name
-      - file.backlinks
