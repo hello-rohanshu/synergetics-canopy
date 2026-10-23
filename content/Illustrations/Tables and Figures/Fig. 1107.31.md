@@ -7,7 +7,9 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 1220.16
+  - Illustrations/Tables and Figures/Fig. 1107.31
+  - Fig. 1107.31
 ---
 
-![[Fig. 1220.16.png]]
+
+![[Fig. 1107.31.png]]

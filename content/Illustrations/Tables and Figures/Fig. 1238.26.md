@@ -7,6 +7,7 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
+  - Illustrations/Tables and Figures/Fig. 1238.26
   - Fig. 1238.26
 ---
 
