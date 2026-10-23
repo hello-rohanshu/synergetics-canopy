@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 1012.14B Wave, Quanta, Indigs, Unity-Is-Plural Bow Ties
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 1012.14B.png]]

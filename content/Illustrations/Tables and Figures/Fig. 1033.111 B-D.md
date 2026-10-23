@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 1033.111 B-D
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 1033.111 B-D.png]]

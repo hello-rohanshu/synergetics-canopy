@@ -1,8 +1,16 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 1012.14A Indig Octave System of Four Positive, Four Negative and Zero-Nine Wave Pattern of Experiential Number
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 1012.14A.png]]
 
-Fig 1012.14A Indig Octave System of Four Positive, Four Negative and Zero-Nine Wave Pattern of Experiential Number: This basic discontinuous wave disclosure is intimately related to inherent octavization through tension-chord halving discovered by the Pythagoreans, and the major-minor-mode "fifthing" obtained by tension-chord thirding of length. These inherent additive-subtractive, alternate pulsing effects of number produce positive waves, but _not continuously_ as had been misassumed. Zero-or "No-tet, None, Nine" intrudes. Waves are discontinuous and confirm unit quantation, one tetrahedron inherently constituting the basic structural system of Universe. The star Sun's combining of four hydrogen atoms into helium atoms generates quanta radiation.
+
+Fig 1012.14A Indig Octave System of Four Positive, Four Negative and Zero-Nine Wave Pattern of Experiential Number: This basic discontinuous wave disclosure is intimately related to inherent octavization through tension-chord halving discovered by the Pythagoreans, and the major-minor-mode "fifthing" obtained by tension-chord thirding of length. These inherent additive-subtractive, alternate pulsing effects of number produce positive waves, but *not continuously* as had been misassumed. Zero-or "No-tet, None, Nine" intrudes. Waves are discontinuous and confirm unit quantation, one tetrahedron inherently constituting the basic structural system of Universe. The star Sun's combining of four hydrogen atoms into helium atoms generates quanta radiation.
