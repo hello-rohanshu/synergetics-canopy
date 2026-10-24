@@ -216,7 +216,7 @@ export function attachParaCopyButtons(container: HTMLElement | Document, pageSlu
       const attributionHtml = `<p><strong>— RBF • Synergetics</strong></p>`
 
       // Plain text: no URLs. HTML: heading link carries the section URL.
-      const plainPayload = [headingLine, bodyPlain, attribution].filter(Boolean).join("\n\n\n")
+      const plainPayload = [headingLine, bodyPlain, attribution].filter(Boolean).join("\n\n")
       const htmlPayload = headingLineHtml + "<p>&nbsp;</p>" + bodyHtml + "<p>&nbsp;</p>" + attributionHtml
 
       const success = await writeToClipboard(plainPayload, htmlPayload)
