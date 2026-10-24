@@ -546,6 +546,13 @@ h6 {
       stroke: currentColor;
     }
 
+    // Mobile: no hover, suppress tooltip bubble
+    @media all and ($mobile) {
+      &[aria-label]::after {
+        display: none !important;
+      }
+    }
+
     // Pure CSS Tooltip via aria-label
     &[aria-label] {
       &::after {
