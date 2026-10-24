@@ -221,7 +221,7 @@ const IllustrationGallery: QuartzComponent = () => {
         .ig-search-wrap { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--lightgray); border-radius: 4px; background: var(--light); padding: 0 0.7rem; height: 2rem; box-sizing: border-box; margin-bottom: 0.75rem; transition: border-color 0.15s; }
         .ig-search-wrap:focus-within { border-color: var(--secondary); }
         .ig-search-icon { display: flex; align-items: center; color: var(--gray); flex-shrink: 0; }
-        .ig-search { flex: 1; border: none; background: transparent; outline: none; font-family: var(--bodyFont); font-size: 0.9rem; color: var(--dark); padding: 0; }
+        .ig-search { flex: 1; min-width: 0; height: 100%; line-height: 1; border: none; background: transparent; outline: none; font-family: var(--bodyFont); font-size: 0.9rem; color: var(--dark); padding: 0; }
         .ig-search::placeholder { color: var(--gray); }
         .ig-search-clear { display: none; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--gray); padding: 0.2rem; border-radius: 4px; }
         .ig-search-clear:hover { color: var(--dark); }
@@ -250,10 +250,12 @@ const IllustrationGallery: QuartzComponent = () => {
       
                 @media (max-width: 640px) {
           .ig-container { margin: 1.25rem 0; }
+.ig-search-wrap { height: 2.5rem; }
+.ig-search { font-size: 1rem; }
 
           .ig-pills { flex-wrap: nowrap; overflow-x: auto; gap: 0.35rem; padding-bottom: 0.25rem; margin-bottom: 0.85rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
           .ig-pills::-webkit-scrollbar { display: none; }
-          .ig-pill { flex-shrink: 0; font-size: 0.82rem; padding: 0.28rem 0.7rem; }
+          .ig-pill { flex-shrink: 0; font-size: 0.9rem; padding: 0.4rem 0.85rem; }
 
           .ig-grid { grid-template-columns: 1fr; gap: 0.5rem; }
 
