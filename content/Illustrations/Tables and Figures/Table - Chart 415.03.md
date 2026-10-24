@@ -1,6 +1,7 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Chart 415.03
+  - Illustrations/Tables and Figures/Table - Chart 415.03
 img-file-titles: false
 img-caption: false
 img-italics: false
@@ -27,4 +28,4 @@ img-links: false
 | 10        | 1002                                      | 3870                                            |                                 |                                  |                                                  |                                       |                                                                              |
 |           |                                           |                                                 |                                 |                                  |                                                  |                                       |                                                                              |
 
-Original: [[Chart 415.03 (original).png]]
+Original: [[Table - Chart 415.03 (original).png]]
