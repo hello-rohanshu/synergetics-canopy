@@ -1,6 +1,6 @@
 import mediumZoom from "medium-zoom"
 
-const SELECTOR = ".center img, .transclude img, figure img, .transclude .transclude img"
+const SELECTOR = ".center img, .transclude img, figure img, .transclude .transclude img, .ig-thumb"
 
 let zoomInstance: ReturnType<typeof mediumZoom> | null = null
 let extraScale = 1
@@ -27,8 +27,8 @@ let closeBtnClickHandler: (() => void) | null = null
 const MIN_EXTRA = 0.5
 const MAX_EXTRA = 5
 const SCALE_STEP_SCROLL = 0.003
-const SCALE_STEP_PINCH  = 0.01
-const SCALE_STEP_KEY    = 0.25
+const SCALE_STEP_PINCH = 0.01
+const SCALE_STEP_KEY = 0.25
 
 function getZoomed(): HTMLImageElement | null {
   return document.querySelector<HTMLImageElement>(".medium-zoom-image--opened")
@@ -353,3 +353,13 @@ document.addEventListener("nav", () => {
   setupImageZoom()
   window.addCleanup(teardown)
 })
+
+// Public hook: any component can request the zoom overlay for a given <img>
+// by dispatching a "quartz:zoom-open" CustomEvent with { target: img }.
+// Keeps the gallery (and future callers) decoupled from medium-zoom internals.
+document.addEventListener("quartz:zoom-open", ((e: CustomEvent) => {
+  const target = e.detail && e.detail.target
+  if (target instanceof HTMLElement && zoomInstance) {
+    zoomInstance.open({ target })
+  }
+}) as EventListener)

@@ -16,7 +16,6 @@ interface GalleryData {
 
 const data = galleryData as GalleryData
 
-// Chapter tags ("400.00") first, numerically; then type tags alphabetically.
 function tagOrder(a: string, b: string) {
   const aChapter = /^\d+\.00$/.test(a)
   const bChapter = /^\d+\.00$/.test(b)
@@ -33,16 +32,7 @@ function uniqueTags(items: GalleryItem[]) {
 }
 
 const FilterIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
     <line x1="3" y1="6" x2="21" y2="6" />
     <line x1="6" y1="12" x2="18" y2="12" />
     <line x1="9" y1="18" x2="15" y2="18" />
@@ -50,42 +40,50 @@ const FilterIcon = () => (
 )
 
 const ClearIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 )
 
+const ExpandIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 3 21 3 21 9" />
+    <polyline points="9 21 3 21 3 15" />
+    <line x1="21" y1="3" x2="14" y2="10" />
+    <line x1="3" y1="21" x2="10" y2="14" />
+  </svg>
+)
+
 const Card = ({ item }: { item: GalleryItem }) => (
-  <a
-    className="ig-card"
-    href={item.href}
-    data-title={item.title.toLowerCase()}
-    data-tags={(item.tags || []).join(",")}
-  >
-    {item.thumb ? (
-      <img className="ig-thumb" src={item.thumb} alt="" loading="lazy" />
-    ) : (
-      <div className="ig-thumb ig-placeholder">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <circle cx="9" cy="9" r="2" />
-          <path d="M21 15l-5-5L5 21" />
-        </svg>
+  <div className="ig-card-wrap">
+    <a
+      className="ig-card"
+      href={item.href}
+      data-title={item.title.toLowerCase()}
+      data-tags={(item.tags || []).join(",")}
+    >
+      <div className="ig-thumb-wrap">
+        {item.thumb ? (
+          <img className="ig-thumb" src={item.thumb} alt="" loading="lazy" />
+        ) : (
+          <div className="ig-thumb ig-placeholder">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+          </div>
+        )}
       </div>
+      <span className="ig-title">{item.title}</span>
+    </a>
+    {item.thumb && (
+      <button className="ig-zoom" type="button" aria-label="Zoom image" title="Zoom">
+        <ExpandIcon />
+      </button>
     )}
-    <span className="ig-title">{item.title}</span>
-  </a>
+  </div>
 )
 
 const SCRIPT = `
@@ -98,7 +96,7 @@ const SCRIPT = `
     var pills = Array.prototype.slice.call(g.querySelectorAll(".ig-pill"));
     var search = g.querySelector(".ig-search");
     var clearBtn = g.querySelector(".ig-search-clear");
-    var activeTags = {};   // { "400.00": true, "Tables": true }
+    var activeTags = {};
     var query = "";
 
     var CHAPTER_RE = /^\\d+\\.00$/;
@@ -119,14 +117,10 @@ const SCRIPT = `
         if (isChapter(t)) selChapters.push(t);
         else selFormats.push(t);
       }
-
-      // 0 selections on either axis = that axis matches everything.
       var chapterMatch = selChapters.length === 0
         || selChapters.some(function (c) { return cardTags.indexOf(c) !== -1; });
-
       var formatMatch = selFormats.length === 0
         || selFormats.some(function (f) { return cardTags.indexOf(f) !== -1; });
-
       return chapterMatch && formatMatch;
     }
 
@@ -135,14 +129,16 @@ const SCRIPT = `
         var c = cards[i];
         var tags = (c.dataset.tags || "").split(",").filter(Boolean);
         var titleMatch = !query || (c.dataset.title || "").indexOf(query) !== -1;
-        c.style.display = (titleMatch && passes(tags)) ? "" : "none";
+        var wrap = c.closest(".ig-card-wrap");
+        var el = wrap || c;
+        el.style.display = (titleMatch && passes(tags)) ? "" : "none";
       }
     }
 
     pills.forEach(function (p) {
       p.addEventListener("click", function () {
         var t = p.dataset.filterTag || "";
-        if (!t) return;          // ignore stray pills without a tag
+        if (!t) return;
         activeTags[t] = !activeTags[t];
         if (!activeTags[t]) delete activeTags[t];
         renderPills();
@@ -158,7 +154,6 @@ const SCRIPT = `
         }
         apply();
       });
-
       if (clearBtn) {
         clearBtn.addEventListener("click", function () {
           search.value = "";
@@ -169,6 +164,22 @@ const SCRIPT = `
         });
       }
     }
+
+    // Expand button: ask ImageZoom to open this thumbnail by dispatching a
+    // "quartz:zoom-open" CustomEvent. Decouples the gallery from the zoom
+    // implementation and lets any future component reuse the same hook.
+    var zoomBtns = Array.prototype.slice.call(g.querySelectorAll(".ig-zoom"));
+    zoomBtns.forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var wrap = btn.closest(".ig-card-wrap");
+        var card = wrap && wrap.querySelector(".ig-card");
+        var img = card && card.querySelector(".ig-thumb");
+        if (!img || !img.src) return;
+        document.dispatchEvent(new CustomEvent("quartz:zoom-open", { detail: { target: img } }));
+      });
+    });
   }
 
   function setupAll() {
@@ -205,14 +216,21 @@ const IllustrationGallery: QuartzComponent = () => {
 
         .ig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
 
-        .ig-card { display: flex; flex-direction: column; border: 1px solid var(--lightgray); border-radius: 8px; overflow: hidden; text-decoration: none; color: inherit; background: var(--light); transition: border-color 0.15s; }
-        .ig-card:hover { border-color: var(--secondary); }
+        .ig-card-wrap { position: relative; }
+        .ig-card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--lightgray); border-radius: 8px; text-decoration: none; color: inherit; background: var(--light); transition: border-color 0.15s; cursor: pointer; }
+        .ig-card:hover, .ig-card-wrap:hover .ig-card { border-color: var(--secondary); }
 
-        .ig-card { cursor: pointer; }
-        .ig-thumb { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: var(--highlight); pointer-events: none; }
-        .ig-placeholder { display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--gray); font-style: italic; }
+        .ig-thumb-wrap { aspect-ratio: 1 / 1; overflow: hidden; background: var(--highlight); border-radius: 7px 7px 0 0; }
+        .ig-thumb { width: 100%; height: auto; display: block; pointer-events: none; }
+        .ig-thumb.medium-zoom-image--opened { pointer-events: auto; }
+        .ig-placeholder { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--gray); }
 
         .ig-title { font-size: 0.82rem; line-height: 1.35; padding: 0.5rem 0.6rem; color: var(--darkgray); }
+
+        .ig-zoom { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 6px; background: rgba(0,0,0,0.55); color: #fff; cursor: pointer; opacity: 0; transition: opacity 0.15s, background 0.15s; }
+        .ig-card-wrap:hover .ig-zoom { opacity: 1; }
+        .ig-zoom:hover { background: rgba(0,0,0,0.8); }
+        @media (pointer: coarse) { .ig-zoom { opacity: 1; } }
       `}</style>
 
       <div className="ig-container">
