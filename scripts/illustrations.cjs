@@ -13,6 +13,13 @@
 //             whose name does NOT start with Fig / Table / Chart / Drawing
 //             (Solo, Inline, Color Plate, etc.)
 //             href  = slugified asset path (opens image directly)
+//
+// Each item also gets a tags array for the pill filter:
+//   - Type tag: at most one of Tables / Drawings / Color Plates
+//   - Chapter tag: derived from the first number in the name
+//     if that number is >= 100. Format: "<chapter>.00" (e.g. "400.00",
+//     "1000.00"). Maps: Math.floor(n / 100) * 100.
+//   - Misc tag: only if no type tag AND no chapter tag.
 // ------------------------------------------------------------------
 
 const fs = require('fs');
@@ -81,6 +88,40 @@ function numericSort(a, b) {
   return a.localeCompare(b);
 }
 
+// Compute pill-filter tags from an item's title.
+function computeTags(title) {
+  const tags = [];
+  const lower = title.toLowerCase();
+
+  // Type tag — at most one. "Chart" rides under Tables (user's choice).
+  if (lower.startsWith('table') || lower.startsWith('chart')) {
+    tags.push('Tables');
+  } else if (lower.startsWith('drawing')) {
+    tags.push('Drawings');
+  } else if (lower.startsWith('color plate')) {
+    tags.push('Color Plates');
+  }
+
+  // Chapter tag — from first number, if >= 100.
+  const numMatch = title.match(/(\d+)/);
+  if (numMatch) {
+    const n = parseInt(numMatch[1], 10);
+    if (n >= 100) {
+      const chapter = Math.floor(n / 100) * 100;
+      tags.push(`${chapter}.00`);
+    }
+  }
+
+  // Fallback: items with no type and no chapter get "Misc".
+  if (tags.length === 0) tags.push('Misc');
+
+  return tags;
+}
+
+function makeItem(title, href, thumb) {
+  return { title, href, thumb, tags: computeTags(title) };
+}
+
 function main() {
   const root = path.join(process.cwd(), CONFIG.illustrationsRoot);
   if (!fs.existsSync(root)) {
@@ -115,18 +156,14 @@ function main() {
         }
       }
 
-      figures.push({
-        title: file.replace(/\.md$/, ''),
-        href: pageSlug,
-        thumb,
-      });
+      figures.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
     }
   }
 
   const misc = [];
 
   // Drawing .md pages live in "Tables and Figures" but are not numbered
-  // like the rest of the book's figures, so they go into Misc instead.
+  // like the rest of the book's figures, so they go into Misc gallery.
   const tfDir = path.join(root, CONFIG.figuresDirs[0]);
   if (fs.existsSync(tfDir)) {
     const drawingFiles = fs.readdirSync(tfDir)
@@ -148,11 +185,7 @@ function main() {
         }
       }
 
-      misc.push({
-        title: file.replace(/\.md$/, ''),
-        href: pageSlug,
-        thumb,
-      });
+      misc.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
     }
   }
 
@@ -171,7 +204,7 @@ function main() {
       if (excluded) continue;
 
       const assetSlug = '/' + slugifyAssetPath(`${illustrationsRel}/${CONFIG.attachmentsDir}/${file}`);
-      misc.push({ title: file, href: assetSlug, thumb: assetSlug });
+      misc.push(makeItem(file, assetSlug, assetSlug));
     }
   }
 
