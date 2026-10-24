@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 620.06 Tetrahedron as Vectorial Model of Quantum
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 620.06.png]]

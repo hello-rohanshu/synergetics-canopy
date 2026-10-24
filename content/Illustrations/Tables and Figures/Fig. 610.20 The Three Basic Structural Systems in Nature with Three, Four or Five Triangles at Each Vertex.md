@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 610.20 The Three Basic Structural Systems in Nature with Three, Four or Five Triangles at Each Vertex
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 610.20.png]]
