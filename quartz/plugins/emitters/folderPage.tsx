@@ -22,6 +22,7 @@ import { BuildCtx } from "../../util/ctx"
 import { StaticResources } from "../../util/resources"
 interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
+  exclude?: string[]
 }
 
 async function* processFolderInfo(
@@ -132,12 +133,14 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
 
+      const excluded = new Set<string>(userOpts?.exclude ?? [])
       const folders: Set<SimpleSlug> = new Set(
         allFiles.flatMap((data) => {
           return data.slug
             ? _getFolders(data.slug).filter(
-                (folderName) => folderName !== "." && folderName !== "tags",
-              )
+              (folderName) =>
+                folderName !== "." && folderName !== "tags" && !excluded.has(folderName),
+            )
             : []
         }),
       )
@@ -154,8 +157,10 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       for (const changeEvent of changeEvents) {
         if (!changeEvent.file) continue
         const slug = changeEvent.file.data.slug!
+        const excluded = new Set<string>(userOpts?.exclude ?? [])
         const folders = _getFolders(slug).filter(
-          (folderName) => folderName !== "." && folderName !== "tags",
+          (folderName) =>
+            folderName !== "." && folderName !== "tags" && !excluded.has(folderName),
         )
         folders.forEach((folder) => affectedFolders.add(folder))
       }

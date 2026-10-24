@@ -4,20 +4,16 @@
 // Scans content/Illustrations/ and writes a single unified manifest
 // to quartz/static/data/illustrations.json for IllustrationGallery.tsx.
 //
+// Layout assumptions:
+//   content/Illustrations/*.md           — figure/table/drawing pages
+//   content/Illustrations/Attachments/*  — raw image assets
+//
 // Every entry has: title, href, thumb, tags[].
 // Tags drive the pill filter on the frontend:
 //   - Type tag (at most one): Tables (Table*/Chart*), Drawings, Color Plates
 //   - Chapter tag derived from the first number in the name if >= 100:
 //     Math.floor(n / 100) * 100, formatted as "<chapter>.00" (e.g. "400.00")
 //   - "Misc" tag if neither type nor chapter applies
-//
-// Source logic (unchanged from before, just flattened):
-//   - Tables and Figures/*.md (excluding Drawing N) + Interactive/*.md
-//       href = .md page, thumb = first ![[...]] embed
-//   - Tables and Figures/Drawing *.md
-//       href = .md page, thumb = first ![[...]] embed
-//   - Attachments/* (excluding Fig/Table/Chart/Drawing prefixes)
-//       href = asset URL, thumb = same asset URL
 // ------------------------------------------------------------------
 
 const fs = require('fs');
@@ -25,14 +21,12 @@ const path = require('path');
 
 const CONFIG = {
   illustrationsRoot: 'content/Illustrations',
-  figuresDirs: ['Tables and Figures', 'Interactive'],
   attachmentsDir: 'Attachments',
   miscExcludePrefixes: ['Fig', 'Table', 'Chart', 'Drawing'],
   imageExts: ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'],
   outputFile: 'quartz/static/data/illustrations.json',
 };
 
-// Mirrors Quartz's sluggify() for one path segment.
 function sluggifySegment(seg) {
   return seg
     .replace(/\s/g, '-')
@@ -42,20 +36,17 @@ function sluggifySegment(seg) {
     .replace(/#/g, '');
 }
 
-// Mirrors Quartz's slugifyFilePath for a path already relative to content/.
 function slugifyFilePath(fp) {
   const cleaned = fp.replace(/^\/+|\/+$/g, '');
   const withoutExt = cleaned.replace(/\.(md|html)$/i, '');
   return withoutExt.split('/').map(sluggifySegment).join('/');
 }
 
-// Same as above but keeps the extension (used for asset URLs).
 function slugifyAssetPath(fp) {
   const cleaned = fp.replace(/^\/+|\/+$/g, '');
   return cleaned.split('/').map(sluggifySegment).join('/');
 }
 
-// Returns only the body of a markdown file, frontmatter stripped.
 function stripFrontmatter(raw) {
   if (!raw.startsWith('---')) return raw;
   const end = raw.indexOf('\n---', 3);
@@ -64,19 +55,16 @@ function stripFrontmatter(raw) {
   return after === -1 ? '' : raw.slice(after + 1);
 }
 
-// First ![[...]] embed in the body, or null.
 function firstWikilinkEmbed(body) {
   const m = body.match(/!\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]/);
   return m ? m[1].trim() : null;
 }
 
-// First number anywhere in a filename, for numeric sort.
 function leadingNumber(name) {
   const m = name.match(/(\d+)/);
   return m ? parseInt(m[1], 10) : Infinity;
 }
 
-// Sort comparator: by leading number, then alphabetically.
 function numericSort(a, b) {
   const na = leadingNumber(a);
   const nb = leadingNumber(b);
@@ -84,7 +72,6 @@ function numericSort(a, b) {
   return a.localeCompare(b);
 }
 
-// Compute pill-filter tags from an item's title.
 function computeTags(title) {
   const tags = [];
   const lower = title.toLowerCase();
@@ -107,7 +94,6 @@ function computeTags(title) {
   }
 
   if (tags.length === 0) tags.push('Misc');
-
   return tags;
 }
 
@@ -125,61 +111,31 @@ function main() {
   const illustrationsRel = CONFIG.illustrationsRoot.replace(/^content\//, '');
   const items = [];
 
-  // 1. Figures from Tables and Figures + Interactive (excluding Drawings)
-  for (const dirName of CONFIG.figuresDirs) {
-    const dirPath = path.join(root, dirName);
-    if (!fs.existsSync(dirPath)) continue;
+  // 1. All .md pages directly inside Illustrations/ (skip index.md — it
+  //    hosts this gallery and isn't itself a figure).
+  const mdFiles = fs.readdirSync(root)
+    .filter((f) => f.endsWith('.md') && f.toLowerCase() !== 'index.md')
+    .sort(numericSort);
 
-    const files = fs.readdirSync(dirPath)
-      .filter((f) => f.endsWith('.md') && !f.toLowerCase().startsWith('drawing'))
-      .sort(numericSort);
+  for (const file of mdFiles) {
+    const raw = fs.readFileSync(path.join(root, file), 'utf-8');
+    const body = stripFrontmatter(raw);
+    const embed = firstWikilinkEmbed(body);
 
-    for (const file of files) {
-      const raw = fs.readFileSync(path.join(dirPath, file), 'utf-8');
-      const body = stripFrontmatter(raw);
-      const embed = firstWikilinkEmbed(body);
+    const pageSlug = '/' + slugifyFilePath(`${illustrationsRel}/${file}`);
 
-      const pageSlug = '/' + slugifyFilePath(`${illustrationsRel}/${dirName}/${file}`);
-
-      let thumb = '';
-      if (embed) {
-        const ext = path.extname(embed).toLowerCase();
-        if (CONFIG.imageExts.includes(ext)) {
-          thumb = '/' + slugifyAssetPath(`${illustrationsRel}/${CONFIG.attachmentsDir}/${embed}`);
-        }
+    let thumb = '';
+    if (embed) {
+      const ext = path.extname(embed).toLowerCase();
+      if (CONFIG.imageExts.includes(ext)) {
+        thumb = '/' + slugifyAssetPath(`${illustrationsRel}/${CONFIG.attachmentsDir}/${embed}`);
       }
-
-      items.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
     }
+
+    items.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
   }
 
-  // 2. Drawing .md pages
-  const tfDir = path.join(root, CONFIG.figuresDirs[0]);
-  if (fs.existsSync(tfDir)) {
-    const drawingFiles = fs.readdirSync(tfDir)
-      .filter((f) => f.endsWith('.md') && f.toLowerCase().startsWith('drawing'))
-      .sort(numericSort);
-
-    for (const file of drawingFiles) {
-      const raw = fs.readFileSync(path.join(tfDir, file), 'utf-8');
-      const body = stripFrontmatter(raw);
-      const embed = firstWikilinkEmbed(body);
-
-      const pageSlug = '/' + slugifyFilePath(`${illustrationsRel}/${CONFIG.figuresDirs[0]}/${file}`);
-
-      let thumb = '';
-      if (embed) {
-        const ext = path.extname(embed).toLowerCase();
-        if (CONFIG.imageExts.includes(ext)) {
-          thumb = '/' + slugifyAssetPath(`${illustrationsRel}/${CONFIG.attachmentsDir}/${embed}`);
-        }
-      }
-
-      items.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
-    }
-  }
-
-  // 3. Loose attachments (Color Plates, Inline, Solo)
+  // 2. Loose attachments (Color Plates, Inline, Solo)
   const attachmentsPath = path.join(root, CONFIG.attachmentsDir);
   if (fs.existsSync(attachmentsPath)) {
     const files = fs.readdirSync(attachmentsPath).sort(numericSort);

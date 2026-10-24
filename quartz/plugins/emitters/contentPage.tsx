@@ -83,8 +83,12 @@ export const ContentPage: QuartzEmitterPlugin<Partial<FullPageLayout>> = (userOp
           containsIndex = true
         }
 
-        // only process home page, non-tag pages, and non-index pages
-        if (slug.endsWith("/index") || slug.startsWith("tags/")) continue
+        // only skip tag pages. Folder index pages are emitted here too, then
+        // overwritten by FolderPage when FolderPage processes that folder. The
+        // emitters array order (ContentPage before FolderPage) makes the latter
+        // win for every folder that FolderPage handles. Folders excluded from
+        // FolderPage (via its `exclude` option) keep the ContentPage output.
+        if (slug.startsWith("tags/")) continue
         yield processContent(ctx, tree, file.data, allFiles, opts, resources)
       }
 
@@ -112,7 +116,7 @@ export const ContentPage: QuartzEmitterPlugin<Partial<FullPageLayout>> = (userOp
       for (const [tree, file] of content) {
         const slug = file.data.slug!
         if (!changedSlugs.has(slug)) continue
-        if (slug.endsWith("/index") || slug.startsWith("tags/")) continue
+        if (slug.startsWith("tags/")) continue
 
         yield processContent(ctx, tree, file.data, allFiles, opts, resources)
       }

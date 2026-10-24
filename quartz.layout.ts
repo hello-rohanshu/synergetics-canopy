@@ -7,10 +7,20 @@ const explorerConfig = {
     const slug = node.data?.slug ?? "";
     const name = (node.path || node.displayName || "").toLowerCase();
     const hasHideTag = node.data?.tags?.includes("hide-from-nav");
-    return !hidden.has(slug) && !hidden.has(name) && !hasHideTag;
+
+    // Figure pages live inside Illustrations/ but are already surfaced via
+    // the gallery at /Illustrations. Hide the children from the sidebar so
+    // the folder doesn't expand into 300 entries, but keep the folder itself.
+    const isIllustrationsFolder = slug === "Illustrations" || slug === "Illustrations/index";
+    const isIllustrationChild = slug.startsWith("Illustrations/") && !isIllustrationsFolder;
+
+    return !hidden.has(slug) && !hidden.has(name) && !hasHideTag && !isIllustrationChild;
   },
 
   mapFn: (node: any) => {
+    if (node.displayName === "Illustrations") {
+      node.isFolder = false;
+    }
     if (node.displayName === "Introduction - The Wellspring of Reality") {
       node.displayName = "Wellspring";
     }
@@ -101,7 +111,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ConditionalRender({
       component: Component.IllustrationGallery(),
-      condition: (page) => page.fileData.slug === "gallery",
+      condition: (page) => page.fileData.slug === "Illustrations" || page.fileData.slug === "Illustrations/index",
     }),
   ],
   left: [
