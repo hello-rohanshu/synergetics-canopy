@@ -1,6 +1,7 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 100.416
+  - Illustrations/Tables and Figures/Fig. 100.416 (Legacy)
 img-file-titles: true
 img-caption: true
 img-italics: true

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tetrahedron Fold</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100vw;
+      min-height: 340px;
+      touch-action: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .widget-box {
+      width: 340px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 0;
+      padding: 0.75rem 0;
+      background: transparent;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 340px;
+      height: 256px;
+    }
+
+    canvas {
+      display: block;
+      width: 340px;
+      height: 256px;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    canvas:active {
+      cursor: grabbing;
+    }
+
+    .controls {
+      width: 340px;
+      height: 84px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0 16px 10px 16px;
+    }
+
+    .slider-track-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #phase-labels {
+      position: relative;
+      width: 100%;
+      height: 28px;
+      pointer-events: none;
+    }
+
+    .phase-lbl {
+      position: absolute;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+      font-weight: 600;
+      color: var(--tick-color, #888);
+      line-height: 1;
+      transition: color 0.15s ease;
+    }
+
+    .phase-lbl.active {
+      font-weight: 700;
+      color: var(--slider-thumb, #2b2b2b);
+    }
+
+    #slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      background: var(--slider-track, #c0c0c0);
+      display: block;
+    }
+
+    #slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--slider-thumb, #2b2b2b);
+      background-image: var(--thumb-icon);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 12px 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+      transition: transform 0.1s ease, background-color 0.15s ease;
+    }
+
+    #slider::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--slider-thumb, #2b2b2b);
+      background-image: var(--thumb-icon);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 12px 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+      transition: transform 0.1s ease, background-color 0.15s ease;
+    }
+
+    #slider::-webkit-slider-thumb:hover,
+    #slider::-moz-range-thumb:hover {
+      transform: scale(1.08);
+    }
+
+    #slider::-webkit-slider-thumb:active,
+    #slider::-moz-range-thumb:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="widget-box">
+    <div class="canvas-container" id="canvas-container"></div>
+
+    <div class="controls">
+      <div class="slider-track-wrap">
+        <div id="phase-labels"></div>
+        <input type="range" id="slider" min="0" max="1000" value="0" step="1" aria-label="Tetrahedron fold slider">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // ---------- IFRAME RESIZE ----------
+      function sendHeightToParent() {
+        if (window.parent !== window) {
+          const height = document.body.scrollHeight;
+          window.parent.postMessage({ type: 'iframeResize', height: height }, '*');
+          try {
+            const iframes = window.parent.document.querySelectorAll('iframe');
+            for (let iframe of iframes) {
+              if (iframe.contentWindow === window) {
+                iframe.style.height = height + 'px';
+                break;
+              }
+            }
+          } catch (e) { /* cross-origin fallback */ }
+        }
+      }
+      const resizeObserver = new ResizeObserver(() => sendHeightToParent());
+      resizeObserver.observe(document.body);
+      window.addEventListener('load', sendHeightToParent);
+      const layoutObserver = new MutationObserver(() => sendHeightToParent());
+      layoutObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      sendHeightToParent();
+
+      // ---------- COLOR READING FROM PARENT ----------
+      function getParentColor(varName) {
+        try {
+          const parentHtml = parent.document.documentElement;
+          const color = getComputedStyle(parentHtml).getPropertyValue(varName).trim();
+          if (color) return color;
+        } catch (e) { }
+        const fallbacks = {
+          '--light': '#faf8f8',
+          '--dark': '#2b2b2b',
+          '--gray': '#b8b8b8',
+          '--secondary': '#284b63',
+          '--tertiary': '#84a59d'
+        };
+        return fallbacks[varName] || '#cccccc';
+      }
+
+      function watchParentTheme(callback) {
+        try {
+          const parentHtml = parent.document.documentElement;
+          const observer = new MutationObserver(callback);
+          observer.observe(parentHtml, { attributes: true, attributeFilter: ['class'] });
+          callback();
+        } catch (e) { }
+      }
+
+      function applyThemeToSlider() {
+        const dark = getParentColor('--dark');
+        const gray = getParentColor('--gray');
+        document.documentElement.style.setProperty('--slider-track', gray + '55');
+        document.documentElement.style.setProperty('--slider-thumb', dark);
+        document.documentElement.style.setProperty('--tick-color', gray);
+        updateThumbIcon();
+      }
+
+      // ---------- CANVAS SETUP ----------
+      const nominalW = 340;
+      const nominalH = 256;
+      const cx = nominalW / 2;
+      const cy = nominalH / 2 - 2;
+      const HIT_RADIUS_SQ = 115 * 115;
+
+      // Perspective matching the original WebGL camera (z=4.7, fov=45°).
+      // Near points render bigger, far points smaller — this is what kept
+      // WebGL's corners from clipping during rotation.
+      const PERSPECTIVE_CAMERA_Z = 4.7;
+      const PERSPECTIVE_BASE_SCALE = 309.0;  // (canvasH/2) / tan(22.5°)
+
+      const container = document.getElementById('canvas-container');
+      const dpr = window.devicePixelRatio || 1;
+      const canvas = document.createElement('canvas');
+      canvas.width = nominalW * dpr;
+      canvas.height = nominalH * dpr;
+      canvas.style.width = nominalW + 'px';
+      canvas.style.height = nominalH + 'px';
+      canvas.style.cursor = 'grab';
+      canvas.style.touchAction = 'none';
+      container.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+
+      function isInsideDiagram(clientX, clientY) {
+        const rect = canvas.getBoundingClientRect();
+        const canvasX = (clientX - rect.left) * (nominalW / rect.width);
+        const canvasY = (clientY - rect.top) * (nominalH / rect.height);
+        const dx = canvasX - cx;
+        const dy = canvasY - cy;
+        return (dx * dx + dy * dy) <= HIT_RADIUS_SQ;
+      }
+
+      // ---------- GEOMETRY (plain JS vectors) ----------
+      const vAdd = (a, b) => ({ x: a.x + b.x, y: a.y + b.y, z: a.z + b.z });
+      const vSub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
+      const vScale = (a, s) => ({ x: a.x * s, y: a.y * s, z: a.z * s });
+      const vLen = (a) => Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+      const vNorm = (a) => { const l = vLen(a) || 1; return { x: a.x / l, y: a.y / l, z: a.z / l }; };
+
+      // Rotate v around unit axis by angle (Rodrigues via quaternion).
+      function quatRotate(v, axis, angle) {
+        const half = angle / 2;
+        const s = Math.sin(half);
+        const qx = axis.x * s, qy = axis.y * s, qz = axis.z * s;
+        const qw = Math.cos(half);
+        const tx = 2 * (qy * v.z - qz * v.y);
+        const ty = 2 * (qz * v.x - qx * v.z);
+        const tz = 2 * (qx * v.y - qy * v.x);
+        return {
+          x: v.x + qw * tx + (qy * tz - qz * ty),
+          y: v.y + qw * ty + (qz * tx - qx * tz),
+          z: v.z + qw * tz + (qx * ty - qy * tx)
+        };
+      }
+
+      // Net geometry (edge length 2)
+      const R = 2 / Math.sqrt(3);
+      const P0 = { x: 0, y: 0, z: R };
+      const P1 = { x: -1, y: 0, z: -R / 2 };
+      const P2 = { x: 1, y: 0, z: -R / 2 };
+
+      const FOLD_ANGLE = Math.PI - Math.acos(1 / 3);
+      const MODEL_OFFSET_Y = -(2 * Math.sqrt(2 / 3)) / 4;
+
+      const flapDefs = [
+        [P1, P2, P0],
+        [P2, P0, P1],
+        [P0, P1, P2],
+      ];
+
+      // Precompute each flap's pivot, apex, axis, and fold sign.
+      const flapData = flapDefs.map(([A, B, C]) => {
+        const apex = vAdd(vAdd(A, B), vScale(C, -1)); // A + B - C
+        const axis = vNorm(vSub(B, A));
+        const test = quatRotate(vSub(apex, A), axis, 0.1);
+        const sign = test.y > 0 ? 1 : -1;
+        return { A, B, apex, axis, sign };
+      });
+
+      // Build the 4 subdivided triangles (3 corners + 1 center) for one face.
+      function addFaceTris(out, V0, V1, V2, rotation, pivot) {
+        const AB = vScale(vAdd(V0, V1), 0.5);
+        const BC = vScale(vAdd(V1, V2), 0.5);
+        const CA = vScale(vAdd(V2, V0), 0.5);
+
+        const tris = [
+          { v: [V0, AB, CA], center: false },
+          { v: [AB, V1, BC], center: false },
+          { v: [CA, BC, V2], center: false },
+          { v: [AB, BC, CA], center: true }
+        ];
+
+        tris.forEach(tri => {
+          const pts = tri.v.map(v => {
+            let p = v;
+            if (rotation && pivot) {
+              p = vAdd(pivot, quatRotate(vSub(v, pivot), rotation.axis, rotation.angle));
+            }
+            return { x: p.x, y: p.y + MODEL_OFFSET_Y, z: p.z };
+          });
+          out.push({ pts, center: tri.center });
+        });
+      }
+
+      // Compute all triangles (world space, before view rotation) for fold t.
+      function computeTriangles(t) {
+        const triangles = [];
+        // Base face (unfolded, sits in XZ plane)
+        addFaceTris(triangles, P0, P1, P2, null, null);
+        // Three flaps
+        flapData.forEach(({ A, B, apex, axis, sign }) => {
+          const angle = sign * FOLD_ANGLE * t;
+          addFaceTris(triangles, A, B, apex, { axis, angle }, A);
+        });
+        return triangles;
+      }
+
+      // ---------- VIEW ROTATION & PROJECTION ----------
+      // Matches three.js Euler 'XYZ' order: M = Rx * Ry * Rz, Rz = I.
+      function viewRotate(p, rx, ry) {
+        const cy_ = Math.cos(ry), sy_ = Math.sin(ry);
+        const x1 = p.x * cy_ + p.z * sy_;
+        const y1 = p.y;
+        const z1 = -p.x * sy_ + p.z * cy_;
+        const cx_ = Math.cos(rx), sx_ = Math.sin(rx);
+        return {
+          x: x1,
+          y: y1 * cx_ - z1 * sx_,
+          z: y1 * sx_ + z1 * cx_
+        };
+      }
+
+      function project(p) {
+        const view_dist = PERSPECTIVE_CAMERA_Z - p.z;
+        const scale = PERSPECTIVE_BASE_SCALE / view_dist;
+        return { x: cx + p.x * scale, y: cy - p.y * scale };
+      }
+
+      // ---------- INTERACTION & ROTATION ----------
+      const DEFAULT_ROTX = 0.25;
+      const DEFAULT_ROTY = 0.35;
+      let rotX = DEFAULT_ROTX;
+      let rotY = DEFAULT_ROTY;
+      let dragging = false, lx = 0, ly = 0;
+      let isResetting = false;
+
+      function triggerReset() { isResetting = true; }
+
+      const el = canvas;
+
+      el.addEventListener('dblclick', e => {
+        if (isInsideDiagram(e.clientX, e.clientY)) triggerReset();
+      });
+
+      el.addEventListener('mousemove', e => {
+        el.style.cursor = isInsideDiagram(e.clientX, e.clientY) ? (dragging ? 'grabbing' : 'grab') : 'default';
+        if (!dragging) return;
+        rotY += (e.clientX - lx) * 0.008;
+        rotX = Math.max(-1.5, Math.min(1.5, rotX + (e.clientY - ly) * 0.008));
+        lx = e.clientX; ly = e.clientY;
+      });
+
+      el.addEventListener('mousedown', e => {
+        if (!isInsideDiagram(e.clientX, e.clientY)) return;
+        dragging = true;
+        isResetting = false;
+        el.style.cursor = 'grabbing';
+        lx = e.clientX; ly = e.clientY;
+      });
+
+      window.addEventListener('mouseup', () => {
+        dragging = false;
+        el.style.cursor = 'default';
+      });
+
+      let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+
+      el.addEventListener('touchstart', e => {
+        if (e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        if (!isInsideDiagram(touch.clientX, touch.clientY)) return;
+
+        const now = performance.now();
+        const distSq = (touch.clientX - lastTapX) ** 2 + (touch.clientY - lastTapY) ** 2;
+
+        if (now - lastTapTime < 300 && distSq < 900) {
+          triggerReset();
+          lastTapTime = 0;
+        } else {
+          lastTapTime = now;
+          lastTapX = touch.clientX;
+          lastTapY = touch.clientY;
+        }
+
+        if (e.cancelable) e.preventDefault();
+        dragging = true;
+        isResetting = false;
+        lx = touch.clientX; ly = touch.clientY;
+      });
+
+      el.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        if (e.cancelable) e.preventDefault();
+        const touch = e.touches[0];
+        rotY += (touch.clientX - lx) * 0.008;
+        rotX = Math.max(-1.5, Math.min(1.5, rotX + (touch.clientY - ly) * 0.008));
+        lx = touch.clientX; ly = touch.clientY;
+      });
+
+      el.addEventListener('touchend', () => { dragging = false; });
+      el.addEventListener('touchcancel', () => { dragging = false; });
+
+      // ---------- CONTROLS ----------
+      const sliderEl = document.getElementById('slider');
+      const labelsEl = document.getElementById('phase-labels');
+
+      const phases = [
+        { t: 0, label: 'A' },
+        { t: 0.3333, label: 'B' },
+        { t: 0.6667, label: 'C' },
+        { t: 1, label: 'D' }
+      ];
+
+      const labelEls = phases.map((p) => {
+        const pct = p.t * 100;
+        const elem = document.createElement('span');
+        elem.className = 'phase-lbl';
+        elem.style.left = pct + '%';
+        elem.textContent = p.label;
+        labelsEl.appendChild(elem);
+        return elem;
+      });
+
+      function sliderToT(val) { return val / 1000; }
+      function tToSlider(t) { return Math.round(t * 1000); }
+
+      function updatePhaseLabel(t) {
+        let closestIdx = 0, minDist = Infinity;
+        phases.forEach((p, i) => {
+          const d = Math.abs(t - p.t);
+          if (d < minDist) { minDist = d; closestIdx = i; }
+        });
+        labelEls.forEach((elem, i) => {
+          elem.classList.toggle('active', i === closestIdx && minDist < 0.2);
+        });
+      }
+
+      let tParam = 0;
+      let tDir = 1;
+      let autoPlay = true;
+      let endpointPauseUntil = 0;
+      const HOLD_A_MS = 1000;
+      const HOLD_D_MS = 2500;
+      const foldSpeed = 0.0055;
+
+      function updateThumbIcon() {
+        if (!autoPlay) {
+          const lightColor = getParentColor('--light');
+          const playPath = "<path d='M4.5 2.5v11l9-5.5z'/>";
+          const svgData = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='${encodeURIComponent(lightColor)}'>${playPath}</svg>")`;
+          sliderEl.style.setProperty('--thumb-icon', svgData);
+        } else {
+          sliderEl.style.setProperty('--thumb-icon', 'none');
+        }
+      }
+
+      let isDraggingSlider = false;
+
+      sliderEl.addEventListener('pointerdown', () => { isDraggingSlider = false; });
+
+      sliderEl.addEventListener('input', () => {
+        isDraggingSlider = true;
+        tParam = sliderToT(parseInt(sliderEl.value));
+        autoPlay = false;
+        endpointPauseUntil = 0;
+        updatePhaseLabel(tParam);
+        updateThumbIcon();
+      });
+
+      sliderEl.addEventListener('pointerup', () => {
+        if (!isDraggingSlider) {
+          autoPlay = !autoPlay;
+          endpointPauseUntil = 0;
+          updateThumbIcon();
+        }
+      });
+
+      // ---------- RENDER LOOP (Canvas 2D) ----------
+      function animate(timestamp) {
+        requestAnimationFrame(animate);
+
+        // Reset rotation to default smoothly
+        if (isResetting && !dragging) {
+          rotY += (DEFAULT_ROTY - rotY) * 0.12;
+          rotX += (DEFAULT_ROTX - rotX) * 0.12;
+          if (Math.abs(rotY - DEFAULT_ROTY) < 0.0005 && Math.abs(rotX - DEFAULT_ROTX) < 0.0005) {
+            rotY = DEFAULT_ROTY;
+            rotX = DEFAULT_ROTX;
+            isResetting = false;
+          }
+        }
+
+        // Autoplay fold animation
+        if (autoPlay) {
+          if (endpointPauseUntil > 0) {
+            if (timestamp >= endpointPauseUntil) {
+              tDir = (tParam >= 1) ? -1 : 1;
+              endpointPauseUntil = 0;
+            }
+          } else {
+            tParam += foldSpeed * tDir;
+            if (tParam >= 1) {
+              tParam = 1;
+              endpointPauseUntil = timestamp + HOLD_D_MS;
+            } else if (tParam <= 0) {
+              tParam = 0;
+              endpointPauseUntil = timestamp + HOLD_A_MS;
+            }
+          }
+          sliderEl.value = tToSlider(tParam);
+          updatePhaseLabel(tParam);
+        }
+
+        // Theme colors
+        const lightColor = getParentColor('--light');
+        const darkColor = getParentColor('--dark');
+        const secondaryColor = getParentColor('--secondary');
+        document.body.style.backgroundColor = lightColor;
+        applyThemeToSlider();
+
+        // Clear
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, nominalW, nominalH);
+
+        // Compute all triangles, rotate & project
+        const triangles = computeTriangles(tParam);
+        const projected = triangles.map(tri => {
+          const world = tri.pts.map(p => viewRotate(p, rotX, rotY));
+          const screen = world.map(p => project(p));
+          const avgZ = (world[0].z + world[1].z + world[2].z) / 3;
+          return { screen, world, center: tri.center, avgZ };
+        });
+
+        // Painter's algorithm — back to front
+        projected.sort((a, b) => a.avgZ - b.avgZ);
+
+        // 1) Center subtriangle fills (subtle translucent)
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = secondaryColor;
+        projected.forEach(tri => {
+          if (!tri.center) return;
+          ctx.beginPath();
+          ctx.moveTo(tri.screen[0].x, tri.screen[0].y);
+          ctx.lineTo(tri.screen[1].x, tri.screen[1].y);
+          ctx.lineTo(tri.screen[2].x, tri.screen[2].y);
+          ctx.closePath();
+          ctx.fill();
+        });
+
+        // 2) Collect unique edges (deduped by rounded endpoints)
+        const edgeMap = new Map();
+        projected.forEach(tri => {
+          for (let i = 0; i < 3; i++) {
+            const a = tri.screen[i];
+            const b = tri.screen[(i + 1) % 3];
+            const ka = `${a.x.toFixed(1)},${a.y.toFixed(1)}`;
+            const kb = `${b.x.toFixed(1)},${b.y.toFixed(1)}`;
+            const key = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+            if (!edgeMap.has(key)) {
+              edgeMap.set(key, { a, b });
+            }
+          }
+        });
+        const edges = Array.from(edgeMap.values());
+
+        // 3) All edges — solid dark, no dashes, no hidden-edge distinction
+        ctx.globalAlpha = 1.0;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = darkColor;
+        edges.forEach(e => {
+          ctx.beginPath();
+          ctx.moveTo(e.a.x, e.a.y);
+          ctx.lineTo(e.b.x, e.b.y);
+          ctx.stroke();
+        });
+      }
+
+      watchParentTheme(() => {
+        document.body.style.backgroundColor = getParentColor('--light');
+        applyThemeToSlider();
+        sendHeightToParent();
+      });
+
+      applyThemeToSlider();
+      requestAnimationFrame(animate);
+      sendHeightToParent();
+    })();
+  </script>
+</body>
+
+</html>
