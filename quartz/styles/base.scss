@@ -517,7 +517,7 @@ h6 {
   // Heading container manages the "warm tooltip" state
   &[id] {
     --tooltip-delay: 2s;
-    transition: --tooltip-delay 0s 0s; // Resets delay to 1s instantly on mouse leave
+    transition: none; // Instant reset on mouse leave
 
     &:hover {
       --tooltip-delay: 0s;
