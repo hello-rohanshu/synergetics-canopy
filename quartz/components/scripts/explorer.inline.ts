@@ -49,9 +49,9 @@ function toggleFolder(evt: MouseEvent) {
   const folderContainer = (
     isSvg
       ? // svg -> div.folder-container
-        target.parentElement
+      target.parentElement
       : // button.folder-button -> div -> div.folder-container
-        target.parentElement?.parentElement
+      target.parentElement?.parentElement
   ) as MaybeHTMLElement
   if (!folderContainer) return
   const childFolderContainer = folderContainer.nextElementSibling as MaybeHTMLElement
@@ -77,6 +77,15 @@ function toggleFolder(evt: MouseEvent) {
 
   const stringifiedFileTree = JSON.stringify(currentExplorerState)
   localStorage.setItem("fileTree", stringifiedFileTree)
+}
+
+// A folder can opt out of folder rendering (toggle icon, nested list) and be
+// shown as a page link instead, by adding the `render-as-page` tag to its
+// index.md frontmatter. Used for Illustrations, where the folder has its own
+// custom gallery page and 200+ children that shouldn't appear in the sidebar.
+function isRenderAsPage(node: FileTrieNode): boolean {
+  const tags = (node as any).data?.tags
+  return Array.isArray(tags) && tags.includes("render-as-page")
 }
 
 function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElement {
@@ -145,7 +154,7 @@ function createFolderNode(
   }
 
   for (const child of node.children) {
-    const childNode = child.isFolder
+    const childNode = child.isFolder && !isRenderAsPage(child)
       ? createFolderNode(currentSlug, child, opts)
       : createFileNode(currentSlug, child)
     ul.appendChild(childNode)
@@ -212,7 +221,7 @@ async function setupExplorer(currentSlug: FullSlug) {
     // Create and insert new content
     const fragment = document.createDocumentFragment()
     for (const child of trie.children) {
-      const node = child.isFolder
+      const node = child.isFolder && !isRenderAsPage(child)
         ? createFolderNode(currentSlug, child, opts)
         : createFileNode(currentSlug, child)
 

@@ -20,6 +20,18 @@ import { write } from "./helpers"
 import { i18n, TRANSLATIONS } from "../../i18n"
 import { BuildCtx } from "../../util/ctx"
 import { StaticResources } from "../../util/resources"
+
+// Read tags from either the frontmatter (source of truth) or the
+// transformer-populated field. `file.tags` is not always populated at
+// emit time in some Quartz versions; frontmatter always is.
+function getNodeTags(file: QuartzPluginData): string[] {
+  const fm = file.frontmatter?.tags
+  if (typeof fm === "string") return [fm]
+  if (Array.isArray(fm)) return fm
+  if (Array.isArray(file.tags)) return file.tags as string[]
+  return []
+}
+
 interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
   exclude?: string[]
@@ -134,6 +146,13 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const cfg = ctx.cfg.configuration
 
       const excluded = new Set<string>(userOpts?.exclude ?? [])
+      // Folders whose index.md is tagged `render-as-page` are excluded
+      // automatically — their index page is emitted by ContentPage instead.
+      for (const file of allFiles) {
+        if (file.slug?.endsWith("/index") && getNodeTags(file).includes("render-as-page")) {
+          excluded.add(file.slug.slice(0, -"/index".length))
+        }
+      }
       const folders: Set<SimpleSlug> = new Set(
         allFiles.flatMap((data) => {
           return data.slug
@@ -158,6 +177,13 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
         if (!changeEvent.file) continue
         const slug = changeEvent.file.data.slug!
         const excluded = new Set<string>(userOpts?.exclude ?? [])
+        // Folders whose index.md is tagged `render-as-page` are excluded
+        // automatically — their index page is emitted by ContentPage instead.
+        for (const file of allFiles) {
+          if (file.slug?.endsWith("/index") && getNodeTags(file).includes("render-as-page")) {
+            excluded.add(file.slug.slice(0, -"/index".length))
+          }
+        }
         const folders = _getFolders(slug).filter(
           (folderName) =>
             folderName !== "." && folderName !== "tags" && !excluded.has(folderName),

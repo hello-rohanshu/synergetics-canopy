@@ -83,12 +83,20 @@ export const ContentPage: QuartzEmitterPlugin<Partial<FullPageLayout>> = (userOp
           containsIndex = true
         }
 
-        // only skip tag pages. Folder index pages are emitted here too, then
-        // overwritten by FolderPage when FolderPage processes that folder. The
-        // emitters array order (ContentPage before FolderPage) makes the latter
-        // win for every folder that FolderPage handles. Folders excluded from
-        // FolderPage (via its `exclude` option) keep the ContentPage output.
         if (slug.startsWith("tags/")) continue
+
+        // Folder index pages are FolderPage's job. Emit one here only if its
+        // markdown opts in via `render-as-page`, which also tells FolderPage
+        // to skip that folder. Guarantees only one emitter writes each file.
+        if (slug.endsWith("/index")) {
+          const fmTags = file.data.frontmatter?.tags
+          const tags: string[] = Array.isArray(fmTags)
+            ? fmTags
+            : typeof fmTags === "string"
+              ? [fmTags]
+              : ((file.data.tags as string[] | undefined) ?? [])
+          if (!tags.includes("render-as-page")) continue
+        }
         yield processContent(ctx, tree, file.data, allFiles, opts, resources)
       }
 
@@ -117,6 +125,16 @@ export const ContentPage: QuartzEmitterPlugin<Partial<FullPageLayout>> = (userOp
         const slug = file.data.slug!
         if (!changedSlugs.has(slug)) continue
         if (slug.startsWith("tags/")) continue
+
+        if (slug.endsWith("/index")) {
+          const fmTags = file.data.frontmatter?.tags
+          const tags: string[] = Array.isArray(fmTags)
+            ? fmTags
+            : typeof fmTags === "string"
+              ? [fmTags]
+              : ((file.data.tags as string[] | undefined) ?? [])
+          if (!tags.includes("render-as-page")) continue
+        }
 
         yield processContent(ctx, tree, file.data, allFiles, opts, resources)
       }

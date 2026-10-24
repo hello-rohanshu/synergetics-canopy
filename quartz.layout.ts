@@ -8,19 +8,12 @@ const explorerConfig = {
     const name = (node.path || node.displayName || "").toLowerCase();
     const hasHideTag = node.data?.tags?.includes("hide-from-nav");
 
-    // Figure pages live inside Illustrations/ but are already surfaced via
-    // the gallery at /Illustrations. Hide the children from the sidebar so
-    // the folder doesn't expand into 300 entries, but keep the folder itself.
-    const isIllustrationsFolder = slug === "Illustrations" || slug === "Illustrations/index";
-    const isIllustrationChild = slug.startsWith("Illustrations/") && !isIllustrationsFolder;
-
-    return !hidden.has(slug) && !hidden.has(name) && !hasHideTag && !isIllustrationChild;
+    return !hidden.has(slug) && !hidden.has(name) && !hasHideTag;
   },
 
   mapFn: (node: any) => {
-    if (node.displayName === "Illustrations") {
-      node.isFolder = false;
-    }
+    // Folders opt into page-style rendering via the `render-as-page` tag on
+    // their index.md frontmatter. No per-folder overrides needed here.
     if (node.displayName === "Introduction - The Wellspring of Reality") {
       node.displayName = "Wellspring";
     }
