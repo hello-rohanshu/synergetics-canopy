@@ -1,0 +1,16 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Fig. 938.16 Octahedron Produced from Precessed Edges of Tetrahedron
+  - Illustrations/Fig. 938.16 Octahedron Produced from Precessed Edges of Tetrahedron
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
+---
+
+![[Fig. 938.16.png]]
+
+Fig. 938.16 Octahedron Produced from Precessed Edges of Tetrahedron: An octahedron may be produced from a single tetrahedron by detaching the tetra edges and precessing each of the faces 60 degrees. The sequence begins at A and proceeds through BCD at arrive at E with an octahedron of four positive triangular facets interspersed symmetrically with four empty triangular windows. From F through I the sequence returns to the original tetrahedron.

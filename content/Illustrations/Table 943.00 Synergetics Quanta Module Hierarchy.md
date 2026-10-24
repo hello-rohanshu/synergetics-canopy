@@ -1,0 +1,30 @@
+---
+aliases:
+  - Illustrations/Tables and Figures/Table 943.00 Synergetics Quanta Module Hierarchy
+  - Illustrations/Table 943.00 Synergetics Quanta Module Hierarchy
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
+---
+
+
+Table 943.00 Synergetics Quanta Module Hierarchy
+
+| Interior As<br>Whole Balls<br>at Center: | Interior Bs<br>System:     | Exterior<br>Volume | Exterior<br>Layers | Total<br>Shells: As<br>Implosive<br>Conserver | Total<br>Shells: As<br>Explosive<br>Exportive | Total<br>Shells: Bs<br>Implosive<br>Conserver | Total<br>Shells: Bs<br>Explosive<br>Exportive | Total<br>Tetrahedral<br>Quanta<br>Modules | Tetrahedral<br>Quanta<br>Modules (24) |
+| ---------------------------------------- | -------------------------- | ------------------ | ------------------ | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | ----------------------------------------- | ------------------------------------- |
+| 0                                        | Tetrahedron                | 1                  | 1                  |                                               | 24                                            |                                               | 24                                            | 1                                         |                                       |
+| 0                                        | Isosceles<br>Dodecahedron  | 2                  | 2                  | 24                                            |                                               | 24                                            |                                               | 48                                        | 2                                     |
+| 0                                        | Octahedron                 | 4                  | 2                  |                                               | 48                                            | 48                                            |                                               | 96                                        | 4                                     |
+| 0                                        | Cube                       | 3                  | 3                  | 48                                            |                                               |                                               | 24                                            | 72                                        | 3                                     |
+| 1*                                       | Rhombic<br>Dodecahedron #1 | 6                  | 1 (triple<br>deep) |                                               |                                               |                                               |                                               | 144                                       | 6                                     |
+| 0                                        | Rhombic<br>Dodecahedron #2 | 6                  | 3                  |                                               | 48                                            | 96                                            |                                               | 144                                       | 6                                     |
+| 1**                                      | Vector<br>Equilibrium      | 20                 | 4                  | 288                                           | 96                                            | 48                                            | 48                                            | 480                                       | 20                                    |
+|                                          | Tetrakaidecahedron         |                    |                    | 11,664                                        | 5,568                                         | 1,008                                         | 192                                           | 18,432                                    | 768                                   |
+
+\* Sun only; no satellites
+** Sun + 12 partial sphere satellites
+
