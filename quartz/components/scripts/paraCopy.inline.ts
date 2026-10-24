@@ -201,7 +201,7 @@ export function attachParaCopyButtons(container: HTMLElement | Document, pageSlu
       // Heading line — § prefix, all bold.
       // Plain text: no URL. HTML: heading text wraps in a link to the section URL,
       // the § symbol stays outside the link.
-      const headingLine = `**§ ${headingText}**`
+      const headingLine = `§ ${headingText}`
       const headingLineHtml = `<p><strong>§ <a href="${escapeHtml(url)}">${escapeHtml(headingText)}</a></strong></p>`
 
       const bodyPlain = nodes
@@ -212,7 +212,7 @@ export function attachParaCopyButtons(container: HTMLElement | Document, pageSlu
       const bodyHtml = nodes.map((n) => elementToHtml(n)).join("")
 
       // Attribution — all bold, no link
-      const attribution = `**— RBF • Synergetics**`
+      const attribution = `— RBF • Synergetics`
       const attributionHtml = `<p><strong>— RBF • Synergetics</strong></p>`
 
       // Plain text: no URLs. HTML: heading link carries the section URL.
