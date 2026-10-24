@@ -34,7 +34,6 @@ function getNodeTags(file: QuartzPluginData): string[] {
 
 interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
-  exclude?: string[]
 }
 
 async function* processFolderInfo(
@@ -145,7 +144,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
 
-      const excluded = new Set<string>(userOpts?.exclude ?? [])
+      const excluded = new Set<string>()
       // Folders whose index.md is tagged `render-as-page` are excluded
       // automatically — their index page is emitted by ContentPage instead.
       for (const file of allFiles) {
@@ -171,19 +170,20 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
 
+      const excluded = new Set<string>()
+      // Folders whose index.md is tagged `render-as-page` are excluded
+      // automatically — their index page is emitted by ContentPage instead.
+      for (const file of allFiles) {
+        if (file.slug?.endsWith("/index") && getNodeTags(file).includes("render-as-page")) {
+          excluded.add(file.slug.slice(0, -"/index".length))
+        }
+      }
+
       // Find all folders that need to be updated based on changed files
       const affectedFolders: Set<SimpleSlug> = new Set()
       for (const changeEvent of changeEvents) {
         if (!changeEvent.file) continue
         const slug = changeEvent.file.data.slug!
-        const excluded = new Set<string>(userOpts?.exclude ?? [])
-        // Folders whose index.md is tagged `render-as-page` are excluded
-        // automatically — their index page is emitted by ContentPage instead.
-        for (const file of allFiles) {
-          if (file.slug?.endsWith("/index") && getNodeTags(file).includes("render-as-page")) {
-            excluded.add(file.slug.slice(0, -"/index".length))
-          }
-        }
         const folders = _getFolders(slug).filter(
           (folderName) =>
             folderName !== "." && folderName !== "tags" && !excluded.has(folderName),
