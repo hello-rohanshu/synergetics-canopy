@@ -1,25 +1,23 @@
 // scripts/illustrations.cjs
 // ------------------------------------------------------------------
 // ILLUSTRATIONS SCRIPT
-// Scans content/Illustrations/ and writes a JSON gallery manifest to
-// quartz/static/data/illustrations.json for IllustrationGallery.tsx.
+// Scans content/Illustrations/ and writes a single unified manifest
+// to quartz/static/data/illustrations.json for IllustrationGallery.tsx.
 //
-// Buckets:
-//   figures — one entry per .md in "Tables and Figures/" (excluding
-//             Drawing N) and "Interactive/"
-//             thumb = first ![[...]] embed with an image extension
-//             href  = slugified path to the .md page
-//   misc    — Drawing N .md pages, plus every file in "Attachments/"
-//             whose name does NOT start with Fig / Table / Chart / Drawing
-//             (Solo, Inline, Color Plate, etc.)
-//             href  = slugified asset path (opens image directly)
+// Every entry has: title, href, thumb, tags[].
+// Tags drive the pill filter on the frontend:
+//   - Type tag (at most one): Tables (Table*/Chart*), Drawings, Color Plates
+//   - Chapter tag derived from the first number in the name if >= 100:
+//     Math.floor(n / 100) * 100, formatted as "<chapter>.00" (e.g. "400.00")
+//   - "Misc" tag if neither type nor chapter applies
 //
-// Each item also gets a tags array for the pill filter:
-//   - Type tag: at most one of Tables / Drawings / Color Plates
-//   - Chapter tag: derived from the first number in the name
-//     if that number is >= 100. Format: "<chapter>.00" (e.g. "400.00",
-//     "1000.00"). Maps: Math.floor(n / 100) * 100.
-//   - Misc tag: only if no type tag AND no chapter tag.
+// Source logic (unchanged from before, just flattened):
+//   - Tables and Figures/*.md (excluding Drawing N) + Interactive/*.md
+//       href = .md page, thumb = first ![[...]] embed
+//   - Tables and Figures/Drawing *.md
+//       href = .md page, thumb = first ![[...]] embed
+//   - Attachments/* (excluding Fig/Table/Chart/Drawing prefixes)
+//       href = asset URL, thumb = same asset URL
 // ------------------------------------------------------------------
 
 const fs = require('fs');
@@ -45,7 +43,6 @@ function sluggifySegment(seg) {
 }
 
 // Mirrors Quartz's slugifyFilePath for a path already relative to content/.
-// Strips a trailing .md/.html, slugifies every segment.
 function slugifyFilePath(fp) {
   const cleaned = fp.replace(/^\/+|\/+$/g, '');
   const withoutExt = cleaned.replace(/\.(md|html)$/i, '');
@@ -73,8 +70,7 @@ function firstWikilinkEmbed(body) {
   return m ? m[1].trim() : null;
 }
 
-// First number anywhere in a filename, for numeric sort. Items with no
-// number (e.g. "VE symbol SVG code") sort to the end.
+// First number anywhere in a filename, for numeric sort.
 function leadingNumber(name) {
   const m = name.match(/(\d+)/);
   return m ? parseInt(m[1], 10) : Infinity;
@@ -93,7 +89,6 @@ function computeTags(title) {
   const tags = [];
   const lower = title.toLowerCase();
 
-  // Type tag — at most one. "Chart" rides under Tables (user's choice).
   if (lower.startsWith('table') || lower.startsWith('chart')) {
     tags.push('Tables');
   } else if (lower.startsWith('drawing')) {
@@ -102,7 +97,6 @@ function computeTags(title) {
     tags.push('Color Plates');
   }
 
-  // Chapter tag — from first number, if >= 100.
   const numMatch = title.match(/(\d+)/);
   if (numMatch) {
     const n = parseInt(numMatch[1], 10);
@@ -112,7 +106,6 @@ function computeTags(title) {
     }
   }
 
-  // Fallback: items with no type and no chapter get "Misc".
   if (tags.length === 0) tags.push('Misc');
 
   return tags;
@@ -130,8 +123,9 @@ function main() {
   }
 
   const illustrationsRel = CONFIG.illustrationsRoot.replace(/^content\//, '');
-  const figures = [];
+  const items = [];
 
+  // 1. Figures from Tables and Figures + Interactive (excluding Drawings)
   for (const dirName of CONFIG.figuresDirs) {
     const dirPath = path.join(root, dirName);
     if (!fs.existsSync(dirPath)) continue;
@@ -147,7 +141,6 @@ function main() {
 
       const pageSlug = '/' + slugifyFilePath(`${illustrationsRel}/${dirName}/${file}`);
 
-      // Only accept embeds with an image extension — GLBs etc. fall back to placeholder.
       let thumb = '';
       if (embed) {
         const ext = path.extname(embed).toLowerCase();
@@ -156,14 +149,11 @@ function main() {
         }
       }
 
-      figures.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
+      items.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
     }
   }
 
-  const misc = [];
-
-  // Drawing .md pages live in "Tables and Figures" but are not numbered
-  // like the rest of the book's figures, so they go into Misc gallery.
+  // 2. Drawing .md pages
   const tfDir = path.join(root, CONFIG.figuresDirs[0]);
   if (fs.existsSync(tfDir)) {
     const drawingFiles = fs.readdirSync(tfDir)
@@ -185,12 +175,12 @@ function main() {
         }
       }
 
-      misc.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
+      items.push(makeItem(file.replace(/\.md$/, ''), pageSlug, thumb));
     }
   }
 
+  // 3. Loose attachments (Color Plates, Inline, Solo)
   const attachmentsPath = path.join(root, CONFIG.attachmentsDir);
-
   if (fs.existsSync(attachmentsPath)) {
     const files = fs.readdirSync(attachmentsPath).sort(numericSort);
 
@@ -204,18 +194,16 @@ function main() {
       if (excluded) continue;
 
       const assetSlug = '/' + slugifyAssetPath(`${illustrationsRel}/${CONFIG.attachmentsDir}/${file}`);
-      misc.push(makeItem(file, assetSlug, assetSlug));
+      items.push(makeItem(file, assetSlug, assetSlug));
     }
   }
 
-  const report = { generated: new Date().toISOString(), figures, misc };
+  const report = { generated: new Date().toISOString(), items };
   const outputPath = path.join(process.cwd(), CONFIG.outputFile);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(report, null, 2));
 
-  console.log(
-    `[illustrations] ${figures.length} figure(s), ${misc.length} misc image(s) -> ${CONFIG.outputFile}`,
-  );
+  console.log(`[illustrations] ${items.length} item(s) -> ${CONFIG.outputFile}`);
 }
 
 main();
