@@ -99,6 +99,10 @@ export const defaultContentPageLayout: PageLayout = {
       component: Component.Changelog(),
       condition: (page) => page.fileData.slug === "changelog",
     }),
+    Component.ConditionalRender({
+      component: Component.IllustrationGallery(),
+      condition: (page) => page.fileData.slug === "gallery",
+    }),
   ],
   left: [
     Component.PageTitle(),

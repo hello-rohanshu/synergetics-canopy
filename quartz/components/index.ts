@@ -31,6 +31,7 @@ import ContentAudit from "./ContentAudit"
 import TrendsManifest from "./TrendsManifest"
 import ImageZoom from "./ImageZoom"
 import Changelog from "./Changelog"
+import IllustrationGallery from "./IllustrationGallery"
 
 export {
   ArticleTitle,
@@ -66,4 +67,5 @@ export {
   TrendsManifest,
   ImageZoom,
   Changelog,
+  IllustrationGallery,
 }

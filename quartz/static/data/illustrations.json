@@ -1,0 +1,1597 @@
+{
+  "generated": "2026-10-24T12:50:07.181Z",
+  "figures": [
+    {
+      "title": "Fig. 100.031 Resolvability Limits",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.031-Resolvability-Limits",
+      "thumb": "/Illustrations/Attachments/Fig.-100.031.png"
+    },
+    {
+      "title": "Fig. 100.103 Parallel and Perpendicular Halving of Tetrahedron (Legacy)",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.103-Parallel-and-Perpendicular-Halving-of-Tetrahedron-(Legacy)",
+      "thumb": "/Illustrations/Attachments/Fig.-100.103.png"
+    },
+    {
+      "title": "Fig. 100.1041 Three-way Bisecting of a Triangle",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.1041-Three-way-Bisecting-of-a-Triangle",
+      "thumb": "/Illustrations/Attachments/Fig.-100.1041.png"
+    },
+    {
+      "title": "Fig. 100.120 Image of Icosa and Tetra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.120-Image-of-Icosa-and-Tetra",
+      "thumb": "/Illustrations/Attachments/Fig.-100.120.png"
+    },
+    {
+      "title": "Fig. 100.301 A-D Dissimilar Subdivision of Irregular Hexahedra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.301-A-D-Dissimilar-Subdivision-of-Irregular-Hexahedra",
+      "thumb": "/Illustrations/Attachments/Fig.-100.301.png"
+    },
+    {
+      "title": "Fig. 100.412",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.412",
+      "thumb": "/Illustrations/Attachments/Fig.-100.412.png"
+    },
+    {
+      "title": "Fig. 100.413",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.413",
+      "thumb": "/Illustrations/Attachments/Fig.-100.413.png"
+    },
+    {
+      "title": "Fig. 100.414",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.414",
+      "thumb": "/Illustrations/Attachments/Fig.-100.414.png"
+    },
+    {
+      "title": "Fig. 100.415",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.415",
+      "thumb": "/Illustrations/Attachments/Fig.-100.415.png"
+    },
+    {
+      "title": "Fig. 100.416 (Legacy)",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.416-(Legacy)",
+      "thumb": "/Illustrations/Attachments/Fig.-100.416.png"
+    },
+    {
+      "title": "Fig. 100.51 Morley Theorem",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-100.51-Morley-Theorem",
+      "thumb": "/Illustrations/Attachments/Fig.-100.51.png"
+    },
+    {
+      "title": "Fig. 108.01 Triangle and Tetrahedron - Synergy (1 + 1 = 4)",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-108.01-Triangle-and-Tetrahedron---Synergy-(1-+-1-=-4)",
+      "thumb": "/Illustrations/Attachments/Fig.-108.01.png"
+    },
+    {
+      "title": "Fig. 110",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-110",
+      "thumb": "/Illustrations/Attachments/Fig.-110A.png"
+    },
+    {
+      "title": "Fig. 203.09 Examples of Geodesic Design in Nature",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-203.09-Examples-of-Geodesic-Design-in-Nature",
+      "thumb": "/Illustrations/Attachments/Fig.-203.09.png"
+    },
+    {
+      "title": "Fig. 222.01 Equation for Omnidirectional Closest Packing of Spheres",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-222.01-Equation-for-Omnidirectional-Closest-Packing-of-Spheres",
+      "thumb": "/Illustrations/Attachments/Fig.-222.01.png"
+    },
+    {
+      "title": "Fig. 222.30 Volume Of Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-222.30-Volume-Of-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-222.30.png"
+    },
+    {
+      "title": "Table 224.20 Angular Topology Independent of Size",
+      "href": "/Illustrations/Tables-and-Figures/Table-224.20-Angular-Topology-Independent-of-Size",
+      "thumb": "/Illustrations/Attachments/Table-224.20.png"
+    },
+    {
+      "title": "Table 224.70A Tetrahedral Mensuration Applied to Well-Known Polyhedra",
+      "href": "/Illustrations/Tables-and-Figures/Table-224.70A-Tetrahedral-Mensuration-Applied-to-Well-Known-Polyhedra",
+      "thumb": "/Illustrations/Attachments/Table-224.70A-Tetrahedral-Mensuration-Applied-to-Well-Known-Polyhedra.png"
+    },
+    {
+      "title": "Table 224.70B Tetrahedral Mensuration Applied to Spheres",
+      "href": "/Illustrations/Tables-and-Figures/Table-224.70B-Tetrahedral-Mensuration-Applied-to-Spheres",
+      "thumb": "/Illustrations/Attachments/Table-224.70B.png"
+    },
+    {
+      "title": "Table 227.01 Underlaying Order in Randomness",
+      "href": "/Illustrations/Tables-and-Figures/Table-227.01-Underlaying-Order-in-Randomness",
+      "thumb": "/Illustrations/Attachments/Table-227.01.png"
+    },
+    {
+      "title": "Fig. 260.211 Humans' Range-finding Optical System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-260.211-Humans'-Range-finding-Optical-System",
+      "thumb": "/Illustrations/Attachments/Fig.-260.211.png"
+    },
+    {
+      "title": "Figs. 267.02A-B Observer as Tetrasystem",
+      "href": "/Illustrations/Tables-and-Figures/Figs.-267.02A-B-Observer-as-Tetrasystem",
+      "thumb": "/Illustrations/Attachments/Fig.-267.02A.png"
+    },
+    {
+      "title": "Fig. 321.01 Universe as 'A Minimum of Two Pictures' - Evolution as a transformation of nonsimultaneous events",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-321.01-Universe-as-'A-Minimum-of-Two-Pictures'---Evolution-as-a-transformation-of-nonsimultaneous-events",
+      "thumb": "/Illustrations/Attachments/Fig.-321.01.png"
+    },
+    {
+      "title": "Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-400.30-Topological-relationships-of-faces,-vertexes,-and-edges-of-various-polyhedra",
+      "thumb": "/Illustrations/Attachments/Fig.-400.30.png"
+    },
+    {
+      "title": "Fig. 401.00 Tensegrity Tetrahedron with 'Me' Ball Suspended at Center of Volume of the Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-401.00-Tensegrity-Tetrahedron-with-'Me'-Ball-Suspended-at-Center-of-Volume-of-the-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-401.00.png"
+    },
+    {
+      "title": "Fig. 401.01 Four Vectors of Restraint Define Minimum System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-401.01-Four-Vectors-of-Restraint-Define-Minimum-System",
+      "thumb": "/Illustrations/Attachments/Fig.-401.01.png"
+    },
+    {
+      "title": "Fig. 401.05",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-401.05",
+      "thumb": "/Illustrations/Attachments/Fig.-401.05.png"
+    },
+    {
+      "title": "Fig. 411.05 Four Spheres Lock as Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-411.05-Four-Spheres-Lock-as-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-411.05.png"
+    },
+    {
+      "title": "Table 412.01",
+      "href": "/Illustrations/Tables-and-Figures/Table-412.01",
+      "thumb": "/Illustrations/Attachments/Table-412.01.png"
+    },
+    {
+      "title": "Fig. 413.01 Vector Equilibrium - Omnidirectional Closest Packing Around a Nucleus",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-413.01-Vector-Equilibrium---Omnidirectional-Closest-Packing-Around-a-Nucleus",
+      "thumb": "/Illustrations/Attachments/Fig.-413.01.png"
+    },
+    {
+      "title": "Fig. 415.17 Nucleated Cube",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-415.17-Nucleated-Cube",
+      "thumb": "/Illustrations/Attachments/Fig.-415.17.png"
+    },
+    {
+      "title": "Fig. 415.22 Rational Volumes of Tetrahedroning",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-415.22-Rational-Volumes-of-Tetrahedroning",
+      "thumb": "/Illustrations/Attachments/Fig.-415.22-Rational-Volumes-of-Tetrahedroning.png"
+    },
+    {
+      "title": "Fig. 415.55 Tetrahedral Closest Packing of Spheres - Nucleus and Nestable Configurations",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-415.55-Tetrahedral-Closest-Packing-of-Spheres---Nucleus-and-Nestable-Configurations",
+      "thumb": "/Illustrations/Attachments/Fig.-415.55-Fig.-415.55-Tetrahedral-Closest-Packing-of-Spheres---Nucleus-and-Nestable-Configurations.png"
+    },
+    {
+      "title": "Table - Chart 415.03",
+      "href": "/Illustrations/Tables-and-Figures/Table---Chart-415.03",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-416.01-Tetrahedral-Precession-of-Closest-Packed-Spheres",
+      "thumb": "/Illustrations/Attachments/Fig.-416.01-Tetrahedral-Precession-of-Closest-Packed-Spheres.png"
+    },
+    {
+      "title": "Fig. 417.01 Precession of Two Sets of 60 Closest-Packed Spheres as Seven-Frequency Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-417.01-Precession-of-Two-Sets-of-60-Closest-Packed-Spheres-as-Seven-Frequency-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-417.01.png"
+    },
+    {
+      "title": "Fig. 419.03",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-419.03",
+      "thumb": "/Illustrations/Attachments/Fig.-419.03-1.png"
+    },
+    {
+      "title": "Fig. 419.30 Realized Nucleus Appears at Fifth Shell Layer",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-419.30-Realized-Nucleus-Appears-at-Fifth-Shell-Layer",
+      "thumb": "/Illustrations/Attachments/Fig.-419.30.png"
+    },
+    {
+      "title": "Fig. 420.02",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-420.02",
+      "thumb": "/Illustrations/Attachments/Fig.-420.02.png"
+    },
+    {
+      "title": "Fig. 445.13",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-445.13",
+      "thumb": "/Illustrations/Attachments/Fig.-445.13.png"
+    },
+    {
+      "title": "Fig. 450.11A Axes of Rotation of Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-450.11A-Axes-of-Rotation-of-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-450.11A.png"
+    },
+    {
+      "title": "Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems 1",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems-1",
+      "thumb": "/Illustrations/Attachments/Fig.-450.11B.png"
+    },
+    {
+      "title": "Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems",
+      "thumb": "/Illustrations/Attachments/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems.png"
+    },
+    {
+      "title": "Fig. 453.01 Great Circles of Vector Equilibrium Define Lowest Common Multiple Triangle",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-453.01-Great-Circles-of-Vector-Equilibrium-Define-Lowest-Common-Multiple-Triangle",
+      "thumb": "/Illustrations/Attachments/Fig.-453.01.png"
+    },
+    {
+      "title": "Fig. 453.02 Inside-Outing of Triangle",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-453.02-Inside-Outing-of-Triangle",
+      "thumb": "/Illustrations/Attachments/Fig.-453.02.png"
+    },
+    {
+      "title": "Fig. 454.01A",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-454.01A",
+      "thumb": "/Illustrations/Attachments/Fig.-454.01A.png"
+    },
+    {
+      "title": "Fig. 454.01B",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-454.01B",
+      "thumb": "/Illustrations/Attachments/Fig.-454.01B.png"
+    },
+    {
+      "title": "Fig. 454.01C",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-454.01C",
+      "thumb": "/Illustrations/Attachments/Fig.-454.01C.png"
+    },
+    {
+      "title": "Fig. 454.06 Definition of Spherical Polyhedra in 25-Great-Circle Vector Equilibrium System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-454.06-Definition-of-Spherical-Polyhedra-in-25-Great-Circle-Vector-Equilibrium-System",
+      "thumb": "/Illustrations/Attachments/Fig.-454.06.png"
+    },
+    {
+      "title": "Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-455.11-Folding-of-Great-Circles-into-Spherical-Cube-or-Rhombic-Dodecahedron-and-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-455.11.png"
+    },
+    {
+      "title": "Fig. 455.20",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-455.20",
+      "thumb": "/Illustrations/Attachments/Fig.-455.20.png"
+    },
+    {
+      "title": "Fig. 457.30A Axes of Rotation of Icosahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-457.30A-Axes-of-Rotation-of-Icosahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-457.30A.png"
+    },
+    {
+      "title": "Fig. 457.30B Projection of 31 Great-Circle Planes in Icosahedron System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-457.30B-Projection-of-31-Great-Circle-Planes-in-Icosahedron-System",
+      "thumb": "/Illustrations/Attachments/Fig.-457.30B.png"
+    },
+    {
+      "title": "Fig. 457.40 Definition of Spherical Polyhedra in 31-Great-Circle Icosahedron System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-457.40-Definition-of-Spherical-Polyhedra-in-31-Great-Circle-Icosahedron-System",
+      "thumb": "/Illustrations/Attachments/Fig.-457.40.png"
+    },
+    {
+      "title": "Fig. 458.12 Folding of Great Circles into the Icosahedron System",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-458.12-Folding-of-Great-Circles-into-the-Icosahedron-System",
+      "thumb": "/Illustrations/Attachments/Fig.-458.12.png"
+    },
+    {
+      "title": "Fig. 459.01 Great Circle Foldabilities of Icosahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-459.01-Great-Circle-Foldabilities-of-Icosahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-459.01.png"
+    },
+    {
+      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium-(Legacy)",
+      "thumb": "/Illustrations/Attachments/Fig.-460.08.png"
+    },
+    {
+      "title": "Fig. 461.08 Jitterbug System Collapses into Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-461.08-Jitterbug-System-Collapses-into-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-461.08.png"
+    },
+    {
+      "title": "Fig. 462.00 The triangle formed by connecting diagonals of three adjacent faces of the cube is the face of the tetrahedron within the cube",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-462.00-The-triangle-formed-by-connecting-diagonals-of-three-adjacent-faces-of-the-cube-is-the-face-of-the-tetrahedron-within-the-cube",
+      "thumb": "/Illustrations/Attachments/Fig.-462.00.png"
+    },
+    {
+      "title": "Fig. 463.01 There are no straight lines, only waves resembling them",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-463.01-There-are-no-straight-lines,-only-waves-resembling-them",
+      "thumb": "/Illustrations/Attachments/Fig.-463.01.png"
+    },
+    {
+      "title": "Fig. 464.01 Triangle in Cube as Energetic Model",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-464.01-Triangle-in-Cube-as-Energetic-Model",
+      "thumb": "/Illustrations/Attachments/Fig.-464.01.png"
+    },
+    {
+      "title": "Fig. 465.00 Note that the eight triangular faces of the vector equilibrium are disposed about four-sided openings, i.e. square faces",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-465.00-Note-that-the-eight-triangular-faces-of-the-vector-equilibrium-are-disposed-about-four-sided-openings,-i.e.-square-faces",
+      "thumb": "/Illustrations/Attachments/Fig.-465.00.png"
+    },
+    {
+      "title": "Fig. 465.01 Four Axes of Vector Equilibrium with Rotating Wheels or Triangular Cams",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-465.01-Four-Axes-of-Vector-Equilibrium-with-Rotating-Wheels-or-Triangular-Cams",
+      "thumb": "/Illustrations/Attachments/Fig.-465.01.png"
+    },
+    {
+      "title": "Fig. 465.03 Rotation of Four Axes of Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-465.03-Rotation-of-Four-Axes-of-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-465.03.png"
+    },
+    {
+      "title": "Fig. 465.10 The vector equilibrium with wheels",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-465.10-The-vector-equilibrium-with-wheels",
+      "thumb": "/Illustrations/Attachments/Fig.-465.10.png"
+    },
+    {
+      "title": "Fig 466.00 Energy-valve Functions of Closest Sphere Packing",
+      "href": "/Illustrations/Tables-and-Figures/Fig-466.00-Energy-valve-Functions-of-Closest-Sphere-Packing",
+      "thumb": "/Illustrations/Attachments/Fig.-466.00.png"
+    },
+    {
+      "title": "Fig. 466.01 Reciprocal Motion of Nine Internal Spheres Propagates Wave by Diagonal Elongation",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-466.01-Reciprocal-Motion-of-Nine-Internal-Spheres-Propagates-Wave-by-Diagonal-Elongation",
+      "thumb": "/Illustrations/Attachments/Fig.-466.01.png"
+    },
+    {
+      "title": "Fig. 466.13",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-466.13",
+      "thumb": "/Illustrations/Attachments/Fig.-466.13.png"
+    },
+    {
+      "title": "Fig. 466.31 Nuclear Tetrahedra Pairs",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-466.31-Nuclear-Tetrahedra-Pairs",
+      "thumb": "/Illustrations/Attachments/Fig.-466.31.png"
+    },
+    {
+      "title": "Fig. 470.02A Role of Tetrahedra and Octahedra in Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-470.02A-Role-of-Tetrahedra-and-Octahedra-in-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-470.02A.png"
+    },
+    {
+      "title": "Fig. 470.02B Relationship of Vector Equilibrium to Cube and Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-470.02B-Relationship-of-Vector-Equilibrium-to-Cube-and-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-470.02B.png"
+    },
+    {
+      "title": "Fig. 470.02C Transformation of Vector Equilibrium and Octahedron as Space-Filling Jitterbug",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-470.02C-Transformation-of-Vector-Equilibrium-and-Octahedron-as-Space-Filling-Jitterbug",
+      "thumb": "/Illustrations/Attachments/Fig.-470.02C.png"
+    },
+    {
+      "title": "Fig. 470.02D Reciprocity of Vector Equilibrium and Octahedra in Space-Filling Jitterbug",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-470.02D-Reciprocity-of-Vector-Equilibrium-and-Octahedra-in-Space-Filling-Jitterbug",
+      "thumb": "/Illustrations/Attachments/Fig.-470.02D.png"
+    },
+    {
+      "title": "Fig. 511.10 Two Triangular Energy Events Make Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-511.10-Two-Triangular-Energy-Events-Make-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-511.10.png"
+    },
+    {
+      "title": "Fig. 511.20 One Energy Event",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-511.20-One-Energy-Event",
+      "thumb": "/Illustrations/Attachments/Fig.-511.20.png"
+    },
+    {
+      "title": "Fig. 516.03 Frequency",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-516.03-Frequency",
+      "thumb": "/Illustrations/Attachments/Fig.-516.03.png"
+    },
+    {
+      "title": "Fig. 517.10 Interference Phenomena",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-517.10-Interference-Phenomena",
+      "thumb": "/Illustrations/Attachments/Fig.-517.10.png"
+    },
+    {
+      "title": "Fig. 521.30 Omnidirectional Lines of Forces",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-521.30-Omnidirectional-Lines-of-Forces",
+      "thumb": "/Illustrations/Attachments/Fig.-521.30.png"
+    },
+    {
+      "title": "Fig. 522.09 The Deliberately Nonstraight Line",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-522.09-The-Deliberately-Nonstraight-Line",
+      "thumb": "/Illustrations/Attachments/Fig.-522.09.png"
+    },
+    {
+      "title": "Fig. 527.08 Assembly by Convergence and Divergence",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-527.08-Assembly-by-Convergence-and-Divergence",
+      "thumb": "/Illustrations/Attachments/Fig.-527.08.png"
+    },
+    {
+      "title": "Fig. 527.09 Convergent Integration and Divergent Disintegration in the Language of Electricity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-527.09-Convergent-Integration-and-Divergent-Disintegration-in-the-Language-of-Electricity",
+      "thumb": "/Illustrations/Attachments/Fig.-527.09.png"
+    },
+    {
+      "title": "Fig. 527.703 Imaginary Three Dimensionality",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-527.703-Imaginary-Three-Dimensionality",
+      "thumb": "/Illustrations/Attachments/Fig.-527.703.png"
+    },
+    {
+      "title": "Fig. 530.07 Simultaneous and Instant Are Nondemonstrable",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-530.07-Simultaneous-and-Instant-Are-Nondemonstrable",
+      "thumb": "/Illustrations/Attachments/Fig.-530.07.png"
+    },
+    {
+      "title": "Fig. 536.03 Domains of Vertexes, Faces, and Edges of Systems",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-536.03-Domains-of-Vertexes,-Faces,-and-Edges-of-Systems",
+      "thumb": "/Illustrations/Attachments/Fig.-536.03.png"
+    },
+    {
+      "title": "Fig. 537.10 Six Vectors for Every Point",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-537.10-Six-Vectors-for-Every-Point",
+      "thumb": "/Illustrations/Attachments/Fig.-537.10.png"
+    },
+    {
+      "title": "Fig. 540.30 Hyperbolic Paraboloid",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-540.30-Hyperbolic-Paraboloid",
+      "thumb": "/Illustrations/Attachments/Fig.-540.30.png"
+    },
+    {
+      "title": "Fig. 541.30H",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-541.30H",
+      "thumb": "/Illustrations/Attachments/Fig.-541.30H.png"
+    },
+    {
+      "title": "Fig. 541.30M",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-541.30M",
+      "thumb": "/Illustrations/Attachments/Fig.-541.30M.png"
+    },
+    {
+      "title": "Fig. 542.02 Tetrahedral Analysis of Plato's Triad",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-542.02-Tetrahedral-Analysis-of-Plato's-Triad",
+      "thumb": "/Illustrations/Attachments/Fig.-542.02.png"
+    },
+    {
+      "title": "Fig. 608.01 Instability of Six Vectors Except as Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-608.01-Instability-of-Six-Vectors-Except-as-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-608.01.png"
+    },
+    {
+      "title": "Fig. 608.21",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-608.21",
+      "thumb": "/Illustrations/Attachments/Fig.-608.21.png"
+    },
+    {
+      "title": "Fig. 608.23 Mariner's Compass Rose",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-608.23-Mariner's-Compass-Rose",
+      "thumb": "/Illustrations/Attachments/Fig.-608.23.png"
+    },
+    {
+      "title": "Fig. 609.01 Instability of Polyhedra from Polygons of More than Three Sides",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-609.01-Instability-of-Polyhedra-from-Polygons-of-More-than-Three-Sides",
+      "thumb": "/Illustrations/Attachments/Fig.-609.01.png"
+    },
+    {
+      "title": "Fig. 610.20 The Three Basic Structural Systems in Nature with Three, Four or Five Triangles at Each Vertex",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-610.20-The-Three-Basic-Structural-Systems-in-Nature-with-Three,-Four-or-Five-Triangles-at-Each-Vertex",
+      "thumb": "/Illustrations/Attachments/Fig.-610.20.png"
+    },
+    {
+      "title": "Fig. 612.11",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-612.11",
+      "thumb": "/Illustrations/Attachments/Fig.-612.11.png"
+    },
+    {
+      "title": "Fig. 613.01 Triangular Spiral Events From Polyhedra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-613.01-Triangular-Spiral-Events-From-Polyhedra",
+      "thumb": "/Illustrations/Attachments/Fig.-613.01.png"
+    },
+    {
+      "title": "Fig. 618.01",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-618.01",
+      "thumb": "/Illustrations/Attachments/Fig.-618.01.png"
+    },
+    {
+      "title": "Fig. 620.06 Tetrahedron as Vectorial Model of Quantum",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-620.06-Tetrahedron-as-Vectorial-Model-of-Quantum",
+      "thumb": "/Illustrations/Attachments/Fig.-620.06.png"
+    },
+    {
+      "title": "Fig. 621.01 Constant Properties of the Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-621.01-Constant-Properties-of-the-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-621.01.png"
+    },
+    {
+      "title": "Fig. 621.10 Falling Sticks - Six Vectors Provide Minimum Stability",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-621.10-Falling-Sticks---Six-Vectors-Provide-Minimum-Stability",
+      "thumb": "/Illustrations/Attachments/Fig.-621.10.png"
+    },
+    {
+      "title": "Fig. 640.20 Compression Members Under Stress",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-640.20-Compression-Members-Under-Stress",
+      "thumb": "/Illustrations/Attachments/Fig.-640.20.png"
+    },
+    {
+      "title": "Fig. 640.41A Stabilization of tension - Minimum of 12 Spokes",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-640.41A-Stabilization-of-tension---Minimum-of-12-Spokes",
+      "thumb": "/Illustrations/Attachments/Fig.-640.41A.png"
+    },
+    {
+      "title": "Fig. 640.41B Minimum of Twelve Spokes Oppose Torque - Universal Joint",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-640.41B-Minimum-of-Twelve-Spokes-Oppose-Torque---Universal-Joint",
+      "thumb": "/Illustrations/Attachments/Fig.-640.41B.png"
+    },
+    {
+      "title": "Fig. 641.01 Tension Members Tend Toward Arcs of Ever Greater Radius",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-641.01-Tension-Members-Tend-Toward-Arcs-of-Ever-Greater-Radius",
+      "thumb": "/Illustrations/Attachments/Fig.-641.01.png"
+    },
+    {
+      "title": "Fig. 647.02",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-647.02",
+      "thumb": "/Illustrations/Attachments/Fig.-647.02.png"
+    },
+    {
+      "title": "Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-717.01-Single-and-Double-Bonding-of-Members-in-Tensegrity-Spheres",
+      "thumb": "/Illustrations/Attachments/Fig.-717.01.png"
+    },
+    {
+      "title": "Fig. 724.10",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-724.10",
+      "thumb": "/Illustrations/Attachments/Fig.-724.10.png"
+    },
+    {
+      "title": "Fig. 725.02 Transformation of Six-Strut Tensegrity Structures",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-725.02-Transformation-of-Six-Strut-Tensegrity-Structures",
+      "thumb": "/Illustrations/Attachments/Fig.-725.02.png"
+    },
+    {
+      "title": "Fig. 730.11 Functions of Positive and Negative Tetrahedra in Tensegrity Stacked Cubes",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-730.11-Functions-of-Positive-and-Negative-Tetrahedra-in-Tensegrity-Stacked-Cubes",
+      "thumb": "/Illustrations/Attachments/Fig.-730.11.png"
+    },
+    {
+      "title": "Fig. 730.12 Stabilization of Tension in Tensegrity Column",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-730.12-Stabilization-of-Tension-in-Tensegrity-Column",
+      "thumb": "/Illustrations/Attachments/Fig.-730.12.png"
+    },
+    {
+      "title": "Fig. 740.21 Tensegrity Masts as Struts",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-740.21-Tensegrity-Masts-as-Struts",
+      "thumb": "/Illustrations/Attachments/Fig.-740.21.png"
+    },
+    {
+      "title": "Fig. 762.01 Chordal Ricochet Pattern in Stretch Action of a Balloon Net",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-762.01-Chordal-Ricochet-Pattern-in-Stretch-Action-of-a-Balloon-Net",
+      "thumb": "/Illustrations/Attachments/Fig.-762.01.png"
+    },
+    {
+      "title": "Fig. 765.02 Stabilization of Three-Way-Grid Tensegrity Sphere",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-765.02-Stabilization-of-Three-Way-Grid-Tensegrity-Sphere",
+      "thumb": "/Illustrations/Attachments/Fig.-765.02.png"
+    },
+    {
+      "title": "Fig. 770.11 System Turbining in Tensegrity Structures",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-770.11-System-Turbining-in-Tensegrity-Structures",
+      "thumb": "/Illustrations/Attachments/Fig.-770.11.png"
+    },
+    {
+      "title": "Fig. 791.01(3) Diagram of Equal Area Planetary Sweepouts",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-791.01(3)-Diagram-of-Equal-Area-Planetary-Sweepouts",
+      "thumb": "/Illustrations/Attachments/Fig.-791.01.png"
+    },
+    {
+      "title": "Fig. 812.03",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-812.03",
+      "thumb": "/Illustrations/Attachments/Fig.-812.03.png"
+    },
+    {
+      "title": "Fig. 825.01",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-825.01",
+      "thumb": "/Illustrations/Attachments/Fig.-825.01.png"
+    },
+    {
+      "title": "Fig. 825.22",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-825.22",
+      "thumb": "/Illustrations/Attachments/Fig.-825.22.png"
+    },
+    {
+      "title": "Fig. 826.02",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-826.02",
+      "thumb": "/Illustrations/Attachments/Fig.-826.02.png"
+    },
+    {
+      "title": "Fig. 826.02A Hammer Throw",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-826.02A-Hammer-Throw",
+      "thumb": "/Illustrations/Attachments/Fig.-826.02A.png"
+    },
+    {
+      "title": "Fig. 831.31 Foldability of Great Circles",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-831.31-Foldability-of-Great-Circles",
+      "thumb": "/Illustrations/Attachments/Fig.-831.31.png"
+    },
+    {
+      "title": "Fig. 835.02",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-835.02",
+      "thumb": "/Illustrations/Attachments/Fig.-835.02.png"
+    },
+    {
+      "title": "Fig. 835.10 Six Great Circles Folded to Form Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-835.10-Six-Great-Circles-Folded-to-Form-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-835.10.png"
+    },
+    {
+      "title": "Fig. 835.11 The Spherical Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-835.11-The-Spherical-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-835.11-The-Spherical-Octahedron.png"
+    },
+    {
+      "title": "Fig. 841.15A Realization of Four Great Circles of Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-841.15A-Realization-of-Four-Great-Circles-of-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-841.15A.png"
+    },
+    {
+      "title": "Fig. 841.15B Fixed Radius Striking a Small Circle on the Surface of a Sphere",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-841.15B-Fixed-Radius-Striking-a-Small-Circle-on-the-Surface-of-a-Sphere",
+      "thumb": "/Illustrations/Attachments/Fig.-841.15B.png"
+    },
+    {
+      "title": "Fig. 841.22 Foldability of Four Great Circles of Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-841.22-Foldability-of-Four-Great-Circles-of-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-841.22.png"
+    },
+    {
+      "title": "Fig. 841.30 Trisection by Inherent Axial Spin",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-841.30-Trisection-by-Inherent-Axial-Spin",
+      "thumb": "/Illustrations/Attachments/Fig.-841.30.png"
+    },
+    {
+      "title": "Fig. 901.03 Basic Right Triangle of Geodesic Sphere",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-901.03-Basic-Right-Triangle-of-Geodesic-Sphere",
+      "thumb": "/Illustrations/Attachments/Fig.-901.03.png"
+    },
+    {
+      "title": "Fig. 901.03 The Basic Disequilibrium 120 LCD Triangle",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-901.03-The-Basic-Disequilibrium-120-LCD-Triangle",
+      "thumb": "/Illustrations/Attachments/Fig.-901.03-b.png"
+    },
+    {
+      "title": "Fig. 913.01 Division of the Quarter-Tetrahedron into Six Parts",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-913.01-Division-of-the-Quarter-Tetrahedron-into-Six-Parts",
+      "thumb": "/Illustrations/Attachments/Fig.-913.01-1.png"
+    },
+    {
+      "title": "Fig. 913.01",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-913.01",
+      "thumb": "/Illustrations/Attachments/Fig.-913.01.png"
+    },
+    {
+      "title": "Fig. 916.01 Division of Eighth-Octahedron into Six Parts",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-916.01-Division-of-Eighth-Octahedron-into-Six-Parts",
+      "thumb": "/Illustrations/Attachments/Fig.-916.01.png"
+    },
+    {
+      "title": "Fig. 923.10 Constant Volume of A and B Quanta Modules",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-923.10-Constant-Volume-of-A-and-B-Quanta-Modules",
+      "thumb": "/Illustrations/Attachments/Fig.-923.10.png"
+    },
+    {
+      "title": "Table 924.20 Tetrahedral Functions of A and B Quanta Modules",
+      "href": "/Illustrations/Tables-and-Figures/Table-924.20-Tetrahedral-Functions-of-A-and-B-Quanta-Modules",
+      "thumb": "/Illustrations/Attachments/Table-924.20.png"
+    },
+    {
+      "title": "Fig. 930.11",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-930.11",
+      "thumb": "/Illustrations/Attachments/Fig.-930.11.png"
+    },
+    {
+      "title": "Fig. 933.01",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-933.01",
+      "thumb": "/Illustrations/Attachments/Fig.-933.01.png"
+    },
+    {
+      "title": "Fig. 935.23 Proton and Neutron Three-vector Teams",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-935.23-Proton-and-Neutron-Three-vector-Teams",
+      "thumb": "/Illustrations/Attachments/Fig.-935.23.png"
+    },
+    {
+      "title": "Fig. 936.12 Octahedron as Conservation and Annihilation Model",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-936.12-Octahedron-as-Conservation-and-Annihilation-Model",
+      "thumb": "/Illustrations/Attachments/Fig.-936.12.png"
+    },
+    {
+      "title": "Fig. 936.16 Iceland Spar Crystal",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-936.16-Iceland-Spar-Crystal",
+      "thumb": "/Illustrations/Attachments/Fig.-936.16.png"
+    },
+    {
+      "title": "Fig. 936.19 Tetrahedral Quantum is Lost and Reappears in Transformation between Octahedron and Three-tetra-arc Tetrahelix",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-936.19-Tetrahedral-Quantum-is-Lost-and-Reappears-in-Transformation-between-Octahedron-and-Three-tetra-arc-Tetrahelix",
+      "thumb": "/Illustrations/Attachments/Fig.-936.19.png"
+    },
+    {
+      "title": "Fig. 937.20 Six-great-circle Spherical Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-937.20-Six-great-circle-Spherical-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-937.20.png"
+    },
+    {
+      "title": "Fig 938.15 Two Tetrahedra Open Three Petal Faces and Precess to Rejoin as Octahedron.",
+      "href": "/Illustrations/Tables-and-Figures/Fig-938.15-Two-Tetrahedra-Open-Three-Petal-Faces-and-Precess-to-Rejoin-as-Octahedron.",
+      "thumb": "/Illustrations/Attachments/Fig.-938.15.png"
+    },
+    {
+      "title": "Fig. 938.13 Six Vectors of Additional Quantum Vanish and Reappear in Jitterbug Transformation Between Vector Equilibrium and Icosahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-938.13-Six-Vectors-of-Additional-Quantum-Vanish-and-Reappear-in-Jitterbug-Transformation-Between-Vector-Equilibrium-and-Icosahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-938.13.png"
+    },
+    {
+      "title": "Fig. 938.16 Octahedron Produced from Precessed Edges of Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-938.16-Octahedron-Produced-from-Precessed-Edges-of-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-938.16.png"
+    },
+    {
+      "title": "Fig. 943.00A",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-943.00A",
+      "thumb": "/Illustrations/Attachments/Fig.-943.00A.png"
+    },
+    {
+      "title": "Fig. 943.00B Hierarchy of Quanta Module Orientations",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-943.00B-Hierarchy-of-Quanta-Module-Orientations",
+      "thumb": "/Illustrations/Attachments/Fig.-943.00B-a.png"
+    },
+    {
+      "title": "Table 943.00 - Synergetics Quanta Module Hierarchy",
+      "href": "/Illustrations/Tables-and-Figures/Table-943.00---Synergetics-Quanta-Module-Hierarchy",
+      "thumb": ""
+    },
+    {
+      "title": "Table 943.00 Synergetics Quanta Module Hierarchy",
+      "href": "/Illustrations/Tables-and-Figures/Table-943.00-Synergetics-Quanta-Module-Hierarchy",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 950.12 Three Self-Packing, Allspace-Filling Irregular Tetrahedra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-950.12-Three-Self-Packing,-Allspace-Filling-Irregular-Tetrahedra",
+      "thumb": "/Illustrations/Attachments/Fig.-950.12.png"
+    },
+    {
+      "title": "Fig. 954.00A A and B Quanta Module Orientations.",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-954.00A-A-and-B-Quanta-Module-Orientations.",
+      "thumb": "/Illustrations/Attachments/Fig.-954.00A-a.png"
+    },
+    {
+      "title": "Fig. 954.00B Mites and Couplers",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-954.00B-Mites-and-Couplers",
+      "thumb": "/Illustrations/Attachments/Fig.-954.00B-a.png"
+    },
+    {
+      "title": "Table 963.10 Dymaxion Energetic Geometry, 1950.",
+      "href": "/Illustrations/Tables-and-Figures/Table-963.10-Dymaxion-Energetic-Geometry,-1950.",
+      "thumb": "/Illustrations/Attachments/Table-963.10-a.png"
+    },
+    {
+      "title": "Fig. 966.05 Tetrahedral Modelability of 2nd, 3rd, 4th, and 5th Power Relationships",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-966.05-Tetrahedral-Modelability-of-2nd,-3rd,-4th,-and-5th-Power-Relationships",
+      "thumb": "/Illustrations/Attachments/Fig.-966.05.png"
+    },
+    {
+      "title": "Fig. 970.20 Basic Vector Equilibrium Concentric Shell Structure",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-970.20-Basic-Vector-Equilibrium-Concentric-Shell-Structure",
+      "thumb": "/Illustrations/Attachments/Fig.-970.20.png"
+    },
+    {
+      "title": "Fig. 982.58",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-982.58",
+      "thumb": "/Illustrations/Attachments/Fig.-982.58.png"
+    },
+    {
+      "title": "Fig. 982.61 Synergetics Isometric of the Isotropic Vector Matrix",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-982.61-Synergetics-Isometric-of-the-Isotropic-Vector-Matrix",
+      "thumb": "/Illustrations/Attachments/Fig.-982.61.png"
+    },
+    {
+      "title": "Fig. 986.052 Robot Camera Photograph of Tetrahedra on Mars",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.052-Robot-Camera-Photograph-of-Tetrahedra-on-Mars",
+      "thumb": "/Illustrations/Attachments/Fig.-986.052.png"
+    },
+    {
+      "title": "Fig. 986.061 Truncation of Tetrahedra",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.061-Truncation-of-Tetrahedra",
+      "thumb": "/Illustrations/Attachments/Fig.-986.061.png"
+    },
+    {
+      "title": "Fig. 986.062 Truncated Tetrahedron within Five-frequency Tetra Grid",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.062-Truncated-Tetrahedron-within-Five-frequency-Tetra-Grid",
+      "thumb": "/Illustrations/Attachments/Fig.-986.062.png"
+    },
+    {
+      "title": "Fig. 986.076 Diagram of Verrazano Bridge",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.076-Diagram-of-Verrazano-Bridge",
+      "thumb": "/Illustrations/Attachments/Fig.-986.076.png"
+    },
+    {
+      "title": "Fig. 986.096 4-D Symbol",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.096-4-D-Symbol",
+      "thumb": "/Illustrations/Attachments/Fig.-986.096.png"
+    },
+    {
+      "title": "Fig. 986.161 Diametric Unity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.161-Diametric-Unity",
+      "thumb": "/Illustrations/Attachments/Fig.-986.161.png"
+    },
+    {
+      "title": "Fig. 986.210 Diagonal of Cube as Unity in Synergetic Geometry",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.210-Diagonal-of-Cube-as-Unity-in-Synergetic-Geometry",
+      "thumb": "/Illustrations/Attachments/Fig.-986.210.png"
+    },
+    {
+      "title": "Fig. 986.314",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.314",
+      "thumb": "/Illustrations/Attachments/Fig.-986.314.png"
+    },
+    {
+      "title": "Fig. 986.405",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.405",
+      "thumb": "/Illustrations/Attachments/Fig.-986.405.png"
+    },
+    {
+      "title": "Fig. 986.411A T and E Quanta Modules Lengths",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.411A-T-and-E-Quanta-Modules-Lengths",
+      "thumb": "/Illustrations/Attachments/Fig.-986.411A.png"
+    },
+    {
+      "title": "Fig. 986.411B T and E Quanta Module Angles",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.411B-T-and-E-Quanta-Module-Angles",
+      "thumb": "/Illustrations/Attachments/Fig.-986.411B.png"
+    },
+    {
+      "title": "Fig. 986.411C",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.411C",
+      "thumb": "/Illustrations/Attachments/Fig.-986.411C.png"
+    },
+    {
+      "title": "Fig. 986.413",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.413",
+      "thumb": "/Illustrations/Attachments/Fig.-986.413.png"
+    },
+    {
+      "title": "Fig. 986.419",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.419",
+      "thumb": "/Illustrations/Attachments/Fig.-986.419.png"
+    },
+    {
+      "title": "Fig. 986.421",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.421",
+      "thumb": "/Illustrations/Attachments/Fig.-986.421.png"
+    },
+    {
+      "title": "Fig. 986.422 MITE",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.422-MITE",
+      "thumb": "/Illustrations/Attachments/Fig.-986.422.png"
+    },
+    {
+      "title": "Fig. 986.427 Bite, Rite, Lite",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.427-Bite,-Rite,-Lite",
+      "thumb": "/Illustrations/Attachments/Fig.-986.427.png"
+    },
+    {
+      "title": "Fig. 986.429 Kate, Kat",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.429-Kate,-Kat",
+      "thumb": "/Illustrations/Attachments/Fig.-986.429.png"
+    },
+    {
+      "title": "Fig. 986.430 OCTET",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.430-OCTET",
+      "thumb": "/Illustrations/Attachments/Fig.-986.430.png"
+    },
+    {
+      "title": "Fig. 986.431 COUPLER",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.431-COUPLER",
+      "thumb": "/Illustrations/Attachments/Fig.-986.431.png"
+    },
+    {
+      "title": "Fig. 986.432 CUBE",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.432-CUBE",
+      "thumb": "/Illustrations/Attachments/Fig.-986.432.png"
+    },
+    {
+      "title": "Fig. 986.433 RHOMBIC DODECAHEDRON",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.433-RHOMBIC-DODECAHEDRON",
+      "thumb": "/Illustrations/Attachments/Fig.-986.433.png"
+    },
+    {
+      "title": "Fig. 986.471",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.471",
+      "thumb": "/Illustrations/Attachments/Fig.-986.471.png"
+    },
+    {
+      "title": "Fig. 986.502",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.502",
+      "thumb": "/Illustrations/Attachments/Fig.-986.502.png"
+    },
+    {
+      "title": "Fig. 986.504",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.504",
+      "thumb": "/Illustrations/Attachments/Fig.-986.504.png"
+    },
+    {
+      "title": "Fig. 986.505",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.505",
+      "thumb": "/Illustrations/Attachments/Fig.-986.505.png"
+    },
+    {
+      "title": "Fig. 986.508 Six Intertangent Great-circle Discs",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.508-Six-Intertangent-Great-circle-Discs",
+      "thumb": "/Illustrations/Attachments/Fig.-986.508.png"
+    },
+    {
+      "title": "Fig. 986.515",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.515",
+      "thumb": "/Illustrations/Attachments/Fig.-986.515.png"
+    },
+    {
+      "title": "Fig. 986.561 T and E Modules - Minimod Nestabilities",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.561-T-and-E-Modules---Minimod-Nestabilities",
+      "thumb": "/Illustrations/Attachments/Fig.-986.561.png"
+    },
+    {
+      "title": "Fig. 986.726",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.726",
+      "thumb": "/Illustrations/Attachments/Fig.-986.726.png"
+    },
+    {
+      "title": "Fig. 986.816",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-986.816",
+      "thumb": "/Illustrations/Attachments/Fig.-986.816.png"
+    },
+    {
+      "title": "Fig. 987.081 Trivalent Bonding of Vertexial Spheres Form Rigids",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.081-Trivalent-Bonding-of-Vertexial-Spheres-Form-Rigids",
+      "thumb": "/Illustrations/Attachments/Fig.-987.081.png"
+    },
+    {
+      "title": "Fig. 987.132E Composite of Primary and Secondary Icosahedron Greate Circle Sets",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.132E-Composite-of-Primary-and-Secondary-Icosahedron-Greate-Circle-Sets",
+      "thumb": "/Illustrations/Attachments/Fig.-987.132E.png"
+    },
+    {
+      "title": "Fig. 987.132F Net Diagram of Angles and Edges for Basic Disequilibrium 120 LCD Triangle",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.132F-Net-Diagram-of-Angles-and-Edges-for-Basic-Disequilibrium-120-LCD-Triangle",
+      "thumb": "/Illustrations/Attachments/Fig.-987.132F.png"
+    },
+    {
+      "title": "Fig. 987.137B Composite of Primary and Secondary Vector Equilibrium Great Circle Sets",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.137B-Composite-of-Primary-and-Secondary-Vector-Equilibrium-Great-Circle-Sets",
+      "thumb": "/Illustrations/Attachments/Fig.-987.137B.png"
+    },
+    {
+      "title": "Fig. 987.137C",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.137C",
+      "thumb": "/Illustrations/Attachments/Fig.-987.137C.png"
+    },
+    {
+      "title": "Fig. 987.210 Subdivision of Tetrahedral Unity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.210-Subdivision-of-Tetrahedral-Unity",
+      "thumb": "/Illustrations/Attachments/Fig.-987.210.png"
+    },
+    {
+      "title": "Fig. 987.221 Four-great-circle Systems of Octahedron and Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.221-Four-great-circle-Systems-of-Octahedron-and-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-987.221.png"
+    },
+    {
+      "title": "Fig. 987.230 Subdivision of Tetrahedral Unity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.230-Subdivision-of-Tetrahedral-Unity",
+      "thumb": "/Illustrations/Attachments/Fig.-987.230-a.png"
+    },
+    {
+      "title": "Fig. 987.240 Subdivision of Tetrahedral Unity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.240-Subdivision-of-Tetrahedral-Unity",
+      "thumb": "/Illustrations/Attachments/Fig.-987.240-a.png"
+    },
+    {
+      "title": "Fig. 987.241 Subdivision of Tetrahedral Unity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.241-Subdivision-of-Tetrahedral-Unity",
+      "thumb": "/Illustrations/Attachments/Fig.-987.241-a.png"
+    },
+    {
+      "title": "Fig. 987.242 Evolution of Duo-Tet Cube and Hourglass Polyhedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.242-Evolution-of-Duo-Tet-Cube-and-Hourglass-Polyhedron",
+      "thumb": "/Illustrations/Attachments/Fig.-987.242.png"
+    },
+    {
+      "title": "Fig. 987.312 Rhombic Dodecahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.312-Rhombic-Dodecahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-987.312.png"
+    },
+    {
+      "title": "Fig. 987.326 Stellated Rhombic Dodecahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.326-Stellated-Rhombic-Dodecahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-987.326.png"
+    },
+    {
+      "title": "Fig. 987.412",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-987.412",
+      "thumb": "/Illustrations/Attachments/Fig.-987.412.png"
+    },
+    {
+      "title": "Fig. 988.00 Polyhedral Evolution",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.00-Polyhedral-Evolution",
+      "thumb": "/Illustrations/Attachments/Fig.-988.00.png"
+    },
+    {
+      "title": "Fig. 988.100 Octa-Icosa Matrix",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.100-Octa-Icosa-Matrix",
+      "thumb": "/Illustrations/Attachments/Fig.-988.100.png"
+    },
+    {
+      "title": "Fig. 988.12 Icosahedron Inscribed Within Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.12-Icosahedron-Inscribed-Within-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-988.12.png"
+    },
+    {
+      "title": "Fig. 988.13A S Quanta Module Edge Lengths",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.13A-S-Quanta-Module-Edge-Lengths",
+      "thumb": "/Illustrations/Attachments/Fig.-988.13A.png"
+    },
+    {
+      "title": "Fig. 988.13B S Quanta Module Angles",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.13B-S-Quanta-Module-Angles",
+      "thumb": "/Illustrations/Attachments/Fig.-988.13B.png"
+    },
+    {
+      "title": "Fig. 988.13C S Quanta Module in Context of Icosahedron and Octahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-988.13C-S-Quanta-Module-in-Context-of-Icosahedron-and-Octahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-988.13C.png"
+    },
+    {
+      "title": "Fig. 995.03 Vector Models of Atomic Nuclei",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-995.03-Vector-Models-of-Atomic-Nuclei",
+      "thumb": "/Illustrations/Attachments/Fig.-995.03.png"
+    },
+    {
+      "title": "Fig. 995.03A Vector Models of Atomic Nuclei",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-995.03A-Vector-Models-of-Atomic-Nuclei",
+      "thumb": "/Illustrations/Attachments/Fig.-995.03A.png"
+    },
+    {
+      "title": "Fig. 995.31A Reverse Peaks in Descending Isotope Curve",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-995.31A-Reverse-Peaks-in-Descending-Isotope-Curve",
+      "thumb": "/Illustrations/Attachments/Fig.-995.31A.png"
+    },
+    {
+      "title": "Fig. 1005.15 Omnidirectional Intersystem Precessional Effects - Volume and Area Progressions",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1005.15-Omnidirectional-Intersystem-Precessional-Effects---Volume-and-Area-Progressions",
+      "thumb": "/Illustrations/Attachments/Fig.-1005.15-A-and-B.png"
+    },
+    {
+      "title": "Fig. 1006.32 Duo-Tet Star Polyhedron Defines Vector Equilibrium Involvement Domain",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1006.32-Duo-Tet-Star-Polyhedron-Defines-Vector-Equilibrium-Involvement-Domain",
+      "thumb": "/Illustrations/Attachments/Fig.-1006.32.png"
+    },
+    {
+      "title": "Fig. 1007.30 View of Tetrahedron from Above - There are four triangles",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1007.30-View-of-Tetrahedron-from-Above---There-are-four-triangles",
+      "thumb": "/Illustrations/Attachments/Fig.-1007.30.png"
+    },
+    {
+      "title": "Fig 1009.57A Critical Proximity Crimping-in of Local Wave Coil-spring",
+      "href": "/Illustrations/Tables-and-Figures/Fig-1009.57A-Critical-Proximity-Crimping-in-of-Local-Wave-Coil-spring",
+      "thumb": "/Illustrations/Attachments/Fig.-1009.57A.png"
+    },
+    {
+      "title": "Fig. 1009.57B Big Orbit Passing through Little Orbit",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1009.57B-Big-Orbit-Passing-through-Little-Orbit",
+      "thumb": "/Illustrations/Attachments/Fig.-1009.57B.png"
+    },
+    {
+      "title": "Fig. 1012.14A Indig Octave System of Four Positive, Four Negative and Zero-Nine Wave Pattern of Experiential Number",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1012.14A-Indig-Octave-System-of-Four-Positive,-Four-Negative-and-Zero-Nine-Wave-Pattern-of-Experiential-Number",
+      "thumb": "/Illustrations/Attachments/Fig.-1012.14A.png"
+    },
+    {
+      "title": "Fig. 1012.14B Wave, Quanta, Indigs, Unity-Is-Plural Bow Ties",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1012.14B-Wave,-Quanta,-Indigs,-Unity-Is-Plural-Bow-Ties",
+      "thumb": "/Illustrations/Attachments/Fig.-1012.14B.png"
+    },
+    {
+      "title": "Fig. 1012.15",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1012.15",
+      "thumb": "/Illustrations/Attachments/Fig.-1012.15.png"
+    },
+    {
+      "title": "Fig. 1012.30 Indestructability of the Tetrahedron",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1012.30-Indestructability-of-the-Tetrahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-1012.30.png"
+    },
+    {
+      "title": "Fig. 1032.12 Convex and Concave Sphere Packing Voids",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1032.12-Convex-and-Concave-Sphere-Packing-Voids",
+      "thumb": "/Illustrations/Attachments/Fig.-1032.12.png"
+    },
+    {
+      "title": "Fig. 1032.30 Space Filling of Octahedron and Vector Equilibrium",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1032.30-Space-Filling-of-Octahedron-and-Vector-Equilibrium",
+      "thumb": "/Illustrations/Attachments/Fig.-1032.30.png"
+    },
+    {
+      "title": "Fig. 1032.31 Concave Octahedra and Concave Vector Equilibria Define Spherical Voids and Energy Trajectories",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1032.31-Concave-Octahedra-and-Concave-Vector-Equilibria-Define-Spherical-Voids-and-Energy-Trajectories",
+      "thumb": "/Illustrations/Attachments/Fig.-1032.31.png"
+    },
+    {
+      "title": "Fig. 1033.019 Circuit Pattern Tensegrity",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1033.019-Circuit-Pattern-Tensegrity",
+      "thumb": "/Illustrations/Attachments/Fig.-1033.019.png"
+    },
+    {
+      "title": "Fig. 1033.11 Electromagnetic Field of Closest-packed spheres",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1033.11-Electromagnetic-Field-of-Closest-packed-spheres",
+      "thumb": "/Illustrations/Attachments/Fig.-1033.11.png"
+    },
+    {
+      "title": "Fig. 1033.111 B-D",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1033.111-B-D",
+      "thumb": "/Illustrations/Attachments/Fig.-1033.111-B-D.png"
+    },
+    {
+      "title": "Fig. 1033.111A Photograph of Southeast Asian Reed Sphere Woven on Three-way Grid.",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1033.111A-Photograph-of-Southeast-Asian-Reed-Sphere-Woven-on-Three-way-Grid.",
+      "thumb": "/Illustrations/Attachments/Fig.-1033.111A.png"
+    },
+    {
+      "title": "Fig. 1033.43 Two Opposite-Paired Tetrahedra Interpenetrate in Jitterbug Contraction",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1033.43-Two-Opposite-Paired-Tetrahedra-Interpenetrate-in-Jitterbug-Contraction",
+      "thumb": "/Illustrations/Attachments/Fig.-1033.43.png"
+    },
+    {
+      "title": "Table 1033.192 - Prime Number Consequences of Spin-halving of Tetrahedrons Volumetric Domain Unity",
+      "href": "/Illustrations/Tables-and-Figures/Table-1033.192---Prime-Number-Consequences-of-Spin-halving-of-Tetrahedrons-Volumetric-Domain-Unity",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 1041.11 Truncated Tetrahedron Generates Seven Prime Axes of Symmetry",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1041.11-Truncated-Tetrahedron-Generates-Seven-Prime-Axes-of-Symmetry",
+      "thumb": "/Illustrations/Attachments/Fig.-1041.11.png"
+    },
+    {
+      "title": "Fig. 1053.37 Spherical Great Circles Are Commensurable with Spherical Triangles of Three Prime Structural Systems - Tetra Octa and Icosa",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1053.37-Spherical-Great-Circles-Are-Commensurable-with-Spherical-Triangles-of-Three-Prime-Structural-Systems---Tetra-Octa-and-Icosa",
+      "thumb": "/Illustrations/Attachments/Fig.-1053.37.png"
+    },
+    {
+      "title": "Fig. 1054.40",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1054.40",
+      "thumb": "/Illustrations/Attachments/Fig.-1054.40.png"
+    },
+    {
+      "title": "Fig. 1073.10 Cosmic Inherency - Four Kinds of Twoness",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1073.10-Cosmic-Inherency---Four-Kinds-of-Twoness",
+      "thumb": "/Illustrations/Attachments/Fig.-1073.10.png"
+    },
+    {
+      "title": "Fig. 1074.13 Nuclear Structural Systems",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1074.13-Nuclear-Structural-Systems",
+      "thumb": "/Illustrations/Attachments/Fig.-1074.13.png"
+    },
+    {
+      "title": "Fig.1101.02 The projection system of the Dymaxion Airocean World Map",
+      "href": "/Illustrations/Tables-and-Figures/Fig.1101.02-The-projection-system-of-the-Dymaxion-Airocean-World-Map",
+      "thumb": "/Illustrations/Attachments/Fig.-1101.02.png"
+    },
+    {
+      "title": "Fig. 1105.01",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1105.01",
+      "thumb": "/Illustrations/Attachments/Fig.-1105.01.png"
+    },
+    {
+      "title": "Fig. 1105.03",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1105.03",
+      "thumb": "/Illustrations/Attachments/Fig.-1105.03.png"
+    },
+    {
+      "title": "Fig. 1105.04",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1105.04",
+      "thumb": "/Illustrations/Attachments/Fig.-1105.04.png"
+    },
+    {
+      "title": "Fig. 1107.12",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1107.12",
+      "thumb": "/Illustrations/Attachments/Fig.-1107.12.png"
+    },
+    {
+      "title": "Fig. 1107.21",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1107.21",
+      "thumb": "/Illustrations/Attachments/Fig.-1107.21.png"
+    },
+    {
+      "title": "Fig. 1107.31",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1107.31",
+      "thumb": "/Illustrations/Attachments/Fig.-1107.31.png"
+    },
+    {
+      "title": "Fig. 1107.42",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1107.42",
+      "thumb": "/Illustrations/Attachments/Fig.-1107.42.png"
+    },
+    {
+      "title": "Fig. 1130.24 Reality is Spiro-orbital",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1130.24-Reality-is-Spiro-orbital",
+      "thumb": "/Illustrations/Attachments/Fig.-1130.24.png"
+    },
+    {
+      "title": "Fig. 1132.01B Composite of Vector Equilibrium and Icosahedron Great Circle Sets",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1132.01B-Composite-of-Vector-Equilibrium-and-Icosahedron-Great-Circle-Sets",
+      "thumb": "/Illustrations/Attachments/Fig.-1132.01B.png"
+    },
+    {
+      "title": "Fig. 1132.01C Net Diagram of Angles and Edges for Basic Equilibrium 48 LCD Triangle in VE-icosa Grid",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1132.01C-Net-Diagram-of-Angles-and-Edges-for-Basic-Equilibrium-48-LCD-Triangle-in-VE-icosa-Grid",
+      "thumb": "/Illustrations/Attachments/Fig.-1132.01C.png"
+    },
+    {
+      "title": "Fig. 1220.16",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1220.16",
+      "thumb": "/Illustrations/Attachments/Fig.-1220.16.png"
+    },
+    {
+      "title": "Fig. 1223.12",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1223.12",
+      "thumb": "/Illustrations/Attachments/Fig.-1223.12.png"
+    },
+    {
+      "title": "Table 1232.21 Cancellation of 'Leftward Spillover' to Disclose Basic Reflection Symmetry of Successive Powers of the Scheherazade Numbers",
+      "href": "/Illustrations/Tables-and-Figures/Table-1232.21-Cancellation-of-'Leftward-Spillover'-to-Disclose-Basic-Reflection-Symmetry-of-Successive-Powers-of-the-Scheherazade-Numbers",
+      "thumb": "/Illustrations/Attachments/Table-1232.21.png"
+    },
+    {
+      "title": "Fig. 1238.26",
+      "href": "/Illustrations/Tables-and-Figures/Fig.-1238.26",
+      "thumb": "/Illustrations/Attachments/Fig.-1238.26.png"
+    },
+    {
+      "title": "VE symbol SVG code",
+      "href": "/Illustrations/Tables-and-Figures/VE-symbol-SVG-code",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 100.103 Parallel and Perpendicular Halving of Tetrahedron",
+      "href": "/Illustrations/Interactive/Fig.-100.103-Parallel-and-Perpendicular-Halving-of-Tetrahedron",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 100.416",
+      "href": "/Illustrations/Interactive/Fig.-100.416",
+      "thumb": ""
+    },
+    {
+      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium",
+      "href": "/Illustrations/Interactive/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium",
+      "thumb": ""
+    }
+  ],
+  "misc": [
+    {
+      "title": "Drawing 1",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-1",
+      "thumb": "/Illustrations/Attachments/Drawing-1.png"
+    },
+    {
+      "title": "Drawing 2",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-2",
+      "thumb": "/Illustrations/Attachments/Drawing-2.png"
+    },
+    {
+      "title": "Drawing 3",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-3",
+      "thumb": "/Illustrations/Attachments/Drawing-3.png"
+    },
+    {
+      "title": "Drawing 4",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-4",
+      "thumb": "/Illustrations/Attachments/Drawing-4.png"
+    },
+    {
+      "title": "Drawing 5",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-5",
+      "thumb": "/Illustrations/Attachments/Drawing-5.png"
+    },
+    {
+      "title": "Drawing 6",
+      "href": "/Illustrations/Tables-and-Figures/Drawing-6",
+      "thumb": "/Illustrations/Attachments/Drawing-6.png"
+    },
+    {
+      "title": "Color Plate - 1.png",
+      "href": "/Illustrations/Attachments/Color-Plate---1.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---1.png"
+    },
+    {
+      "title": "Color Plate - 2.png",
+      "href": "/Illustrations/Attachments/Color-Plate---2.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---2.png"
+    },
+    {
+      "title": "Color Plate - 3.png",
+      "href": "/Illustrations/Attachments/Color-Plate---3.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---3.png"
+    },
+    {
+      "title": "Color Plate - 4.png",
+      "href": "/Illustrations/Attachments/Color-Plate---4.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---4.png"
+    },
+    {
+      "title": "Color Plate - 5.png",
+      "href": "/Illustrations/Attachments/Color-Plate---5.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---5.png"
+    },
+    {
+      "title": "Color Plate - 6.png",
+      "href": "/Illustrations/Attachments/Color-Plate---6.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---6.png"
+    },
+    {
+      "title": "Color Plate - 7.png",
+      "href": "/Illustrations/Attachments/Color-Plate---7.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---7.png"
+    },
+    {
+      "title": "Color Plate - 8.png",
+      "href": "/Illustrations/Attachments/Color-Plate---8.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---8.png"
+    },
+    {
+      "title": "Color Plate - 9.png",
+      "href": "/Illustrations/Attachments/Color-Plate---9.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---9.png"
+    },
+    {
+      "title": "Color Plate - 10.png",
+      "href": "/Illustrations/Attachments/Color-Plate---10.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---10.png"
+    },
+    {
+      "title": "Color Plate - 11.png",
+      "href": "/Illustrations/Attachments/Color-Plate---11.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---11.png"
+    },
+    {
+      "title": "Color Plate - 12.png",
+      "href": "/Illustrations/Attachments/Color-Plate---12.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---12.png"
+    },
+    {
+      "title": "Color Plate - 13.png",
+      "href": "/Illustrations/Attachments/Color-Plate---13.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---13.png"
+    },
+    {
+      "title": "Color Plate - 14.png",
+      "href": "/Illustrations/Attachments/Color-Plate---14.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---14.png"
+    },
+    {
+      "title": "Color Plate - 15.png",
+      "href": "/Illustrations/Attachments/Color-Plate---15.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---15.png"
+    },
+    {
+      "title": "Color Plate - 16.png",
+      "href": "/Illustrations/Attachments/Color-Plate---16.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---16.png"
+    },
+    {
+      "title": "Color Plate - 17.png",
+      "href": "/Illustrations/Attachments/Color-Plate---17.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---17.png"
+    },
+    {
+      "title": "Color Plate - 18.png",
+      "href": "/Illustrations/Attachments/Color-Plate---18.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---18.png"
+    },
+    {
+      "title": "Color Plate - 19.png",
+      "href": "/Illustrations/Attachments/Color-Plate---19.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---19.png"
+    },
+    {
+      "title": "Color Plate - 20.png",
+      "href": "/Illustrations/Attachments/Color-Plate---20.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---20.png"
+    },
+    {
+      "title": "Color Plate - 21.png",
+      "href": "/Illustrations/Attachments/Color-Plate---21.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---21.png"
+    },
+    {
+      "title": "Color Plate - 22.png",
+      "href": "/Illustrations/Attachments/Color-Plate---22.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---22.png"
+    },
+    {
+      "title": "Color Plate - 23.png",
+      "href": "/Illustrations/Attachments/Color-Plate---23.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---23.png"
+    },
+    {
+      "title": "Color Plate - 24.png",
+      "href": "/Illustrations/Attachments/Color-Plate---24.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---24.png"
+    },
+    {
+      "title": "Color Plate - 25.png",
+      "href": "/Illustrations/Attachments/Color-Plate---25.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---25.png"
+    },
+    {
+      "title": "Color Plate - 26.png",
+      "href": "/Illustrations/Attachments/Color-Plate---26.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---26.png"
+    },
+    {
+      "title": "Color Plate - 27.png",
+      "href": "/Illustrations/Attachments/Color-Plate---27.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---27.png"
+    },
+    {
+      "title": "Color Plate - 28.png",
+      "href": "/Illustrations/Attachments/Color-Plate---28.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---28.png"
+    },
+    {
+      "title": "Color Plate - 29.png",
+      "href": "/Illustrations/Attachments/Color-Plate---29.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---29.png"
+    },
+    {
+      "title": "Color Plate - 30.png",
+      "href": "/Illustrations/Attachments/Color-Plate---30.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---30.png"
+    },
+    {
+      "title": "Color Plate - 31.png",
+      "href": "/Illustrations/Attachments/Color-Plate---31.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---31.png"
+    },
+    {
+      "title": "Color Plate - 32.png",
+      "href": "/Illustrations/Attachments/Color-Plate---32.png",
+      "thumb": "/Illustrations/Attachments/Color-Plate---32.png"
+    },
+    {
+      "title": "Inline. 100.201 - a big something fastened to the Earth.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---a-big-something-fastened-to-the-Earth.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---a-big-something-fastened-to-the-Earth.png"
+    },
+    {
+      "title": "Inline. 100.201 - child breaks off piece of something.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---child-breaks-off-piece-of-something.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---child-breaks-off-piece-of-something.png"
+    },
+    {
+      "title": "Inline. 100.201 - child takes hammer and breaks rock.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---child-takes-hammer-and-breaks-rock.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---child-takes-hammer-and-breaks-rock.png"
+    },
+    {
+      "title": "Inline. 100.201 - humans blast apart rock cliff with dynamite.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---humans-blast-apart-rock-cliff-with-dynamite.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---humans-blast-apart-rock-cliff-with-dynamite.png"
+    },
+    {
+      "title": "Inline. 100.201 - minimum of three faces around a corner.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---minimum-of-three-faces-around-a-corner.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---minimum-of-three-faces-around-a-corner.png"
+    },
+    {
+      "title": "Inline. 100.201 - nature breaks big rocks.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---nature-breaks-big-rocks.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---nature-breaks-big-rocks.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of big rocks broken into smaller rocks.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-big-rocks-broken-into-smaller-rocks.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-big-rocks-broken-into-smaller-rocks.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of individual grains of sand.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-individual-grains-of-sand.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-individual-grains-of-sand.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of rocks on Earth.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Earth.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Earth.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of rocks on Mars.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Mars.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Mars.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of rocks on Moon.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Moon.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-rocks-on-Moon.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of sandy beach.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-sandy-beach.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-sandy-beach.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of small rocks broken into sand.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-small-rocks-broken-into-sand.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-small-rocks-broken-into-sand.png"
+    },
+    {
+      "title": "Inline. 100.201 - picture of the Matterhorn.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---picture-of-the-Matterhorn.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---picture-of-the-Matterhorn.png"
+    },
+    {
+      "title": "Inline. 100.201 - separate individual 'things'.png",
+      "href": "/Illustrations/Attachments/Inline.-100.201---separate-individual-'things'.png",
+      "thumb": "/Illustrations/Attachments/Inline.-100.201---separate-individual-'things'.png"
+    },
+    {
+      "title": "Inline. 1056.20 (1 of 4).png",
+      "href": "/Illustrations/Attachments/Inline.-1056.20-(1-of-4).png",
+      "thumb": "/Illustrations/Attachments/Inline.-1056.20-(1-of-4).png"
+    },
+    {
+      "title": "Inline. 1056.20 (2 of 4).png",
+      "href": "/Illustrations/Attachments/Inline.-1056.20-(2-of-4).png",
+      "thumb": "/Illustrations/Attachments/Inline.-1056.20-(2-of-4).png"
+    },
+    {
+      "title": "Inline. 1056.20 (3 of 4).png",
+      "href": "/Illustrations/Attachments/Inline.-1056.20-(3-of-4).png",
+      "thumb": "/Illustrations/Attachments/Inline.-1056.20-(3-of-4).png"
+    },
+    {
+      "title": "Inline. 1056.20 (4 of 4).png",
+      "href": "/Illustrations/Attachments/Inline.-1056.20-(4-of-4).png",
+      "thumb": "/Illustrations/Attachments/Inline.-1056.20-(4-of-4).png"
+    },
+    {
+      "title": "Inline. 1072.21.png",
+      "href": "/Illustrations/Attachments/Inline.-1072.21.png",
+      "thumb": "/Illustrations/Attachments/Inline.-1072.21.png"
+    },
+    {
+      "title": "Inline. 1221.18.png",
+      "href": "/Illustrations/Attachments/Inline.-1221.18.png",
+      "thumb": "/Illustrations/Attachments/Inline.-1221.18.png"
+    },
+    {
+      "title": "Inline. 1222.32.png",
+      "href": "/Illustrations/Attachments/Inline.-1222.32.png",
+      "thumb": "/Illustrations/Attachments/Inline.-1222.32.png"
+    },
+    {
+      "title": "Inline. 1234.10.png",
+      "href": "/Illustrations/Attachments/Inline.-1234.10.png",
+      "thumb": "/Illustrations/Attachments/Inline.-1234.10.png"
+    },
+    {
+      "title": "Inline. 1236.02.png",
+      "href": "/Illustrations/Attachments/Inline.-1236.02.png",
+      "thumb": "/Illustrations/Attachments/Inline.-1236.02.png"
+    },
+    {
+      "title": "Solo. Atomic Nucleus Diameter Symbol.png",
+      "href": "/Illustrations/Attachments/Solo.-Atomic-Nucleus-Diameter-Symbol.png",
+      "thumb": "/Illustrations/Attachments/Solo.-Atomic-Nucleus-Diameter-Symbol.png"
+    },
+    {
+      "title": "Solo. Bucky in Classroom.jpg",
+      "href": "/Illustrations/Attachments/Solo.-Bucky-in-Classroom.jpg",
+      "thumb": "/Illustrations/Attachments/Solo.-Bucky-in-Classroom.jpg"
+    },
+    {
+      "title": "Solo. Synergetics Book Cover.png",
+      "href": "/Illustrations/Attachments/Solo.-Synergetics-Book-Cover.png",
+      "thumb": "/Illustrations/Attachments/Solo.-Synergetics-Book-Cover.png"
+    }
+  ]
+}
