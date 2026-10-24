@@ -8,7 +8,7 @@
 @property --tooltip-delay {
   syntax: "<time>";
   inherits: true;
-  initial-value: 1s;
+  initial-value: 2s;
 }
 
 // =============================================================================
@@ -516,12 +516,12 @@ h6 {
 
   // Heading container manages the "warm tooltip" state
   &[id] {
-    --tooltip-delay: 0.618s;
+    --tooltip-delay: 2s;
     transition: --tooltip-delay 0s 0s; // Resets delay to 1s instantly on mouse leave
 
     &:hover {
       --tooltip-delay: 0s;
-      transition: --tooltip-delay 0s 1.618s; // Warms up group: sets delay to 0s after 1s hover
+      transition: --tooltip-delay 0s 2; // Warms up group: sets delay to 0s after 1s hover
     }
   }
 
