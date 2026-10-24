@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 458.12 Folding of Great Circles into the Icosahedron System
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 ![[Fig. 458.12.png]]

@@ -6,7 +6,7 @@ img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true
-img-emDash:
+img-emDash: false
 img-links: true
 ---
 

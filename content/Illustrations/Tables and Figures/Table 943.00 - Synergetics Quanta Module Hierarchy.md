@@ -2,6 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Table 943.00 - Synergetics Quanta Module Hierarchy
   - Illustrations/Tables and Figures/943.00 Table - Synergetics Quanta Module Hierarchy
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 

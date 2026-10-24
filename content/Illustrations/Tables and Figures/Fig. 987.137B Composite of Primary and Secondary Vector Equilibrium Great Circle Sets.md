@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 987.137B Composite of Primary and Secondary Vector Equilibrium Great Circle Sets
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 ![[Fig. 987.137B.png]]

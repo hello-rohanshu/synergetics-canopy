@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 938.13 Six Vectors of Additional Quantum Vanish and Reappear in Jitterbug Transformation Between Vector Equilibrium and Icosahedron
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 ![[Fig. 938.13.png]]

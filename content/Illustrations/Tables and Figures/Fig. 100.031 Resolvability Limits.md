@@ -3,7 +3,7 @@ aliases:
   - Illustrations/Tables and Figures/Fig. 100.031 Resolvability Limits
   - Illustrations/Tables and Figures/Fig. 100.031
 img-file-titles: true
-img-caption:
+img-caption: false
 img-italics: true
 img-bold: true
 img-equations: true

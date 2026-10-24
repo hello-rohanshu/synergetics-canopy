@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 936.19 Tetrahedral Quantum is Lost and Reappears in Transformation between Octahedron and Three-tetra-arc Tetrahelix
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 ![[Fig. 936.19.png]]

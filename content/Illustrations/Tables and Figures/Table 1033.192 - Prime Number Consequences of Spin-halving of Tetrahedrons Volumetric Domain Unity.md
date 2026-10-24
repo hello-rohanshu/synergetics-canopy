@@ -2,6 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Table 1033.192 - Prime Number Consequences of Spin-halving of Tetrahedrons Volumetric Domain Unity
   - Illustrations/Tables and Figures/1033.192 Table - Prime Number Consequences of Spin-halving of Tetrahedrons Volumetric Domain Unity
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 Needs checking #management/note 

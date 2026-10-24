@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 ![[Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres.png]]

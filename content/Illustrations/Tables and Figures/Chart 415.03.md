@@ -1,6 +1,13 @@
 ---
 aliases:
   - Illustrations/Tables and Figures/Chart 415.03
+img-file-titles: false
+img-caption: false
+img-italics: false
+img-bold: false
+img-equations: false
+img-emDash: false
+img-links: false
 ---
 
 |           |                                           |                                                 |                                 |                                  |                                                  |                                       |                                                                              |
