@@ -165,9 +165,12 @@ const SCRIPT = `
       }
     }
 
-    // Expand button: ask ImageZoom to open this thumbnail by dispatching a
-    // "quartz:zoom-open" CustomEvent. Decouples the gallery from the zoom
-    // implementation and lets any future component reuse the same hook.
+    function openZoom(img) {
+      if (!img || !img.src) return;
+      document.dispatchEvent(new CustomEvent("quartz:zoom-open", { detail: { target: img } }));
+    }
+
+    // Expand button (desktop): open the zoom overlay for this thumbnail.
     var zoomBtns = Array.prototype.slice.call(g.querySelectorAll(".ig-zoom"));
     zoomBtns.forEach(function (btn) {
       btn.addEventListener("click", function (e) {
@@ -175,9 +178,22 @@ const SCRIPT = `
         e.stopPropagation();
         var wrap = btn.closest(".ig-card-wrap");
         var card = wrap && wrap.querySelector(".ig-card");
-        var img = card && card.querySelector(".ig-thumb");
+        openZoom(card && card.querySelector(".ig-thumb"));
+      });
+    });
+
+    // Mobile: the expand button is hidden, so tapping the thumbnail itself
+    // opens the zoom instead of navigating. Tapping the title still navigates.
+    var thumbWraps = Array.prototype.slice.call(g.querySelectorAll(".ig-thumb-wrap"));
+    var mobileMq = window.matchMedia("(max-width: 640px)");
+    thumbWraps.forEach(function (tw) {
+      tw.addEventListener("click", function (e) {
+        if (!mobileMq.matches) return;
+        var img = tw.querySelector(".ig-thumb");
         if (!img || !img.src) return;
-        document.dispatchEvent(new CustomEvent("quartz:zoom-open", { detail: { target: img } }));
+        e.preventDefault();
+        e.stopPropagation();
+        openZoom(img);
       });
     });
   }
@@ -231,6 +247,27 @@ const IllustrationGallery: QuartzComponent = () => {
         .ig-card-wrap:hover .ig-zoom { opacity: 1; }
         .ig-zoom:hover { background: rgba(0,0,0,0.8); }
         @media (pointer: coarse) { .ig-zoom { opacity: 1; } }
+      
+                @media (max-width: 640px) {
+          .ig-container { margin: 1.25rem 0; }
+
+          .ig-pills { flex-wrap: nowrap; overflow-x: auto; gap: 0.35rem; padding-bottom: 0.25rem; margin-bottom: 0.85rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+          .ig-pills::-webkit-scrollbar { display: none; }
+          .ig-pill { flex-shrink: 0; font-size: 0.75rem; padding: 0.22rem 0.6rem; }
+
+          .ig-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+
+          .ig-card { flex-direction: row; align-items: stretch; }
+
+          .ig-thumb-wrap { width: 72px; height: 72px; flex-shrink: 0; aspect-ratio: auto; align-self: center; border-radius: 7px 0 0 7px; display: flex; align-items: center; justify-content: center; }
+
+          .ig-title { flex: 1; align-self: center; padding: 0.5rem 0.7rem; font-size: 0.82rem; overflow-wrap: break-word; }
+
+          .ig-zoom { display: none; }
+
+          .ig-placeholder svg { width: 20px; height: 20px; }
+        }
+      
       `}</style>
 
       <div className="ig-container">
