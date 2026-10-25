@@ -7,7 +7,7 @@ children:
   - "[[open-mixtral-8x7b]]"
 alternatives:
 critical:
-retired:
+retired: true
 tags:
   - hide-from-nav
 aliases:
