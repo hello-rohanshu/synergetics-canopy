@@ -2,6 +2,7 @@
 aliases:
   - Illustrations/Tables and Figures/Fig 466.00 Energy-valve Functions of Closest Sphere Packing
   - Illustrations/Fig 466.00 Energy-valve Functions of Closest Sphere Packing
+  - Illustrations/Fig. 466.00 Energy-valve Functions of Closest Sphere Packing
 img-file-titles: false
 img-caption: false
 img-italics: false
