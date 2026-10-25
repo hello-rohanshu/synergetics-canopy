@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 541.31
+  - Illustrations/Fig. 541.31
 ---
 ![[Fig. 541.31.png]]

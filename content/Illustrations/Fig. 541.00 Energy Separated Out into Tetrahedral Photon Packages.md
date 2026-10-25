@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 761.02 Function of a Balloon as a Porous Network
+  - Illustrations/Fig. 541.00 Energy Separated Out into Tetrahedral Photon Packages
 ---
-![[Fig. 761.02.png]]
+![[Fig. 541.00.png]]

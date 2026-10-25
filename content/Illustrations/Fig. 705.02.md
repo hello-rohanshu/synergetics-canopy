@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 505.41 Involution and Evolution
+  - Illustrations/Fig. 705.02
 ---
-![[Fig. 505.41.png]]
+![[Fig. 705.02.png]]

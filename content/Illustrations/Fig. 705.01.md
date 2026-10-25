@@ -5,8 +5,8 @@ img-italics: true
 img-bold: true
 img-equations: true
 img-emDash: true
-img-links:
+img-links: true
 aliases:
-  - Fig. 770.21
+  - Illustrations/Fig. 705.01
 ---
-![[Fig. 770.21.png]]
+![[Fig. 705.01.png]]

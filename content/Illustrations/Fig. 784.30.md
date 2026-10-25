@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 784.41 Indefinitely Extensive Array of Tensegrity Icosahedra
+  - Illustrations/Fig. 784.30
 ---
-![[Fig. 784.41.png]]
+![[Fig. 784.30.png]]

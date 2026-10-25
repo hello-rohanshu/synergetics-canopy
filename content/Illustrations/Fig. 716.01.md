@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 510.03 Four Rocket Bursts
+  - Illustrations/Fig. 716.01
 ---
-![[Fig. 510.03.png]]
+![[Fig. 716.01.png]]

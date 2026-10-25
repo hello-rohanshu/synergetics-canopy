@@ -7,7 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 509.01 A, B, C. Patterns of Thought
+  - Illustrations/Fig. 784.20
 ---
-
-![[Fig. 509.01.png]]
+![[Fig. 784.20.png]]

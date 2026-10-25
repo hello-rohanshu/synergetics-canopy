@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 724.30 Behavior of Tensegrity Icosahedron
+  - Illustrations/Fig. 541.30I Three-Sided, Triangular Cornucopia Subdivide the total sphere
 ---
-![[Fig. 724.30.png]]
+![[Fig. 541.30I.png]]

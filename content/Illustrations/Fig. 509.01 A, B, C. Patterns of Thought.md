@@ -7,6 +7,7 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 541.30I Three-Sided, Triangular Cornucopia Subdivide the total sphere
+  - Illustrations/Fig. 509.01 A, B, C. Patterns of Thought
 ---
-![[Fig. 541.30I.png]]
+
+![[Fig. 509.01.png]]

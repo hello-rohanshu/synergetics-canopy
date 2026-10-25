@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 705.02
+  - Illustrations/Fig. 761.02 Function of a Balloon as a Porous Network
 ---
-![[Fig. 705.02.png]]
+![[Fig. 761.02.png]]

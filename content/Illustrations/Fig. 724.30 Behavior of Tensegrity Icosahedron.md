@@ -7,6 +7,6 @@ img-equations: true
 img-emDash: true
 img-links: true
 aliases:
-  - Fig. 541.00 Energy Separated Out into Tetrahedral Photon Packages
+  - Illustrations/Fig. 724.30 Behavior of Tensegrity Icosahedron
 ---
-![[Fig. 541.00.png]]
+![[Fig. 724.30.png]]
