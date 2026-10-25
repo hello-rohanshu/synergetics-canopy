@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24T19:32:21.991Z",
+  "generated": "2026-10-25T13:45:55.497Z",
   "items": [
     {
       "title": "Drawing 1",
@@ -294,8 +294,8 @@
       ]
     },
     {
-      "title": "Table 412.01",
-      "href": "/Illustrations/Table-412.01",
+      "title": "Table 412.01 Closest Packing of Rods",
+      "href": "/Illustrations/Table-412.01-Closest-Packing-of-Rods",
       "thumb": "/Illustrations/Attachments/Table-412.01.png",
       "tags": [
         "Tables",
@@ -311,8 +311,8 @@
       ]
     },
     {
-      "title": "Fig. 415.17 Nucleated Cube",
-      "href": "/Illustrations/Fig.-415.17-Nucleated-Cube",
+      "title": "Fig. 415.17 Nucleated Cube - The 'External' Octahedron",
+      "href": "/Illustrations/Fig.-415.17-Nucleated-Cube---The-'External'-Octahedron",
       "thumb": "/Illustrations/Attachments/Fig.-415.17.png",
       "tags": [
         "400.00"
@@ -321,7 +321,7 @@
     {
       "title": "Fig. 415.22 Rational Volumes of Tetrahedroning",
       "href": "/Illustrations/Fig.-415.22-Rational-Volumes-of-Tetrahedroning",
-      "thumb": "/Illustrations/Attachments/Fig.-415.22-Rational-Volumes-of-Tetrahedroning.png",
+      "thumb": "/Illustrations/Attachments/Fig.-415.22.png",
       "tags": [
         "400.00"
       ]
@@ -335,8 +335,8 @@
       ]
     },
     {
-      "title": "Table - Chart 415.03",
-      "href": "/Illustrations/Table---Chart-415.03",
+      "title": "Table - Chart 415.03 - Rate of Occurrence of Symmetrically Nucleated Polyhedra of Closest Packing",
+      "href": "/Illustrations/Table---Chart-415.03---Rate-of-Occurrence-of-Symmetrically-Nucleated-Polyhedra-of-Closest-Packing",
       "thumb": "",
       "tags": [
         "Tables",
@@ -346,7 +346,7 @@
     {
       "title": "Fig. 416.01 Tetrahedral Precession of Closest Packed Spheres",
       "href": "/Illustrations/Fig.-416.01-Tetrahedral-Precession-of-Closest-Packed-Spheres",
-      "thumb": "/Illustrations/Attachments/Fig.-416.01-Tetrahedral-Precession-of-Closest-Packed-Spheres.png",
+      "thumb": "/Illustrations/Attachments/Fig.-416.01.png",
       "tags": [
         "400.00"
       ]
@@ -360,9 +360,9 @@
       ]
     },
     {
-      "title": "Fig. 419.03",
-      "href": "/Illustrations/Fig.-419.03",
-      "thumb": "/Illustrations/Attachments/Fig.-419.03-1.png",
+      "title": "Fig. 419.03 - Profile of The Industrial Revolution",
+      "href": "/Illustrations/Fig.-419.03---Profile-of-The-Industrial-Revolution",
+      "thumb": "/Illustrations/Attachments/Fig.-419.03.png",
       "tags": [
         "400.00"
       ]
@@ -376,9 +376,25 @@
       ]
     },
     {
+      "title": "Fig. 420.01 Octet Truss",
+      "href": "/Illustrations/Fig.-420.01-Octet-Truss",
+      "thumb": "/Illustrations/Attachments/Fig.-420.01.png",
+      "tags": [
+        "400.00"
+      ]
+    },
+    {
       "title": "Fig. 420.02",
       "href": "/Illustrations/Fig.-420.02",
       "thumb": "/Illustrations/Attachments/Fig.-420.02.png",
+      "tags": [
+        "400.00"
+      ]
+    },
+    {
+      "title": "Fig. 426.04 Rhombic Dodecahedron as Hub at the Vector Crossings within the Isotropic Vector Matrix",
+      "href": "/Illustrations/Fig.-426.04-Rhombic-Dodecahedron-as-Hub-at-the-Vector-Crossings-within-the-Isotropic-Vector-Matrix",
+      "thumb": "/Illustrations/Attachments/Fig.-426.04.png",
       "tags": [
         "400.00"
       ]
@@ -392,6 +408,14 @@
       ]
     },
     {
+      "title": "Fig. 450.10 The 12 Great Circles of the Vector Equilibrium Constructed from 12 Folded Units (Shown as Shaded)",
+      "href": "/Illustrations/Fig.-450.10-The-12-Great-Circles-of-the-Vector-Equilibrium-Constructed-from-12-Folded-Units-(Shown-as-Shaded)",
+      "thumb": "/Illustrations/Attachments/Fig.-450.10.png",
+      "tags": [
+        "400.00"
+      ]
+    },
+    {
       "title": "Fig. 450.11A Axes of Rotation of Vector Equilibrium",
       "href": "/Illustrations/Fig.-450.11A-Axes-of-Rotation-of-Vector-Equilibrium",
       "thumb": "/Illustrations/Attachments/Fig.-450.11A.png",
@@ -400,17 +424,9 @@
       ]
     },
     {
-      "title": "Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems 1",
-      "href": "/Illustrations/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems-1",
-      "thumb": "/Illustrations/Attachments/Fig.-450.11B.png",
-      "tags": [
-        "400.00"
-      ]
-    },
-    {
       "title": "Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems",
       "href": "/Illustrations/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems",
-      "thumb": "/Illustrations/Attachments/Fig.-450.11B-Projection-of-25-Great-Circle-Planes-in-Vector-Equilibrium-Systems.png",
+      "thumb": "/Illustrations/Attachments/Fig.-450.11B.png",
       "tags": [
         "400.00"
       ]
@@ -464,8 +480,8 @@
       ]
     },
     {
-      "title": "Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium",
-      "href": "/Illustrations/Fig.-455.11-Folding-of-Great-Circles-into-Spherical-Cube-or-Rhombic-Dodecahedron-and-Vector-Equilibrium",
+      "title": "Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium - Bow-Tie Units",
+      "href": "/Illustrations/Fig.-455.11-Folding-of-Great-Circles-into-Spherical-Cube-or-Rhombic-Dodecahedron-and-Vector-Equilibrium---Bow-Tie-Units",
       "thumb": "/Illustrations/Attachments/Fig.-455.11.png",
       "tags": [
         "400.00"
@@ -520,24 +536,24 @@
       ]
     },
     {
-      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)",
-      "href": "/Illustrations/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium-(Legacy)",
+      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium - Jitterbug System (Legacy)",
+      "href": "/Illustrations/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium---Jitterbug-System-(Legacy)",
       "thumb": "/Illustrations/Attachments/Fig.-460.08.png",
       "tags": [
         "400.00"
       ]
     },
     {
-      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium",
-      "href": "/Illustrations/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium",
+      "title": "Fig. 460.08 Symmetrical Contraction of Vector Equilibrium - Jitterbug System",
+      "href": "/Illustrations/Fig.-460.08-Symmetrical-Contraction-of-Vector-Equilibrium---Jitterbug-System",
       "thumb": "",
       "tags": [
         "400.00"
       ]
     },
     {
-      "title": "Fig. 461.08 Jitterbug System Collapses into Tetrahedron",
-      "href": "/Illustrations/Fig.-461.08-Jitterbug-System-Collapses-into-Tetrahedron",
+      "title": "Fig. 461.08 Jitterbug System Collapses into Tetrahedron - Polarization",
+      "href": "/Illustrations/Fig.-461.08-Jitterbug-System-Collapses-into-Tetrahedron---Polarization",
       "thumb": "/Illustrations/Attachments/Fig.-461.08.png",
       "tags": [
         "400.00"
@@ -568,8 +584,8 @@
       ]
     },
     {
-      "title": "Fig. 465.00 Note that the eight triangular faces of the vector equilibrium are disposed about four-sided openings, i.e. square faces",
-      "href": "/Illustrations/Fig.-465.00-Note-that-the-eight-triangular-faces-of-the-vector-equilibrium-are-disposed-about-four-sided-openings,-i.e.-square-faces",
+      "title": "Fig. 465.00",
+      "href": "/Illustrations/Fig.-465.00",
       "thumb": "/Illustrations/Attachments/Fig.-465.00.png",
       "tags": [
         "400.00"
@@ -600,8 +616,8 @@
       ]
     },
     {
-      "title": "Fig 466.00 Energy-valve Functions of Closest Sphere Packing",
-      "href": "/Illustrations/Fig-466.00-Energy-valve-Functions-of-Closest-Sphere-Packing",
+      "title": "Fig. 466.00 Energy-valve Functions of Closest Sphere Packing",
+      "href": "/Illustrations/Fig.-466.00-Energy-valve-Functions-of-Closest-Sphere-Packing",
       "thumb": "/Illustrations/Attachments/Fig.-466.00.png",
       "tags": [
         "400.00"
@@ -664,6 +680,30 @@
       ]
     },
     {
+      "title": "Fig. 505.41 Involution and Evolution",
+      "href": "/Illustrations/Fig.-505.41-Involution-and-Evolution",
+      "thumb": "/Illustrations/Attachments/Fig.-505.41.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
+      "title": "Fig. 509.01 A, B, C. Patterns of Thought",
+      "href": "/Illustrations/Fig.-509.01-A,-B,-C.-Patterns-of-Thought",
+      "thumb": "/Illustrations/Attachments/Fig.-509.01.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
+      "title": "Fig. 510.03 Four Rocket Bursts",
+      "href": "/Illustrations/Fig.-510.03-Four-Rocket-Bursts",
+      "thumb": "/Illustrations/Attachments/Fig.-510.03.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
       "title": "Fig. 511.10 Two Triangular Energy Events Make Tetrahedron",
       "href": "/Illustrations/Fig.-511.10-Two-Triangular-Energy-Events-Make-Tetrahedron",
       "thumb": "/Illustrations/Attachments/Fig.-511.10.png",
@@ -672,8 +712,8 @@
       ]
     },
     {
-      "title": "Fig. 511.20 One Energy Event",
-      "href": "/Illustrations/Fig.-511.20-One-Energy-Event",
+      "title": "Fig. 511.20 One Energy Event - Action, Reaction, and Resultant",
+      "href": "/Illustrations/Fig.-511.20-One-Energy-Event---Action,-Reaction,-and-Resultant",
       "thumb": "/Illustrations/Attachments/Fig.-511.20.png",
       "tags": [
         "500.00"
@@ -688,8 +728,8 @@
       ]
     },
     {
-      "title": "Fig. 517.10 Interference Phenomena",
-      "href": "/Illustrations/Fig.-517.10-Interference-Phenomena",
+      "title": "Fig. 517.10 Interference Phenomena - Lines Cannot Go Through the same Point at the Same Time",
+      "href": "/Illustrations/Fig.-517.10-Interference-Phenomena---Lines-Cannot-Go-Through-the-same-Point-at-the-Same-Time",
       "thumb": "/Illustrations/Attachments/Fig.-517.10.png",
       "tags": [
         "500.00"
@@ -768,9 +808,25 @@
       ]
     },
     {
-      "title": "Fig. 541.30H",
-      "href": "/Illustrations/Fig.-541.30H",
+      "title": "Fig. 541.00 Energy Separated Out into Tetrahedral Photon Packages",
+      "href": "/Illustrations/Fig.-541.00-Energy-Separated-Out-into-Tetrahedral-Photon-Packages",
+      "thumb": "/Illustrations/Attachments/Fig.-541.00.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
+      "title": "Fig. 541.30H Circular Cornucopia Assembled Around Interior Points to Form a Spherical Array",
+      "href": "/Illustrations/Fig.-541.30H-Circular-Cornucopia-Assembled-Around-Interior-Points-to-Form-a-Spherical-Array",
       "thumb": "/Illustrations/Attachments/Fig.-541.30H.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
+      "title": "Fig. 541.30I Three-Sided, Triangular Cornucopia Subdivide the total sphere",
+      "href": "/Illustrations/Fig.-541.30I-Three-Sided,-Triangular-Cornucopia-Subdivide-the-total-sphere",
+      "thumb": "/Illustrations/Attachments/Fig.-541.30I.png",
       "tags": [
         "500.00"
       ]
@@ -779,6 +835,14 @@
       "title": "Fig. 541.30M",
       "href": "/Illustrations/Fig.-541.30M",
       "thumb": "/Illustrations/Attachments/Fig.-541.30M.png",
+      "tags": [
+        "500.00"
+      ]
+    },
+    {
+      "title": "Fig. 541.31",
+      "href": "/Illustrations/Fig.-541.31",
+      "thumb": "/Illustrations/Attachments/Fig.-541.31.png",
       "tags": [
         "500.00"
       ]
@@ -920,6 +984,38 @@
       ]
     },
     {
+      "title": "Fig. 705.01",
+      "href": "/Illustrations/Fig.-705.01",
+      "thumb": "/Illustrations/Attachments/Fig.-705.01.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 705.02",
+      "href": "/Illustrations/Fig.-705.02",
+      "thumb": "/Illustrations/Attachments/Fig.-705.02.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 712.01 Tensegrity Behavior",
+      "href": "/Illustrations/Fig.-712.01-Tensegrity-Behavior",
+      "thumb": "/Illustrations/Attachments/Fig.-712.01.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 716.01",
+      "href": "/Illustrations/Fig.-716.01",
+      "thumb": "/Illustrations/Attachments/Fig.-716.01.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
       "title": "Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres",
       "href": "/Illustrations/Fig.-717.01-Single-and-Double-Bonding-of-Members-in-Tensegrity-Spheres",
       "thumb": "/Illustrations/Attachments/Fig.-717.01.png",
@@ -931,6 +1027,14 @@
       "title": "Fig. 724.10",
       "href": "/Illustrations/Fig.-724.10",
       "thumb": "/Illustrations/Attachments/Fig.-724.10.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 724.30 Behavior of Tensegrity Icosahedron",
+      "href": "/Illustrations/Fig.-724.30-Behavior-of-Tensegrity-Icosahedron",
+      "thumb": "/Illustrations/Attachments/Fig.-724.30.png",
       "tags": [
         "700.00"
       ]
@@ -960,9 +1064,17 @@
       ]
     },
     {
-      "title": "Fig. 740.21 Tensegrity Masts as Struts",
-      "href": "/Illustrations/Fig.-740.21-Tensegrity-Masts-as-Struts",
+      "title": "Fig. 740.21 Tensegrity Masts as Struts - Miniaturization Approaches Atomic Structure",
+      "href": "/Illustrations/Fig.-740.21-Tensegrity-Masts-as-Struts---Miniaturization-Approaches-Atomic-Structure",
       "thumb": "/Illustrations/Attachments/Fig.-740.21.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 761.02 Function of a Balloon as a Porous Network",
+      "href": "/Illustrations/Fig.-761.02-Function-of-a-Balloon-as-a-Porous-Network",
+      "thumb": "/Illustrations/Attachments/Fig.-761.02.png",
       "tags": [
         "700.00"
       ]
@@ -987,6 +1099,38 @@
       "title": "Fig. 770.11 System Turbining in Tensegrity Structures",
       "href": "/Illustrations/Fig.-770.11-System-Turbining-in-Tensegrity-Structures",
       "thumb": "/Illustrations/Attachments/Fig.-770.11.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 770.21",
+      "href": "/Illustrations/Fig.-770.21",
+      "thumb": "/Illustrations/Attachments/Fig.-770.21.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 784.20",
+      "href": "/Illustrations/Fig.-784.20",
+      "thumb": "/Illustrations/Attachments/Fig.-784.20.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 784.30",
+      "href": "/Illustrations/Fig.-784.30",
+      "thumb": "/Illustrations/Attachments/Fig.-784.30.png",
+      "tags": [
+        "700.00"
+      ]
+    },
+    {
+      "title": "Fig. 784.41 Indefinitely Extensive Array of Tensegrity Icosahedra",
+      "href": "/Illustrations/Fig.-784.41-Indefinitely-Extensive-Array-of-Tensegrity-Icosahedra",
+      "thumb": "/Illustrations/Attachments/Fig.-784.41.png",
       "tags": [
         "700.00"
       ]
@@ -1066,7 +1210,7 @@
     {
       "title": "Fig. 835.11 The Spherical Octahedron",
       "href": "/Illustrations/Fig.-835.11-The-Spherical-Octahedron",
-      "thumb": "/Illustrations/Attachments/Fig.-835.11-The-Spherical-Octahedron.png",
+      "thumb": "/Illustrations/Attachments/Fig.-835.11.png",
       "tags": [
         "800.00"
       ]

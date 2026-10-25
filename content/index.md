@@ -28,7 +28,7 @@ aliases:
   flex: 0 0 auto;
   height: 170px;
   /* Width removed — lets the image determine its own width */
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@ aliases:
 }
 .image-gallery::-webkit-scrollbar-thumb {
   background: #ddd;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .link-btn {
@@ -135,7 +135,7 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 # Project Status
 
 <div class="status-card" style="margin: 1.5rem 0;">
-  <a href="/content-audit" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+  <a href="/content-audit" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 8px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Content Completeness</div>
       <div style="font-size: 0.85rem; color: var(--gray);">Check Detailed Audit -></div>
@@ -145,7 +145,7 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 </div>
 
 <div class="status-card" style="margin: 1.5rem 0;">
-  <a href="/changelog" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+  <a href="/changelog" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 8px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Current Version</div>
       <div style="font-size: 0.85rem; color: var(--gray);">See Changelog -></div>
@@ -155,7 +155,7 @@ The site is built on [Quartz](https://github.com/jackyzha0/quartz/releases/tag/v
 </div>
 
 <div class="status-card" style="margin: 1.5rem 0;">
-  <a href="/systems-manifest" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 12px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
+  <a href="/systems-manifest" style="display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; background: var(--light); border: 1px solid var(--lightgray); border-radius: 8px; text-decoration: none; transition: background 0.2s, border-color 0.2s;" onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='var(--light)'; this.style.borderColor='var(--lightgray)'">
     <div style="flex: 1;">
       <div style="font-weight: 600; font-size: 1.05rem; color: var(--darkgray); margin-bottom: 0.2rem;">Systems Freshness</div>
       <div style="font-size: 0.85rem; color: var(--gray);">View Manifest -></div>
