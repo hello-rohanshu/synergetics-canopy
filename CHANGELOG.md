@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- ## [Unreleased] -->
 
+## [1.2.0] - 2026-10-25
+
+### Added
+
+- Copy button — copy any section’s text to clipboard in a clean, pasteable format
+- Illustrations gallery — all figures browsable in one place, with per-chapter filtering and in-gallery zoom
+- Interactive figure 100.416 — Find it [here](https://synergetics.pages.dev/Illustrations/Fig.-100.416)
+- Smart redirects — renamed pages stay reachable via their old URLs; combined with the existing Smart 404, broken links are now robustly prevented
+
+### Changed
+- Systems Manifest and Changelog updated for v1.2.0
+- Minor UI polish on homepage
+
+### Fixed
+
+- 404 page correctly restores its state when navigating back/forward (bfcache)
+- Formatting coverage 80% → 92%; all images formatted to a uniform convention (except chapter 900.00); all hyperlinks resolved across chapters
+
+
 ## [1.1.0] - 2026-08-24
 
 ### Added
@@ -18,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Systems Manifest updated for v1.1.0
+- Systems Manifest and Changelog updated for v1.1.0
 - Homepage about section, feedback button, and GitHub link improved
 - Minor UI polish on AI page
 - GitHub Readme updated
