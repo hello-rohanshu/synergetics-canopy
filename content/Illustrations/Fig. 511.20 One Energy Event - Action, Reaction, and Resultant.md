@@ -2,13 +2,14 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 511.20 One Energy Event
   - Illustrations/Fig. 511.20 One Energy Event
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+  - Illustrations/Fig. 511.20 One Energy Event - Action, Reaction, and Resultant
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 511.20.png]]

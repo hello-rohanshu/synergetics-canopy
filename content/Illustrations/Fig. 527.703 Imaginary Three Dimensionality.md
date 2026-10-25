@@ -2,13 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 527.703 Imaginary Three Dimensionality
   - Illustrations/Fig. 527.703 Imaginary Three Dimensionality
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 527.703.png]]

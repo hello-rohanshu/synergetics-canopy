@@ -2,13 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 536.03 Domains of Vertexes, Faces, and Edges of Systems
   - Illustrations/Fig. 536.03 Domains of Vertexes, Faces, and Edges of Systems
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 536.03.png]]

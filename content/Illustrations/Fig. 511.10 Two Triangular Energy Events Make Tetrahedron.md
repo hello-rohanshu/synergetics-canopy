@@ -2,13 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 511.10 Two Triangular Energy Events Make Tetrahedron
   - Illustrations/Fig. 511.10 Two Triangular Energy Events Make Tetrahedron
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 511.10.png]]
