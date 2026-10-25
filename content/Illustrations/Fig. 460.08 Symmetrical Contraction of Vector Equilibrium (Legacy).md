@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 460.08.png]]

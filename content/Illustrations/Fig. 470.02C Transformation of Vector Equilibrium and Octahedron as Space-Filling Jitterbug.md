@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 470.02C Transformation of Vector Equilibrium and Octahedron as Space-Filling Jitterbug
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 470.02C.png]]

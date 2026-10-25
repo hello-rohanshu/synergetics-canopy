@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 461.08 Jitterbug System Collapses into Tetrahedron
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 461.08.png]]

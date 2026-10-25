@@ -4,13 +4,13 @@ aliases:
   - Illustrations/Fig. 415.17 Nucleated Cube
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 415.17.png]]
 
-Fig. 415.17 Nucleated Cube: The "External" Octahedron: ABC shows that eight additional closest- packed spheres are required to form the minimum allspace-filling nuclear cube to augment the nuclear vector equilibrium. DEF show the eight Eighth-Octa required to complete the polyhedral transformation. (Compare Fig. [[1006.32]].)
+Fig. 415.17 Nucleated Cube: The "External" Octahedron: ABC shows that eight additional closest- packed spheres are required to form the minimum allspace-filling nuclear cube to augment the nuclear vector equilibrium. DEF show the eight Eighth-Octa required to complete the polyhedral transformation. (Compare Fig. [[1001.00 Inherent Rationality of Omnidirectional Epistemology#1006.32|1006.32]].)

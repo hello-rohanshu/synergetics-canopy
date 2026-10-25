@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 464.01 Triangle in Cube as Energetic Model
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 464.01.png]]

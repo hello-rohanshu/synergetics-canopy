@@ -2,6 +2,10 @@
 aliases:
   - Illustrations/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium
   - Illustrations/Interactive/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium
+img-italics: true
+img-bold: true
+img-emDash: true
+img-links: true
 ---
 
 

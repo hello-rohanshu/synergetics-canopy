@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 401.00 Tensegrity Tetrahedron with 'Me' Ball Suspended at Center of Volume of the Tetrahedron
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 401.00.png]]

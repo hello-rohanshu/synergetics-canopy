@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 465.01 Four Axes of Vector Equilibrium with Rotating Wheels or Triangular Cams
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 465.01.png]]

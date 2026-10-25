@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 417.01 Precession of Two Sets of 60 Closest-Packed Spheres as Seven-Frequency Tetrahedron
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 417.01.png]]

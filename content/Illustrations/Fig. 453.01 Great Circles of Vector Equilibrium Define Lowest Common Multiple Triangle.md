@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 453.01 Great Circles of Vector Equilibrium Define Lowest Common Multiple Triangle
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 453.01.png]]

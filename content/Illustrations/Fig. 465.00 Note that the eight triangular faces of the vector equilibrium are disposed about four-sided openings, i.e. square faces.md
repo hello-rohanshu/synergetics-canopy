@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 465.00 Note that the eight triangular faces of the vector equilibrium are disposed about four-sided openings, i.e. square faces
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 465.00.png]]

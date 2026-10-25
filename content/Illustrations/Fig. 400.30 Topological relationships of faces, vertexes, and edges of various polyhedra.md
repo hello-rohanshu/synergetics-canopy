@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 400.30 Topological relationships of faces, vertexes, and edges of various polyhedra
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 400.30.png]]

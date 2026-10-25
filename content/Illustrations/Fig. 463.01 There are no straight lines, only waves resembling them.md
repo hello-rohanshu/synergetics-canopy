@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 463.01 There are no straight lines, only waves resembling them
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 463.01.png]]

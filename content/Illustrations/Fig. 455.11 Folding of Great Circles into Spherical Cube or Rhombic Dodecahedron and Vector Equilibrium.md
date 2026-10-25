@@ -4,11 +4,11 @@ aliases:
   - Illustrations/Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium
 img-file-titles: false
 img-caption: false
-img-italics: false
-img-bold: false
+img-italics: true
+img-bold: true
 img-equations: false
-img-emDash: false
-img-links: false
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 455.11.png]]
