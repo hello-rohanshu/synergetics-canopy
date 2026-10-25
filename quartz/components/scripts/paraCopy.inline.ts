@@ -80,7 +80,15 @@ function nodeToMarkdown(node: Node): string {
     case "h6": return `###### ${inner}\n\n`
     case "li": return `- ${inner}\n`
     case "ul": case "ol": return `${inner}\n`
-    case "blockquote": return inner.split("\n").map(l => `> ${l}`).join("\n") + "\n\n"
+    case "blockquote": {
+      // WhatsApp plain-text cleanup:
+      // drop blank quote lines, drop the last line (attribution link),
+      // strip leading # and spaces from the first line. Rest stays.
+      const lines = inner.split("\n").filter((l) => l.trim().length > 0)
+      if (lines.length > 1) lines.pop()
+      if (lines.length > 0) lines[0] = lines[0].replace(/^\s*#*\s*/, "")
+      return lines.map((l) => `> ${l}`).join("\n") + "\n\n"
+    }
     default: return inner
   }
 }
@@ -216,7 +224,12 @@ export function attachParaCopyButtons(container: HTMLElement | Document, pageSlu
       const attributionHtml = `<p><strong>— RBF • Synergetics</strong></p>`
 
       // Plain text: no URLs. HTML: heading link carries the section URL.
-      const plainPayload = [headingLine, bodyPlain, attribution].filter(Boolean).join("\n\n")
+      // WhatsApp-friendly: collapse runs of 2+ newlines inside the body,
+      // but keep one blank line after the heading line and before the attribution.
+      const bodyPlainCollapsed = bodyPlain.replace(/\n{2,}/g, "\n")
+      const plainPayload = [headingLine, bodyPlainCollapsed, attribution]
+        .filter(Boolean)
+        .join("\n\n")
       const htmlPayload = headingLineHtml + "<p>&nbsp;</p>" + bodyHtml + "<p>&nbsp;</p>" + attributionHtml
 
       const success = await writeToClipboard(plainPayload, htmlPayload)
