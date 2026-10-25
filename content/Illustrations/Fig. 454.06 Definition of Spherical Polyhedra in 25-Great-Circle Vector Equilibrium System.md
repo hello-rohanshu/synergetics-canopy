@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 454.06 Definition of Spherical Polyhedra in 25-Great-Circle Vector Equilibrium System
   - Illustrations/Fig. 454.06 Definition of Spherical Polyhedra in 25-Great-Circle Vector Equilibrium System
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

@@ -6,3 +6,4 @@
 - There are some tables which are screenshots, they too get similar proper treatment instead of being inline. Just need calling them 'Table xyz - abc' instead.
 - Title-only caption should be removed as it is already covered in the md file name
 - If the caption has two titles, include both of them into the image name
+

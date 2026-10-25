@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 401.05
   - Illustrations/Fig. 401.05
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

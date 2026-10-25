@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 464.01 Triangle in Cube as Energetic Model
   - Illustrations/Fig. 464.01 Triangle in Cube as Energetic Model
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

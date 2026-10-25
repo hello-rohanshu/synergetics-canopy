@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 450.11A Axes of Rotation of Vector Equilibrium
   - Illustrations/Fig. 450.11A Axes of Rotation of Vector Equilibrium
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true
@@ -14,8 +14,7 @@ img-links: true
 ![[Fig. 450.11A.png]]
 
 Fig. 450.11A Axes of Rotation of Vector Equilibrium:
-
-A. Rotation of vector equilibrium on axes through centers of opposite trianglar faces defines four equatorial great-circle planes.
-B. Rotation of the vector equilibrium on axes through centers of opposite square faces defines three equatorial great-circle planes.
-C. Rotation of vector equilibrium on axes through opposite vertexes defines six equatorial great-circle planes.
-D. Rotation of the vector equilibrium on axes through centers of opposite edges defines twelve equatorial great-circle planes.
+	A. Rotation of vector equilibrium on axes through centers of opposite trianglar faces defines four equatorial great-circle planes.
+	B. Rotation of the vector equilibrium on axes through centers of opposite square faces defines three equatorial great-circle planes.
+	C. Rotation of vector equilibrium on axes through opposite vertexes defines six equatorial great-circle planes.
+	D. Rotation of the vector equilibrium on axes through centers of opposite edges defines twelve equatorial great-circle planes.

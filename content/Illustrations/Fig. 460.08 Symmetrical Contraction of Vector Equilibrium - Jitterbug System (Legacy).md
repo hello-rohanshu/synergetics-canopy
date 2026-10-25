@@ -2,8 +2,9 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)
   - Illustrations/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium (Legacy)
-img-file-titles: false
-img-caption: false
+  - Illustrations/Fig. 460.08 Symmetrical Contraction of Vector Equilibrium - Jitterbug System (Legacy)
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

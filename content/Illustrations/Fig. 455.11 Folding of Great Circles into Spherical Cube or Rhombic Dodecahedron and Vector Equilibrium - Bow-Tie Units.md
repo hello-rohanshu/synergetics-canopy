@@ -2,8 +2,9 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium
   - Illustrations/Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium
-img-file-titles: false
-img-caption: false
+  - Illustrations/Fig. 455.11 Folding of Great Circles into Spherical Cube or Rhombic Dodecahedron and Vector Equilibrium - Bow-Tie Units
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

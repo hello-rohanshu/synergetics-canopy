@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 470.02B Relationship of Vector Equilibrium to Cube and Octahedron
   - Illustrations/Fig. 470.02B Relationship of Vector Equilibrium to Cube and Octahedron
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 463.01 There are no straight lines, only waves resembling them
   - Illustrations/Fig. 463.01 There are no straight lines, only waves resembling them
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

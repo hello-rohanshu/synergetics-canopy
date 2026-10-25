@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 470.02D Reciprocity of Vector Equilibrium and Octahedra in Space-Filling Jitterbug
   - Illustrations/Fig. 470.02D Reciprocity of Vector Equilibrium and Octahedra in Space-Filling Jitterbug
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 401.00 Tensegrity Tetrahedron with 'Me' Ball Suspended at Center of Volume of the Tetrahedron
   - Illustrations/Fig. 401.00 Tensegrity Tetrahedron with 'Me' Ball Suspended at Center of Volume of the Tetrahedron
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

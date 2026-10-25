@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 413.01 Vector Equilibrium - Omnidirectional Closest Packing Around a Nucleus
   - Illustrations/Fig. 413.01 Vector Equilibrium - Omnidirectional Closest Packing Around a Nucleus
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

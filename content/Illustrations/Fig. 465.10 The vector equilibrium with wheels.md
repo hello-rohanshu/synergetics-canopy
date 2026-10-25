@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 465.10 The vector equilibrium with wheels
   - Illustrations/Fig. 465.10 The vector equilibrium with wheels
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

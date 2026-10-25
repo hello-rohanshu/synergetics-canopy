@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 466.01 Reciprocal Motion of Nine Internal Spheres Propagates Wave by Diagonal Elongation
   - Illustrations/Fig. 466.01 Reciprocal Motion of Nine Internal Spheres Propagates Wave by Diagonal Elongation
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

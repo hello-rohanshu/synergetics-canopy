@@ -2,8 +2,9 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 415.17 Nucleated Cube
   - Illustrations/Fig. 415.17 Nucleated Cube
-img-file-titles: false
-img-caption: false
+  - Illustrations/Fig. 415.17 Nucleated Cube - The 'External' Octahedron
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

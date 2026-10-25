@@ -3,7 +3,7 @@ aliases:
   - Illustrations/Tables and Figures/Fig. 454.01A
   - Illustrations/Fig. 454.01A
 img-file-titles: false
-img-caption: false
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

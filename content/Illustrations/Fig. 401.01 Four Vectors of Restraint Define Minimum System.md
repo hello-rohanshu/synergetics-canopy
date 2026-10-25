@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 401.01 Four Vectors of Restraint Define Minimum System
   - Illustrations/Fig. 401.01 Four Vectors of Restraint Define Minimum System
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

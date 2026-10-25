@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 455.20
   - Illustrations/Fig. 455.20
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

@@ -2,8 +2,9 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems 1
   - Illustrations/Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems 1
-img-file-titles: false
-img-caption: false
+  - Illustrations/Fig. 450.11B Projection of 25 Great-Circle Planes in Vector Equilibrium Systems
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

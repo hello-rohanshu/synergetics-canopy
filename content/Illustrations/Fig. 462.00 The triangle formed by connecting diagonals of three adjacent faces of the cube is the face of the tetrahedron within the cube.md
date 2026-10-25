@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 462.00 The triangle formed by connecting diagonals of three adjacent faces of the cube is the face of the tetrahedron within the cube
   - Illustrations/Fig. 462.00 The triangle formed by connecting diagonals of three adjacent faces of the cube is the face of the tetrahedron within the cube
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

@@ -2,8 +2,8 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 419.30 Realized Nucleus Appears at Fifth Shell Layer
   - Illustrations/Fig. 419.30 Realized Nucleus Appears at Fifth Shell Layer
-img-file-titles: false
-img-caption: false
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true

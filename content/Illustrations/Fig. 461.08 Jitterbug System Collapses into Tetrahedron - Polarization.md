@@ -2,8 +2,9 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 461.08 Jitterbug System Collapses into Tetrahedron
   - Illustrations/Fig. 461.08 Jitterbug System Collapses into Tetrahedron
-img-file-titles: false
-img-caption: false
+  - Illustrations/Fig. 461.08 Jitterbug System Collapses into Tetrahedron - Polarization
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
 img-equations: true
