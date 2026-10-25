@@ -6,11 +6,11 @@ img-file-titles: false
 img-caption: false
 img-italics: true
 img-bold: true
-img-equations: false
+img-equations: true
 img-emDash: true
 img-links: true
 ---
 
 ![[Fig. 462.00.png]]
 
-Fig. 462.00 The triangle formed by connecting diagonals of three adjacent faces of the cube is the face of the tetrahedron within the cube. If the triangle is rotated so that its vertexes move along the edges of the cube, its position changes from the positive to the negative tetrahedron. Two equal tetrahedra (positive and negative) joined at their common centers define the cube. The total available energy of a system is related to its surface area, involving the second power (square) of the radius. E=Mc2: The conjunction of any two similar systems results in a synergetic relationship: the second power of individual totals of cohesiveness of the systems.
+Fig. 462.00 The triangle formed by connecting diagonals of three adjacent faces of the cube is the face of the tetrahedron within the cube. If the triangle is rotated so that its vertexes move along the edges of the cube, its position changes from the positive to the negative tetrahedron. Two equal tetrahedra (positive and negative) joined at their common centers define the cube. The total available energy of a system is related to its surface area, involving the second power (square) of the radius. E=Mc²: The conjunction of any two similar systems results in a synergetic relationship: the second power of individual totals of cohesiveness of the systems.

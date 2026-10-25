@@ -7,7 +7,7 @@ img-file-titles: false
 img-caption: false
 img-italics: true
 img-bold: true
-img-equations: false
+img-equations: true
 img-emDash: true
 img-links: true
 ---

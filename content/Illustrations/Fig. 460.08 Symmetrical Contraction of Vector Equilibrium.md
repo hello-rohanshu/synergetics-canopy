@@ -6,6 +6,7 @@ img-italics: true
 img-bold: true
 img-emDash: true
 img-links: true
+img-equations: true
 ---
 
 

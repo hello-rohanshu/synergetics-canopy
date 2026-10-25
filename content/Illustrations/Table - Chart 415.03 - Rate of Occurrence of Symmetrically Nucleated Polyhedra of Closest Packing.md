@@ -3,11 +3,12 @@ aliases:
   - Illustrations/Tables and Figures/Chart 415.03
   - Illustrations/Tables and Figures/Table - Chart 415.03
   - Illustrations/Table - Chart 415.03
-img-file-titles: false
-img-caption: false
+  - Illustrations/Table - Chart 415.03 - Rate of Occurrence of Symmetrically Nucleated Polyhedra of Closest Packing
+img-file-titles: true
+img-caption: true
 img-italics: true
 img-bold: true
-img-equations: false
+img-equations: true
 img-emDash: true
 img-links: true
 ---
@@ -29,4 +30,4 @@ img-links: true
 | 10        | 1002                                      | 3870                                            |                                 |                                  |                                                  |                                       |                                                                              |
 |           |                                           |                                                 |                                 |                                  |                                                  |                                       |                                                                              |
 
-Original: [[Table - Chart 415.03 (original).png]]
+Original: [[Table - Chart 415.03 - Rate of Occurrence of Symmetrically Nucleated Polyhedra of Closest Packing (original).png|Chart 415.03]]

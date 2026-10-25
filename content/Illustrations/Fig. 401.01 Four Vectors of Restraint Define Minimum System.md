@@ -6,7 +6,7 @@ img-file-titles: false
 img-caption: false
 img-italics: true
 img-bold: true
-img-equations: false
+img-equations: true
 img-emDash: true
 img-links: true
 ---
@@ -20,4 +20,4 @@ Investigation of the requirements for a minimum system.
 	C. Three vectors: a line—a one-dimensional system.
 	D. Four vectors: a point—no displacement.
 	E. Note the possibility of turbining with the position otherwise fixed by the four vectors of restraint.
-	F. The four vectors define the tetrahedron: the first identifiable "system" —a primary or minimum subdivision of Universe. The ball lies at the center of gravity within the tetrahedron.
+	F. The four vectors define the tetrahedron: the first identifiable "system" — a primary or minimum subdivision of Universe. The ball lies at the center of gravity within the tetrahedron.
