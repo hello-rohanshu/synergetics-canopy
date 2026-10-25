@@ -2,13 +2,14 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 740.21 Tensegrity Masts as Struts
   - Illustrations/Fig. 740.21 Tensegrity Masts as Struts
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+  - Illustrations/Fig. 740.21 Tensegrity Masts as Struts - Miniaturization Approaches Atomic Structure
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 740.21.png]]

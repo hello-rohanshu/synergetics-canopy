@@ -1,14 +1,14 @@
 ---
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 aliases:
   - Illustrations/Tables and Figures/Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres
   - Illustrations/Fig. 717.01 Single and Double Bonding of Members in Tensegrity Spheres
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
 ---
 
 ![[Fig. 717.01.png]]

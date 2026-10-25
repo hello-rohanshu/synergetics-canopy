@@ -2,13 +2,13 @@
 aliases:
   - Illustrations/Tables and Figures/Fig. 765.02 Stabilization of Three-Way-Grid Tensegrity Sphere
   - Illustrations/Fig. 765.02 Stabilization of Three-Way-Grid Tensegrity Sphere
-img-file-titles: false
-img-caption: false
-img-italics: false
-img-bold: false
-img-equations: false
-img-emDash: false
-img-links: false
+img-file-titles: true
+img-caption: true
+img-italics: true
+img-bold: true
+img-equations: true
+img-emDash: true
+img-links: true
 ---
 
 ![[Fig. 765.02.png]]
