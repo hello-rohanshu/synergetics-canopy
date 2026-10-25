@@ -13,4 +13,4 @@ img-links: false
 
 ![[Fig. 986.430.png]]
 
-OCTET (See [[color plate 22]])
+OCTET (See [[32 Color Plates#Color Plate 22|color plate 22]])

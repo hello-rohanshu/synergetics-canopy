@@ -13,5 +13,5 @@ img-links: false
 
 ![[Fig. 986.422.png]]
 
-MITE (See [[color plate 17]].)
+MITE (See [[32 Color Plates#Color Plate 17|color plate 17]].)
 

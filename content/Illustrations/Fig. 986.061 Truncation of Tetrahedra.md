@@ -13,4 +13,4 @@ img-links: false
 
 ![[Fig. 986.061.png]]
 
-Fig. 986.061 Truncation of Tetrahedra: Only vertexes and edges may be truncated. (Compare Figs. [[987.241]] and [[Fig. 1041.11 Truncated Tetrahedron Generates Seven Prime Axes of Symmetry]].)
+Fig. 986.061 Truncation of Tetrahedra: Only vertexes and edges may be truncated. (Compare Figs. [[987.00 Multiplication Only by Division#987.241|987.241]] and [[1040.00 Seven Axes of Symmetry#1041.11|Fig. 1041.11]].)

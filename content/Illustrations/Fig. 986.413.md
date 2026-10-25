@@ -13,4 +13,4 @@ img-links: false
 
 ![[Fig. 986.413.png]]
 
-Fig. 986.413 Regular Tetrahedron Composed of 24 Quanta Modules: Compare [[Fig. 923.10]].
+Fig. 986.413 Regular Tetrahedron Composed of 24 Quanta Modules: Compare [[920.00 Functions of A and B Modules#923.10|Fig. 923.10]].

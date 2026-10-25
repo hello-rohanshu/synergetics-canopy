@@ -13,4 +13,4 @@ img-links: false
 
 ![[Fig. 986.433.png]]
 
-RHOMBIC DODECAHEDRON (See [[color plate 25]])
+RHOMBIC DODECAHEDRON (See [[32 Color Plates#Color Plate 25|color plate 25]])

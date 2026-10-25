@@ -10,4 +10,4 @@ aliases:
   - Illustrations/Fig. 835.11 The Spherical Octahedron
   - Illustrations/Tables and Figures/Fig. 835.11 The Spherical Octahedron
 ---
-![[Fig. 835.11 The Spherical Octahedron.png]]
+![[Fig. 835.11.png]]

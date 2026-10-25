@@ -13,4 +13,4 @@ img-links: false
 
 ![[Fig. 986.432.png]]
 
-CUBE (See [[color plate 24]])
+CUBE (See [[32 Color Plates#Color Plate 24|color plate 24]])
