@@ -1,6 +1,6 @@
 ---
 status:
-attestation: 2026-08-21
+attestation: 2026-10-25
 ping_url:
 url:
 children:

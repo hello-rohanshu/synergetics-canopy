@@ -1,5 +1,5 @@
 ---
-attestation: 2026-08-21
+attestation: 2026-10-25
 status:
 ping_url:
 url:
