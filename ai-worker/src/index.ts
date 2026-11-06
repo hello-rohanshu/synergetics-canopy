@@ -36,7 +36,7 @@ const HF_HEALTH_URL = "https://hello-rohanshu-synergetics-embed.hf.space/health"
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+  "Access-Control-Allow-Methods": "POST, GET, HEAD, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
@@ -59,6 +59,9 @@ function jsonOk(data: unknown): Response {
 // ── HF Space keep-alive ──────────────────────────────────────
 // Calls HF's restart API, then checks if /health responds.
 // Returns what happened so the caller can log or return it.
+// NOTE: this is side-effectful (may restart the Space and wait 30s).
+// Use it only from cron and the POST / wake-on-sleep retry — never from
+// a /ping monitoring route. For pure monitoring use checkHF() below.
 
 async function keepAliveHF(hfToken: string): Promise<{
   ok: boolean;
@@ -129,6 +132,19 @@ async function keepAliveQdrant(apiKey: string): Promise<{
   }
 }
 
+// ── HF read-only check ───────────────────────────────────────
+// Monitoring only: no restart, no 30s wait. Shared by /ping and /ping/hf.
+// 8s timeout so a sleeping Space can't hang a monitor past its timeout.
+
+async function checkHF(): Promise<{ ok: boolean; detail: string }> {
+  try {
+    const res = await fetch(HF_HEALTH_URL, { signal: AbortSignal.timeout(8000) });
+    return { ok: res.ok, detail: await res.text() };
+  } catch (e) {
+    return { ok: false, detail: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 // ============================================================
 // MAIN WORKER EXPORT
 // ============================================================
@@ -138,10 +154,11 @@ export default {
   // ── HTTP handler ───────────────────────────────────────────
   // Handles all incoming HTTP requests.
   // Routes:
-  //   GET  /ping         → combined health (HF + Qdrant). UptimeRobot watches this.
-  //   GET  /ping/hf      → HF Space health only
-  //   GET  /ping/qdrant  → Qdrant health only
-  //   POST /             → RAG query (embed → search → generate)
+  //   GET/HEAD /ping         → combined health (HF + Qdrant). UptimeRobot watches this.
+  //   GET/HEAD /ping/hf      → HF Space health only
+  //   GET/HEAD /ping/qdrant  → Qdrant health only
+  //   GET/HEAD /ping/worker  → worker itself only (no external deps)
+  //   POST /                 → RAG query (embed → search → generate)
 
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -151,13 +168,17 @@ export default {
       return new Response(null, { headers: CORS_HEADERS });
     }
 
-    // ── GET /ping ──────────────────────────────────────────
+    // Treat HEAD like GET for the /ping routes. Monitors (UptimeRobot) send
+    // HEAD by default; a HEAD falling through returns 405 → "down".
+    const isRead = request.method === "GET" || request.method === "HEAD";
+
+    // ── /ping ──────────────────────────────────────────────
     // Checks both HF and Qdrant simultaneously.
     // Returns 200 if both are healthy, 503 if either is down.
-    // This is the ONE URL UptimeRobot should watch.
-    if (request.method === "GET" && url.pathname === "/ping") {
+    // Pure monitoring: no restarts, no stalls. Keep-alive lives in cron.
+    if (isRead && url.pathname === "/ping") {
       const [hf, qdrant] = await Promise.all([
-        keepAliveHF(env.HF_API_KEY),
+        checkHF(),
         keepAliveQdrant(env.QDRANT_API_KEY),
       ]);
       const allOk = hf.ok && qdrant.ok;
@@ -168,32 +189,23 @@ export default {
       });
     }
 
-    // ── GET /ping/hf ───────────────────────────────────────
+    // ── /ping/hf ───────────────────────────────────────────
     // Checks if the HF Space is alive — no restart, just a knock.
     // The cron job (every minute) handles restarts.
     // Use this for the Canopy dashboard dot or debugging HF specifically.
-    if (request.method === "GET" && url.pathname === "/ping/hf") {
-      try {
-        const res = await fetch(HF_HEALTH_URL);
-        const body = await res.text();
-        return new Response(JSON.stringify({ ok: res.ok, detail: body }, null, 2), {
-          status: res.ok ? 200 : 503,
-          headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-        });
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        return new Response(JSON.stringify({ ok: false, detail: msg }, null, 2), {
-          status: 503,
-          headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-        });
-      }
+    if (isRead && url.pathname === "/ping/hf") {
+      const r = await checkHF();
+      return new Response(JSON.stringify(r, null, 2), {
+        status: r.ok ? 200 : 503,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+      });
     }
 
-    // ── GET /ping/qdrant ───────────────────────────────────
+    // ── /ping/qdrant ───────────────────────────────────────
     // Checks only Qdrant.
     // Qdrant can't be pinged from the outside without going through this worker
     // because the API key can't be exposed to the browser.
-    if (request.method === "GET" && url.pathname === "/ping/qdrant") {
+    if (isRead && url.pathname === "/ping/qdrant") {
       const result = await keepAliveQdrant(env.QDRANT_API_KEY);
       return new Response(JSON.stringify(result, null, 2), {
         status: result.ok ? 200 : 503,
@@ -201,10 +213,10 @@ export default {
       });
     }
 
-    // ── GET /ping/worker ─────────────────────────────────────
+    // ── /ping/worker ───────────────────────────────────────
     // Lightweight check — confirms the worker itself is running,
     // no external dependencies.
-    if (request.method === "GET" && url.pathname === "/ping/worker") {
+    if (isRead && url.pathname === "/ping/worker") {
       return jsonOk({ status: "ok", timestamp: Date.now() });
     }
 
