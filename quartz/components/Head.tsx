@@ -117,6 +117,8 @@ export default (() => {
         )}
         <meta name="google-site-verification" content="YQMUKCIOgo3QnYVDjFVGSWtoozwmEdTHFgmXJ_J_A8k" />
         <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22d9438029144a76938fd3545fa613bb"}'></script>
+        <script data-goatcounter="https://rohanshu.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
       </head>
     )
   }
