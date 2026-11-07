@@ -267,7 +267,7 @@ document.addEventListener("nav", () => {
     showStatus("", "loading")
 
     try {
-      const res = await fetch("https://synergetics-github-api-helper.rohanshu.workers.dev/feedback", {
+      const res = await fetch("https://synergetics-canopy-github-scribe.rohanshu.workers.dev/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
